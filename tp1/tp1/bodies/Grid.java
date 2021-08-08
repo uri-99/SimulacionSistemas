@@ -1,9 +1,11 @@
-import java.util;
+package tp1.bodies;
+
+import java.util.*;
 
 public class Grid{
     int l, m;
     List<Particle> particles;
-    Cells[][] grid;
+    Cell[][] grid;
 
     public Grid(int length, int mCantCells) {
         l = length; //10
@@ -13,7 +15,7 @@ public class Grid{
         int ancho = 0;
         boolean last = false;
 
-        grid = new Array[m][m]; //20*20
+        grid = new Cell[m][m]; //20*20
         for(double i = 0; i < m; i = i + size){
             for(double j = 0; j < m; j = j + size){
                 if(j + size == m){
@@ -33,6 +35,9 @@ public class Grid{
         boolean flag=true;
 
         if(!particles.contains(particle)) {
+            if(checkProximity(particle)){
+                return false;
+            }
             particles.add(particle);
 
             for(int i = 0; (i < m - 1) && flag; i = i++){
@@ -42,7 +47,7 @@ public class Grid{
             }
 
             if(flag){
-                println("no agregaste la particula a ningun cell");
+                System.out.println("no agregaste la particula a ninguna cell");
             }
 
             return true;
@@ -50,7 +55,16 @@ public class Grid{
             return false;
         }
     }
+
+    private boolean checkProximity(Particle particle){
+        boolean chocan = false;
+        for(int i = 0; i < particles.size() && !chocan; i++){
+            chocan = particle.isInDistance(particles.get(i), 0);
+        }
+        return chocan;
+    }
     
+    /*
     private void checkNeighboor(Cell cell) {
         for(Particle particle in cell.getParticles()) {
             
@@ -60,5 +74,15 @@ public class Grid{
     public void exportToOvito() {
 
     }
+    */
 
+    public String toString() {
+        StringBuilder data = new StringBuilder();
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<m; j++) {
+                data.append(grid[i][j].toString());
+            }
+        }
+        return data.toString();
+    }
 }
