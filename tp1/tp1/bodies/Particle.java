@@ -22,7 +22,7 @@ public class Particle{
     public double getR(){
         return r;
     }
-
+/*
     public boolean isInDistance(Particle particle, float distance) {
         float distanceBetweenBounds = Math.sqrt(
             (particle.getX() - this.getX())^2 +
@@ -31,10 +31,13 @@ public class Particle{
         return distance >= distanceBetweenBounds;
     }
 
+
+
     // en que formato guardamos las particulas?
     public String toFormat() {
 
     }
+    */
 
     public String toString() {
         return String.format("(%n;%n;%n)", x, y, r);

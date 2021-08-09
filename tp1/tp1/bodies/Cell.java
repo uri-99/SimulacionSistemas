@@ -3,27 +3,72 @@ package tp1.bodies;
 import java.util.*;
 
 public class Cell{
-    double xMin;
-    double xMax;
-    double yMin;
-    double yMax;
-    boolean lastCell;
+    double xMin, xMax;
+    double yMin, yMax;
+    boolean lastXcell, lastYcell;
 
-    List<Particle> particles;
+    public List<Particle> particles;
     
-    public Cell(double x1, double x2, double y1, double y2, boolean last) {
+    public Cell(double x1, double x2, double y1, double y2, boolean lastX, boolean lastY) {
         xMin = x1;
         xMax = x2;
         yMin = y1;
         yMax = y2;
-        lastCell = last;
-        particles = new ArrayList();
+        lastXcell = lastX;
+        lastYcell = lastY;
+        particles = new LinkedList<Particle>();
     }
+
 
     public boolean contains(Particle particle){
         float x = particle.getX();
         float y = particle.getY();
-        
+/*
+        if(lastXcell){
+            if(lastYcell){
+                if(x >= xMin  &&  x <= xMax  &&  y >= yMin  &&  y <= yMax)
+                {
+                    particles.add(particle);
+                    System.out.println("particle added in cell list");
+                    return true;
+                }
+            } else {
+                if(x >= xMin  &&  x <= xMax  &&  y >= yMin  &&  y < yMax)
+                {
+                    particles.add(particle);
+                    System.out.println("particle added in cell list");
+                    return true;
+                }
+            }
+
+        } else {
+            if(lastYcell){
+                if(x >= xMin  &&  x < xMax  &&  y >= yMin  &&  y <= yMax)
+                {
+                    particles.add(particle);
+                    System.out.println("particle added in cell list");
+                    return true;
+                }
+            } else {
+                if(x >= xMin  &&  x < xMax  &&  y >= yMin  &&  y < yMax)
+                {
+                    particles.add(particle);
+                    System.out.println("particle added in cell list");
+                    return true;
+                }
+            }
+        }
+        */
+        if(x > xMin && x<xMax && y>yMin && y<yMax){
+            particles.add(particle);
+            System.out.println("particle added in cell list: ");
+            System.out.printf("x entre:%f y %f, y entre: %f y %f\n", xMin, xMax, yMin, yMax);
+            return true;
+        }
+        //System.out.println("particle not added in this cell list");
+        return false;
+
+        /*
         if(lastCell){
             if(x >= xMin  &&  x <= xMax  &&  y >= yMin  &&  y <= yMax)
             {
@@ -38,13 +83,20 @@ public class Cell{
             }
         }
         return false;
+        */
     }
 
+
     public String toString() {
-        StringBuilder data = new StringBuilder("Celda: ");
+        StringBuilder data = new StringBuilder();
+        data.append("Celda:  xmax:");
+        data.append(xMax);
+        data.append("  ymax:");
+        data.append(yMax);
         for(Particle particle : particles) {
             data.append(particle.toString());
         }
+
         return data.toString();
     }
 }

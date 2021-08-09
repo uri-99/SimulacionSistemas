@@ -5,18 +5,32 @@ import java.util.*;
 public class Grid{
     int l, m;
     List<Particle> particles;
-    Cell[][] grid;
+    public Cell[][] grid;
 
     public Grid(int length, int mCantCells) {
+        particles = new LinkedList<Particle>();
         l = length; //10
-        m = mCantCells; //20
-        double size = l/m; //0.5
+        m = mCantCells; //4
+        double size = (double)l/(double)m; //2.5
         int largo = 0;
         int ancho = 0;
-        boolean last = false;
+        boolean lastX = false;
+        boolean lastY = false;
 
         grid = new Cell[m][m]; //20*20
-        for(double i = 0; i < m; i = i + size){
+
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<m; j++) {
+                if(j==m)
+                    lastY=true;
+                grid[i][j] = new Cell(i*size, (i+1)*size, j*size, (j+1)*size, lastX, lastY);
+            }
+            lastY=false;
+            if(i==m)
+                lastX=true;
+        }
+
+        /*for(double i = 0; i < m; i = i + size){
             for(double j = 0; j < m; j = j + size){
                 if(j + size == m){
                     last = true;
@@ -26,6 +40,13 @@ public class Grid{
                 last = false;
             }
             largo++;
+        }*/
+
+        System.out.println("grid generated");
+        for(int ii=0; ii<m; ii++){
+            for(int jj=0; jj<m; jj++){
+                System.out.println(grid[ii][jj]);
+            }
         }
 
     }
@@ -35,13 +56,14 @@ public class Grid{
         boolean flag=true;
 
         if(!particles.contains(particle)) {
-            if(checkProximity(particle)){
-                return false;
-            }
+            //if(checkProximity(particle)){
+            //    return false;
+            //}
             particles.add(particle);
+            System.out.println("particle added to gridList");
 
-            for(int i = 0; (i < m - 1) && flag; i = i++){
-                for(int j = 0; (j < m - 1) && flag; j = j++){
+            for(int i = 0; (i < m) && flag; i++){ //le agrego la particle a la cellList apropiada
+                for(int j = 0; (j < m) && flag; j++){
                     flag = !grid[i][j].contains(particle);
                 }
             }
@@ -56,6 +78,7 @@ public class Grid{
         }
     }
 
+    /*
     private boolean checkProximity(Particle particle){
         boolean chocan = false;
         for(int i = 0; i < particles.size() && !chocan; i++){
@@ -64,7 +87,7 @@ public class Grid{
         return chocan;
     }
     
-    /*
+
     private void checkNeighboor(Cell cell) {
         for(Particle particle in cell.getParticles()) {
             
@@ -74,10 +97,12 @@ public class Grid{
     public void exportToOvito() {
 
     }
-    */
+ */
+
 
     public String toString() {
         StringBuilder data = new StringBuilder();
+        data.append("Grid: ");
         for(int i=0; i<m; i++) {
             for(int j=0; j<m; j++) {
                 data.append(grid[i][j].toString());
