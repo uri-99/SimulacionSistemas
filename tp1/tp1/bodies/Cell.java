@@ -61,8 +61,8 @@ public class Cell{
         */
         if(x > xMin && x<xMax && y>yMin && y<yMax){
             particles.add(particle);
-            System.out.println("particle added in cell list: ");
-            System.out.printf("x entre:%f y %f, y entre: %f y %f\n", xMin, xMax, yMin, yMax);
+            //System.out.println("particle added in cell list: ");
+            //System.out.printf("x entre:%f y %f, y entre: %f y %f\n", xMin, xMax, yMin, yMax);
             return true;
         }
         //System.out.println("particle not added in this cell list");
@@ -88,6 +88,7 @@ public class Cell{
 
 
     public String toString() {
+
         StringBuilder data = new StringBuilder();
         data.append("Celda:  xmax:");
         data.append(xMax);
@@ -97,6 +98,7 @@ public class Cell{
             data.append(particle.toString());
         }
 
-        return data.toString();
+        //return data.toString();
+        return ".";
     }
 }

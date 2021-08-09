@@ -8,9 +8,9 @@ import java.util.Arrays;
 import static java.lang.Math.*;
 
 public class Config{
-    int n, m, l;
+    int n, m, l, id=1;
     float rc;
-    Grid grid;
+    public Grid grid;
 
     public Config(String cantParticulas, String matrix, String planeLength, String radioInteraccion) {
 
@@ -18,11 +18,11 @@ public class Config{
         m = Integer.parseInt(matrix);
         l = Integer.parseInt(planeLength);
         rc = Float.parseFloat(radioInteraccion);
-        grid = new Grid(l, m); //nuevo plano y grilla con los datos pasados
-        int i=0;
-        while(i<n){ //genero las n particulas
+        grid = new Grid(l, m, rc); //nuevo plano y grilla con los datos pasados
+
+        while(id<n+1){ //genero las n particulas, id arranca en 1 y se usa para el nombre de la particula
             if(grid.addParticle(generateParticle())) {
-                i++;
+                id++;
             }
         }
     }
@@ -32,8 +32,8 @@ public class Config{
         float y = (float)(Math.random() * l);
         double r = (double)(Math.random() * 0.025) + 0.25;
         
-        Particle newParticle = new Particle(x, y, r);
-        System.out.printf("particle generated: x:%f  y:%f\n", x, y);
+        Particle newParticle = new Particle(x, y, r, id);
+        //System.out.printf("particle generated: x:%f  y:%f\n", x, y);
         return newParticle;
     }
 
@@ -52,7 +52,7 @@ public class Config{
                         visualGrid[i][j] = " ";
                         System.out.printf(" ");
                     } else {
-                        System.out.printf(".");
+                        System.out.printf("%d",grid.grid[i-1][j-1].particles.get(0).id);
                     }
                 }
             }
