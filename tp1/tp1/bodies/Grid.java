@@ -102,7 +102,7 @@ public class Grid{
  */
 
     public void bruteForce(){
-        System.out.println("\nSTAART BRUTE FORCE--------------\n");
+        System.out.println("\nSTART BRUTE FORCE--------------\n");
         for (Particle particle1: particles) {
            // System.out.printf("\nmirando id: %d\n", particle1.id);
             for(Particle particle2: particles) {
