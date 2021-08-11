@@ -33,7 +33,7 @@ public class Main {
         System.out.println("\n\nCOMIENZO DEL EJ 1B"); // TODO falta editar para que sea con condiciones periodicas
         Tinicio = System.currentTimeMillis();
         config.grid.bruteForce();
-        config.grid.CIM();
+        config.grid.CIMP();
         Tfinal = System.currentTimeMillis();
         Tiempo = Tfinal - Tinicio;
         System.out.println("El tiempo tardado es: " + Tiempo);
@@ -71,6 +71,18 @@ public class Main {
         }
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 4; j++) {
+                if(j == 0){
+                    System.out.println("Numero de particulas: ");
+                }
+                else if(j == 1){
+                    System.out.println("El tamaño de la matrix MxM es: ");
+                }
+                else if(j == 2){
+                    System.out.println("Tiempo del Brute Force: ");
+                }
+                else if(j == 3){
+                    System.out.println("Tiempo del CIM: ");
+                }
                 System.out.println(resultados[i][j] + " ");
             }
             System.out.println();
