@@ -2,6 +2,7 @@ package tp1;
 
 import tp1.arquitecture.*;
 import tp1.bodies.Grid;
+import tp1.bodies.Particle;
 
 import java.time.Clock;
 import java.util.Random;
@@ -36,7 +37,7 @@ public class Main {
     //INCOMPLETO
     private static void ej1b(String cantParticulas, String matrix, String planeLength, String radioInteraccion){
         config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
-        System.out.println("\n\nCOMIENZO DEL EJ 1B"); // TODO falta editar para que sea con condiciones periodicas
+        System.out.println("\n\nCOMIENZO DEL EJ 1B"); //
         Tinicio = System.currentTimeMillis();
         config.grid.bruteForce();
         config.grid.CIMP();
@@ -106,9 +107,9 @@ public class Main {
         double L = Double.parseDouble(planeLength);
         double R = Double.parseDouble(radioInteraccion);
         int MxM = (int)Math.floor(L/R);
-        int MxM2 = MxM;
         String matrix = Integer.toString(MxM);
-        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        //config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        config = new Config("1000", "10", "10", "1");
         System.out.println("\n\nCOMIENZO DEL EJ 3 con un M: " + MxM);
         Tinicio = clock.millis();
         config.grid.bruteForce();
@@ -116,18 +117,26 @@ public class Main {
         Tfinal = clock.millis();
         Tiempo = Tfinal - Tinicio;
         long TiempoM = Tiempo;
+
+
         System.out.println("\n\nOtro tamaño de matrix para ver su tiempo");
         rand = new Random();
-        MxM = rand.nextInt(100-1) + 1;
-        matrix = Integer.toString(MxM);
-        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        int MxM2 = rand.nextInt(MxM-1) + 1;
+        matrix = Integer.toString(MxM2);
+        //config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        Config config2 = new Config("1000", "10", "10", "1");
         Tinicio = clock.millis();
-        config.grid.bruteForce();
-        config.grid.CIM();
+        config2.grid.bruteForce();
+        config2.grid.CIM();
         Tfinal = clock.millis();
         Tiempo = Tfinal - Tinicio;
-        System.out.println("El tiempo tardado con un M optimo es: " + TiempoM + " .M es igual a: " + MxM2);
-        System.out.println("El tiempo tardado con un M aleatorio es: " + Tiempo + " .M es igual a: " + MxM);
+
+
+
+
+        System.out.println("El tiempo tardado con un M optimo es: " + TiempoM  + "ms. " + "M es igual a: " + MxM);
+        System.out.println("El tiempo tardado con un M aleatorio es: " + Tiempo +  "ms. "+ "M es igual a: " + MxM2);
+
     }
 
 }

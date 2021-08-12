@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Grid{
     int l, m;
-    List<Particle> particles;
+    public List<Particle> particles;
     public Cell[][] grid;
     float rc;
 
@@ -45,11 +45,14 @@ public class Grid{
         }*/
 
         System.out.println("grid generated");
+        /*
         for(int ii=0; ii<m; ii++){
             for(int jj=0; jj<m; jj++){
                 System.out.println(grid[ii][jj]);
             }
         }
+        */
+
 
     }
 
@@ -112,8 +115,8 @@ public class Grid{
             for(Particle particle2: particles) {
                 //System.out.printf("\tsubid: %d\n", particle2.id);
                 if(particle1.id < particle2.id && particle1.isNeighbor(particle2, rc)) {
-                    System.out.printf("\n%d es vecina de %d\n", particle1.id, particle2.id);
-                    System.out.printf("\n%d es vecina de %d\n", particle2.id, particle1.id);
+                    //System.out.printf("\n%d es vecina de %d\n", particle1.id, particle2.id);
+                    //System.out.printf("\n%d es vecina de %d\n", particle2.id, particle1.id);
                 }
             }
         }
@@ -123,65 +126,37 @@ public class Grid{
     // Sin condiciones periódicas de contorno
     public void CIM(){
         System.out.println("\nSTART CIM--------------\n");
-        Cell celda, aux = null;
+        Cell celda, aux;
+        int a2, b2;
+
         for(int x=0; x<m; x++){
             for(int y=0; y<m; y++){
                 celda = grid[x][y];
                // System.out.printf("celda[%d][%d]\n",x,y);
-                for(int a=0; a<3; a++){ //X
-                    for(int b=0; b<3; b++){ //Y
-                        if(a==0 && b==0){ //0 es +0, 1 es +1, 2 es -1
-                                aux = grid[x][y];
-                              //  System.out.printf("\taux[%d][%d]\n", x, y);
-                        } else if (a==0 && b==1){
-                            if(y<m-1) {
-                                aux = grid[x][y + 1];
-                              //  System.out.printf("\taux[%d][%d]\n", x, y+1);
-                            }
-                        } else if (a==0 && b==2){
-                            if(y>0) {
-                                aux = grid[x][y - 1];
-                              //  System.out.printf("\taux[%d][%d]\n", x, y-1);
-                            }
-                        } else if (a==1 && b==0){
-                            if(x<m-1) {
-                                aux = grid[x + 1][y];
-                              //  System.out.printf("\taux[%d][%d]\n", x+1, y);
-                            }
-                        } else if (a==1 && b==1){
-                            if(x<m-1 && y<m-1) {
-                                aux = grid[x + 1][y + 1];
-                              //  System.out.printf("\taux[%d][%d]\n", x+1, y+1);
-                            }
-                        } else if (a==1 && b==2){
-                            if(x<m-1 && y>0) {
-                                aux = grid[x + 1][y - 1];
-                               // System.out.printf("\taux[%d][%d]\n", x+1, y-1);
-                            }
-                        } else if (a==2 && b==0){
-                            if(x>0) {
-                                aux = grid[x - 1][y];
-                               // System.out.printf("\taux[%d][%d]\n", x-1, y);
-                            }
-                        } else if (a==2 && b==1){
-                            if(x>0 && y<m-1) {
-                                aux = grid[x - 1][y + 1];
-                               // System.out.printf("\taux[%d][%d]\n", x-1, y+1);
-                            }
-                        } else if (a==2 && b==2){
-                            if(x>0 && y>0) {
-                                aux = grid[x - 1][y - 1];
-                                //System.out.printf("\taux[%d][%d]\n", x-1, y-1);
-                            }
+                for(int a=-1; a<2; a++){ //X
+                    for(int b=-1; b<2; b++){ //Y
+                        if (x+a>-1 && x+a<m) {
+                            a2 = x+a;
+                        } else {
+                            continue;
                         }
 
+                        if (y+b>-1 && y+b<m) {
+                            b2 = y+b;
+                        } else {
+                            continue;
+                        }
+                        aux = grid[a2][b2];
+
                         for(Particle particle1 : celda.particles){
-                          //  System.out.printf("\n\nmirando particula %d en celda[%d][%d]", particle1.id,x,y);
+                            //System.out.printf("\n\nmirando particula %d en celda[%d][%d]", particle1.id,x,y);
                             for(Particle particle2 : aux.particles){
-                               // System.out.printf("\n\tla comparo con particula %d en aux[][]", particle2.id);
+                                //System.out.printf("\n\tla comparo con particula %d en aux[][]", particle2.id);
                                 if(particle1.id < particle2.id && particle1.isNeighbor(particle2, rc)) {
-                                    System.out.printf("\n%d es vecinaa de %d", particle1.id, particle2.id);
-                                    System.out.printf("\n%d es vecinaa de %d\n", particle2.id, particle1.id);
+                                    //System.out.printf("\n%d es vecinaa de %d", particle1.id, particle2.id);
+                                    //System.out.printf("\n%d es vecinaa de %d\n", particle2.id, particle1.id);
+                                    particle1.neighbors.add(particle2);
+                                    particle2.neighbors.add(particle1);
                                 }
                             }
                         }
@@ -196,65 +171,46 @@ public class Grid{
     // Con condiciones periódicas de contorno.
     public void CIMP(){
         System.out.println("\nSTART CIMP--------------\n");
-        Cell celda, aux = null;
+        Cell celda, aux;
+        int a2, b2;
+
         for(int x=0; x<m; x++){
             for(int y=0; y<m; y++){
                 celda = grid[x][y];
                 // System.out.printf("celda[%d][%d]\n",x,y);
-                for(int a=0; a<3; a++){ //X
-                    for(int b=0; b<3; b++){ //Y
-                        if(a==0 && b==0){ //0 es +0, 1 es +1, 2 es -1
-                            aux = grid[x][y];
-                            //  System.out.printf("\taux[%d][%d]\n", x, y);
-                        } else if (a==0 && b==1){
-                            if(y<m-1) {
-                                aux = grid[x][y + 1];
-                                //  System.out.printf("\taux[%d][%d]\n", x, y+1);
-                            }
-                        } else if (a==0 && b==2){
-                            if(y>0) {
-                                aux = grid[x][y - 1];
-                                //  System.out.printf("\taux[%d][%d]\n", x, y-1);
-                            }
-                        } else if (a==1 && b==0){
-                            if(x<m-1) {
-                                aux = grid[x + 1][y];
-                                //  System.out.printf("\taux[%d][%d]\n", x+1, y);
-                            }
-                        } else if (a==1 && b==1){
-                            if(x<m-1 && y<m-1) {
-                                aux = grid[x + 1][y + 1];
-                                //  System.out.printf("\taux[%d][%d]\n", x+1, y+1);
-                            }
-                        } else if (a==1 && b==2){
-                            if(x<m-1 && y>0) {
-                                aux = grid[x + 1][y - 1];
-                                // System.out.printf("\taux[%d][%d]\n", x+1, y-1);
-                            }
-                        } else if (a==2 && b==0){
-                            if(x>0) {
-                                aux = grid[x - 1][y];
-                                // System.out.printf("\taux[%d][%d]\n", x-1, y);
-                            }
-                        } else if (a==2 && b==1){
-                            if(x>0 && y<m-1) {
-                                aux = grid[x - 1][y + 1];
-                                // System.out.printf("\taux[%d][%d]\n", x-1, y+1);
-                            }
-                        } else if (a==2 && b==2){
-                            if(x>0 && y>0) {
-                                aux = grid[x - 1][y - 1];
-                                //System.out.printf("\taux[%d][%d]\n", x-1, y-1);
-                            }
+                for(int a=-1; a<2; a++){ //X
+                    for(int b=-1; b<2; b++){ //Y
+                        if (x+a>-1 && x+a<m) {
+                            a2 = x+a;
+                        } else if(x+a==-1){
+                            a2=m-1;
+                        } else if(x+a==m) {
+                            a2=0;
+                        } else {
+                            a2=-69;
                         }
 
+                        if (y+b>-1 && y+b<m) {
+                            b2 = y+b;
+                        } else if(y+b==-1){
+                            b2=m-1;
+                        } else if(y+b==m) {
+                            b2=0;
+                        } else {
+                            b2=-420;
+                        }
+
+                        aux = grid[a2][b2];
+
                         for(Particle particle1 : celda.particles){
-                            //  System.out.printf("\n\nmirando particula %d en celda[%d][%d]", particle1.id,x,y);
+                            //System.out.printf("\n\nmirando particula %d en celda[%d][%d]", particle1.id,x,y);
                             for(Particle particle2 : aux.particles){
-                                // System.out.printf("\n\tla comparo con particula %d en aux[][]", particle2.id);
+                                //System.out.printf("\n\tla comparo con particula %d en aux[][]", particle2.id);
                                 if(particle1.id < particle2.id && particle1.isNeighbor(particle2, rc)) {
-                                    System.out.printf("\n%d es vecinaa de %d", particle1.id, particle2.id);
-                                    System.out.printf("\n%d es vecinaa de %d\n", particle2.id, particle1.id);
+                                    //System.out.printf("\n%d es vecinaa de %d", particle1.id, particle2.id);
+                                    //System.out.printf("\n%d es vecinaa de %d\n", particle2.id, particle1.id);
+                                    particle1.neighbors.add(particle2);
+                                    particle2.neighbors.add(particle1);
                                 }
                             }
                         }
@@ -263,9 +219,8 @@ public class Grid{
                 }
             }
         }
-        System.out.println("\nEND CIM-----------------\n");
+        System.out.println("\nEND CIMP-----------------\n");
     }
-    
 
 
     public String toString() {

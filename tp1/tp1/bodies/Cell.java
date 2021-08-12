@@ -98,8 +98,7 @@ public class Cell{
             data.append(particle.toString());
         }
 
-        //return data.toString();
-        return ".";
+        return data.toString();
     }
     public String toLAMMPS() {
         StringBuilder data = new StringBuilder();
