@@ -13,7 +13,7 @@ public class Main {
     private static Config config;
 
     public static void main(String[] args){
-        config = new Config("100", "10", "10", "1");
+        config = new Config("10", "10", "10", "1");
         config.grid.CIM();
         config.exportToLAMMPSFile2("test", 3);
 //        ej1a("30", "10", "10", "0.5");

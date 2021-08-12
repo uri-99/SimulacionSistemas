@@ -31,7 +31,7 @@ public class Particle{
     }
 
     public boolean isNeighbor(Particle otherParticle, float rc) {
-        float distanceBetweenBounds = (float) ((float) Math.sqrt(Math.pow(otherParticle.getX() - this.getX(), 2) + Math.pow(otherParticle.getY() - this.getY(), 2) ) - (otherParticle.getR() - this.getR()));
+        float distanceBetweenBounds = (float) ((float) Math.sqrt(Math.pow(otherParticle.getX() - this.getX(), 2) + Math.pow(otherParticle.getY() - this.getY(), 2) ) - otherParticle.getR() - this.getR());
         /*System.out.printf(otherParticle.toString());
         System.out.printf(this.toString());
         System.out.printf("dist: %f\n", distanceBetweenBounds);

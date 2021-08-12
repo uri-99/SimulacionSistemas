@@ -67,16 +67,15 @@ public class Grid{
     private boolean checkProximity(Particle newParticle){
         boolean chocan = false;
 
-        /*
         for(Particle particleIter : particles){
-            if(particleIter.isNeighbor(newParticle, 0));
+            if(particleIter.isNeighbor(newParticle, 0))
                 chocan = true;
-        }*/
+        }
 
-
+/*
         for(int i = 0; i < particles.size() && !chocan; i++){
             chocan = newParticle.isNeighbor(particles.get(i), 0);
-        }
+        }*/
 
 
         return chocan;
