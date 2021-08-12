@@ -23,6 +23,15 @@ public class Cell{
     public boolean contains(Particle particle){
         float x = particle.getX();
         float y = particle.getY();
+
+        if(x > xMin && x<xMax && y>yMin && y<yMax){
+            particles.add(particle);
+            //System.out.println("particle added in cell list: ");
+            //System.out.printf("x entre:%f y %f, y entre: %f y %f\n", xMin, xMax, yMin, yMax);
+            return true;
+        }
+        //System.out.println("particle not added in this cell list");
+        return false;
 /*
         if(lastXcell){
             if(lastYcell){
@@ -59,15 +68,6 @@ public class Cell{
             }
         }
         */
-        if(x > xMin && x<xMax && y>yMin && y<yMax){
-            particles.add(particle);
-            //System.out.println("particle added in cell list: ");
-            //System.out.printf("x entre:%f y %f, y entre: %f y %f\n", xMin, xMax, yMin, yMax);
-            return true;
-        }
-        //System.out.println("particle not added in this cell list");
-        return false;
-
         /*
         if(lastCell){
             if(x >= xMin  &&  x <= xMax  &&  y >= yMin  &&  y <= yMax)

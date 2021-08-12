@@ -31,72 +31,58 @@ public class Grid{
             if(i==m)
                 lastX=true;
         }
-
-        /*for(double i = 0; i < m; i = i + size){
-            for(double j = 0; j < m; j = j + size){
-                if(j + size == m){
-                    last = true;
-                }
-                grid[largo][ancho] = new Cell(i, i + size, j, j + size, last);
-                ancho++;
-                last = false;
-            }
-            largo++;
-        }*/
-
-        System.out.println("grid generated");
-        /*
-        for(int ii=0; ii<m; ii++){
-            for(int jj=0; jj<m; jj++){
-                System.out.println(grid[ii][jj]);
-            }
-        }
-        */
-
-
+        //System.out.println("grid generated");
     }
 
     public List<Particle> getParticles() {
         return particles;
     }
 
-    public boolean addParticle(Particle particle){
+    public boolean addParticle(Particle newParticle){
 
         boolean flag=true;
 
-        if(!particles.contains(particle)) {
-            //if(checkProximity(particle)){
-            //    return false;
-            //}
-            particles.add(particle);
-            //System.out.println("particle added to gridList");
-
-            for(int i = 0; (i < m) && flag; i++){ //le agrego la particle a la cellList apropiada
-                for(int j = 0; (j < m) && flag; j++){
-                    flag = !grid[i][j].contains(particle);
-                }
-            }
-
-            if(flag){
-                System.out.println("no agregaste la particula a ninguna cell");
-            }
-
-            return true;
-        } else {
+        if(checkProximity(newParticle)){
             return false;
         }
+
+        particles.add(newParticle);
+
+        for(int i = 0; (i < m) && flag; i++){ //le agrego la particle a la cellList apropiada
+            for(int j = 0; (j < m) && flag; j++){
+                flag = !grid[i][j].contains(newParticle);
+            }
+        }
+
+        if(flag){
+            System.out.println("no agregaste la particula a ninguna cell");
+            particles.remove(particles.size()-1);
+            return false;
+        }
+
+        return true;
     }
 
-    /*
-    private boolean checkProximity(Particle particle){
+
+    private boolean checkProximity(Particle newParticle){
         boolean chocan = false;
+
+        /*
+        for(Particle particleIter : particles){
+            if(particleIter.isNeighbor(newParticle, 0));
+                chocan = true;
+        }*/
+
+
         for(int i = 0; i < particles.size() && !chocan; i++){
-            chocan = particle.isInDistance(particles.get(i), 0);
+            chocan = newParticle.isNeighbor(particles.get(i), 0);
         }
+
+
         return chocan;
     }
     
-
+/*
     private void checkNeighboor(Cell cell) {
         for(Particle particle in cell.getParticles()) {
             

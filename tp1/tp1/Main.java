@@ -13,9 +13,9 @@ public class Main {
     private static Config config;
 
     public static void main(String[] args){
-        config = new Config("20", "4", "40", "1");
+        config = new Config("100", "10", "10", "1");
         config.grid.CIM();
-        config.exportToLAMMPSFile("test");
+        config.exportToLAMMPSFile2("test", 3);
 //        ej1a("30", "10", "10", "0.5");
 //        ej1b("30", "10", "10", "0.5");
 //        ej2("20", "1");
@@ -108,8 +108,8 @@ public class Main {
         double R = Double.parseDouble(radioInteraccion);
         int MxM = (int)Math.floor(L/R);
         String matrix = Integer.toString(MxM);
-        //config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
-        config = new Config("1000", "10", "10", "1");
+        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        //config = new Config("100", "10", "10", "1");
         System.out.println("\n\nCOMIENZO DEL EJ 3 con un M: " + MxM);
         Tinicio = clock.millis();
         config.grid.bruteForce();
@@ -118,7 +118,7 @@ public class Main {
         Tiempo = Tfinal - Tinicio;
         long TiempoM = Tiempo;
 
-
+/*
         System.out.println("\n\nOtro tamaño de matrix para ver su tiempo");
         rand = new Random();
         int MxM2 = rand.nextInt(MxM-1) + 1;
@@ -131,11 +131,13 @@ public class Main {
         Tfinal = clock.millis();
         Tiempo = Tfinal - Tinicio;
 
+ */
+
 
 
 
         System.out.println("El tiempo tardado con un M optimo es: " + TiempoM  + "ms. " + "M es igual a: " + MxM);
-        System.out.println("El tiempo tardado con un M aleatorio es: " + Tiempo +  "ms. "+ "M es igual a: " + MxM2);
+        //System.out.println("El tiempo tardado con un M aleatorio es: " + Tiempo +  "ms. "+ "M es igual a: " + MxM2);
 
     }
 
