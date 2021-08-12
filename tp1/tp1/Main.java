@@ -3,16 +3,19 @@ package tp1;
 import tp1.arquitecture.*;
 import tp1.bodies.Grid;
 
+import java.time.Clock;
+import java.util.Random;
+
 
 public class Main {
     private static long Tinicio, Tfinal, Tiempo;
     private static Config config;
 
     public static void main(String[] args){
-        ej1a("30", "10", "10", "0.5");
-        ej1b("30", "10", "10", "0.5");
-        ej2("20", "1");
-//        ej3("20", "1");
+//        ej1a("30", "10", "10", "0.5");
+//        ej1b("30", "10", "10", "0.5");
+//        ej2("20", "1");
+        ej3("20", "1");
     }
 
     // COMPLETADO
@@ -47,11 +50,13 @@ public class Main {
         long[][] resultados = new long[10][4];
         for(int i = 0; i < cantDePruebas; i++){
             // GUARDO EN EL LUGAR 0 DE LA MATRIZ LA CANT DE PARTICULAS
-            int N = (int)(Math.random() * 30);
+            Random rand = new Random();
+            int N = rand.nextInt(100-1) + 1; //100 (excluyente) es el maximo y 1 (incluido) es el minimo
             String cantParticulas = Integer.toString(N);
             resultados[i][0] = N;
             // GUARDO EN EL LUGAR 1 DE LA MATRIZ LA CANT DE CELDAS
-            int MxM = (int)(Math.random() * 20);
+            rand = new Random();
+            int MxM = rand.nextInt(100-1) + 1;
             String matrix = Integer.toString(MxM);
             resultados[i][1] = MxM;
             // CREO LA CONFIG
@@ -89,18 +94,37 @@ public class Main {
         }
     }
 
-//    //INCOMPLETO
-//    private static void ej3(String planeLength, String radioInteraccion){
-//        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
-//        System.out.println("\n\nCOMIENZO DE Ej 1b");
-//        Tinicio = System.currentTimeMillis();
-//        config.grid.bruteForce();
-//        config.grid.CIM();
-//        Tfinal = System.currentTimeMillis();
-//        Tiempo = Tfinal - Tinicio;
-//        System.out.println("El tiempo tardado es: " + Tiempo);
-//    }
-
-//    30 10 10 0.5
+    //COMPLETO
+    private static void ej3(String planeLength, String radioInteraccion){
+        Clock clock = Clock.systemDefaultZone();
+        Random rand = new Random();
+        int N = rand.nextInt(100-1) + 1; //100 (excluyente) es el maximo y 1 (incluido) es el minimo
+        String cantParticulas = Integer.toString(N);
+        double L = Double.parseDouble(planeLength);
+        double R = Double.parseDouble(radioInteraccion);
+        int MxM = (int)Math.floor(L/R);
+        int MxM2 = MxM;
+        String matrix = Integer.toString(MxM);
+        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        System.out.println("\n\nCOMIENZO DEL EJ 3 con un M: " + MxM);
+        Tinicio = clock.millis();
+        config.grid.bruteForce();
+        config.grid.CIM();
+        Tfinal = clock.millis();
+        Tiempo = Tfinal - Tinicio;
+        long TiempoM = Tiempo;
+        System.out.println("\n\nOtro tamaño de matrix para ver su tiempo");
+        rand = new Random();
+        MxM = rand.nextInt(100-1) + 1;
+        matrix = Integer.toString(MxM);
+        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        Tinicio = clock.millis();
+        config.grid.bruteForce();
+        config.grid.CIM();
+        Tfinal = clock.millis();
+        Tiempo = Tfinal - Tinicio;
+        System.out.println("El tiempo tardado con un M optimo es: " + TiempoM + " .M es igual a: " + MxM2);
+        System.out.println("El tiempo tardado con un M aleatorio es: " + Tiempo + " .M es igual a: " + MxM);
+    }
 
 }
