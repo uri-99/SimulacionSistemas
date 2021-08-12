@@ -31,13 +31,9 @@ public class Particle{
         return distanceBetweenBounds <= rc;
     }
 
-
-/*
-    // en que formato guardamos las particulas?
-    public String toFormat() {
-
+    public String toLAMMPS() {
+        return String.format("%n %n", x, y);
     }
-    */
 
     public String toString() {
         return String.format("(%n;%n;%n)", x, y, r);

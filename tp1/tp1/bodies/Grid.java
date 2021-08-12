@@ -53,6 +53,10 @@ public class Grid{
 
     }
 
+    public List<Particle> getParticles() {
+        return particles;
+    }
+
     public boolean addParticle(Particle particle){
 
         boolean flag=true;
@@ -270,6 +274,16 @@ public class Grid{
         for(int i=0; i<m; i++) {
             for(int j=0; j<m; j++) {
                 data.append(grid[i][j].toString());
+            }
+        }
+        return data.toString();
+    }
+
+    public String toLAMMPS() {
+        StringBuilder data = new StringBuilder();
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<m; j++) {
+                data.append(grid[i][j].toLAMMPS());
             }
         }
         return data.toString();

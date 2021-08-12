@@ -101,4 +101,11 @@ public class Cell{
         //return data.toString();
         return ".";
     }
+    public String toLAMMPS() {
+        StringBuilder data = new StringBuilder();
+        for(Particle particle : particles) {
+            data.append(String.format("%s\n", particle.toLAMMPS()));
+        }
+        return data.toString();
+    }
 }

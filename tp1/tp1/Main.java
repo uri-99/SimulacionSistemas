@@ -12,10 +12,13 @@ public class Main {
     private static Config config;
 
     public static void main(String[] args){
+        config = new Config("20", "4", "40", "1");
+        config.grid.CIM();
+        config.exportToLAMMPSFile("test");
 //        ej1a("30", "10", "10", "0.5");
 //        ej1b("30", "10", "10", "0.5");
 //        ej2("20", "1");
-        ej3("20", "1");
+//        ej3("20", "1");
     }
 
     // COMPLETADO

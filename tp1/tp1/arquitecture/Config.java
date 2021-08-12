@@ -1,9 +1,12 @@
 package tp1.arquitecture;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import tp1.bodies.Grid;
 import tp1.bodies.Particle;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Math.*;
 
@@ -59,6 +62,34 @@ public class Config{
             System.out.printf("\n");
         }
         return "printed";
+    }
+
+    public void exportToLAMMPSFile(String filename) {
+        try {
+            FileWriter myWriter = new FileWriter(filename);
+            myWriter.write("# LAMMPS data file\n");
+            myWriter.write(String.format("%s atoms\n", n));
+            myWriter.write(String.format("%s atom types\n", n));
+            myWriter.write(String.format("%s %s xlo xhi\n", 0, l));
+            myWriter.write(String.format("%s %s ylo yhi\n", 0, l));
+            myWriter.write('\n');
+            myWriter.write("Atoms\n");
+            myWriter.write('\n');
+            List<Particle> particles = grid.getParticles();
+            int i = 1;
+            for(Particle particle : particles) {
+                float x = particle.getX();
+                float y = particle.getY();
+                String formatString = String.format("%d %d %f %f 0\n", i, i, x, y);
+                myWriter.write(formatString);
+                i++;
+            }
+            myWriter.close();
+            System.out.println("Se creo el archivo.");
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo");
+            e.printStackTrace();
+        }
     }
 }
 
