@@ -7,6 +7,7 @@ public class Grid{
     public List<Particle> particles;
     public Cell[][] grid;
     float rc;
+    public boolean periodic;
 
     public Grid(int length, int mCantCells, float radioInteracicion) {
         rc=radioInteracicion;
@@ -18,6 +19,7 @@ public class Grid{
         int ancho = 0;
         boolean lastX = false;
         boolean lastY = false;
+        periodic = false;
 
         grid = new Cell[m][m]; //20*20
 
@@ -111,6 +113,7 @@ public class Grid{
     // Sin condiciones periódicas de contorno
     public void CIM(){
         System.out.println("\nSTART CIM--------------\n");
+        this.periodic=false;
         Cell celda, aux;
         int a2, b2;
 
@@ -156,8 +159,11 @@ public class Grid{
     // Con condiciones periódicas de contorno.
     public void CIMP(){
         System.out.println("\nSTART CIMP--------------\n");
+        this.periodic=true;
         Cell celda, aux;
         int a2, b2;
+        int flagX = 0;
+        int flagY = 0;
 
         for(int x=0; x<m; x++){
             for(int y=0; y<m; y++){
@@ -167,20 +173,26 @@ public class Grid{
                     for(int b=-1; b<2; b++){ //Y
                         if (x+a>-1 && x+a<m) {
                             a2 = x+a;
+                            flagX = 0;
                         } else if(x+a==-1){
                             a2=m-1;
+                            flagX = 1;
                         } else if(x+a==m) {
                             a2=0;
+                            flagX = -1;
                         } else {
                             a2=-69;
                         }
 
                         if (y+b>-1 && y+b<m) {
                             b2 = y+b;
+                            flagY = 0;
                         } else if(y+b==-1){
-                            b2=m-1;
+                            b2 = m-1;
+                            flagY = 1;
                         } else if(y+b==m) {
-                            b2=0;
+                            b2 = 0;
+                            flagY = -1;
                         } else {
                             b2=-420;
                         }
@@ -191,7 +203,7 @@ public class Grid{
                             //System.out.printf("\n\nmirando particula %d en celda[%d][%d]", particle1.id,x,y);
                             for(Particle particle2 : aux.particles){
                                 //System.out.printf("\n\tla comparo con particula %d en aux[][]", particle2.id);
-                                if(particle1.id < particle2.id && particle1.isNeighbor(particle2, rc)) {
+                                if(particle1.id < particle2.id && particle1.isNeighborPeriodic(particle2, rc, flagX, flagY, this.l)) {
                                     //System.out.printf("\n%d es vecinaa de %d", particle1.id, particle2.id);
                                     //System.out.printf("\n%d es vecinaa de %d\n", particle2.id, particle1.id);
                                     particle1.neighbors.add(particle2);
@@ -199,7 +211,6 @@ public class Grid{
                                 }
                             }
                         }
-
                     }
                 }
             }

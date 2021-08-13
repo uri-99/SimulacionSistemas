@@ -64,35 +64,7 @@ public class Config{
         return "printed";
     }
 
-    public void exportToLAMMPSFile(String filename) {
-        try {
-            FileWriter myWriter = new FileWriter(filename);
-            myWriter.write("# LAMMPS data file\n");
-            myWriter.write(String.format("%s atoms\n", this.n));
-            myWriter.write(String.format("%s atom types\n", n));
-            myWriter.write(String.format("%s %s xlo xhi\n", 0, l));
-            myWriter.write(String.format("%s %s ylo yhi\n", 0, l));
-            myWriter.write('\n');
-            myWriter.write("Atoms\n");
-            myWriter.write('\n');
-            List<Particle> particles = grid.getParticles();
-            int i = 1;
-            for(Particle particle : particles) {
-                float x = particle.getX();
-                float y = particle.getY();
-                String formatString = String.format("%d %d %f %f 0\n", i, i, x, y);
-                myWriter.write(formatString);
-                i++;
-            }
-            myWriter.close();
-            System.out.println("Se creo el archivo.");
-        } catch (IOException e) {
-            System.out.println("Error al crear el archivo");
-            e.printStackTrace();
-        }
-    }
-
-    public void exportToLAMMPSFile2(String filename, int selectedID) {
+    public void exportToLAMMPSFile(String filename, int selectedID) {
         List<Particle> auxNeighbors = null;
 
         for(Particle particle : this.grid.particles){
@@ -102,10 +74,18 @@ public class Config{
 
         try {
             FileWriter myWriter = new FileWriter(filename);
+            myWriter.write(String.format("%b\n", this.grid.periodic));
             myWriter.write(String.format("%s\n", this.n));
-            myWriter.write(String.format("Lattice=\"0.0 %d 0.0 %d 0.0 0.0\" Properties=species:I:1:pos:R:3:radius:R:1:color:R:3\n", this.l, this.l));
+            myWriter.write(String.format("%d\n%d\n%f", this.l, this.m, this.rc));
+
             for(Particle particle : this.grid.particles){
-                myWriter.write(String.format("%d %f %f 0 %f ", particle.id, particle.getX(), particle.getY(), particle.getR()));
+                myWriter.write(String.format("\n%d %f %f %f ", particle.id, particle.getX(), particle.getY(), particle.getR()));
+                for(Particle neighbor : particle.neighbors){
+                    myWriter.write(String.format("%d,", neighbor.id));
+                }
+                //myWriter.write(String.format("%s\n", particle.neighbors.toString()));
+
+                /*
                 if(particle.id == selectedID) {
                     myWriter.write("1 0 0\n");
                     auxNeighbors = particle.neighbors;
@@ -114,6 +94,42 @@ public class Config{
                 } else {
                     myWriter.write("0 0 1\n");
                 }
+                 */
+            }
+            myWriter.close();
+            System.out.println("Se creo el archivo.");
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo");
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    public void exportToMatplot() {
+        List<Particle> auxNeighbors = null;
+
+        for(Particle particle : this.grid.particles){
+            if(particle.id == selectedID)
+                auxNeighbors = particle.neighbors;
+        }
+
+        try {
+            FileWriter particleWriter = new FileWriter("particles");
+            FileWriter interactionWriter = new FileWriter("interaction");
+            FileWriter configWriter = new FileWriter("config");configWritter.write()String.format()"%"%s,  %s %s %s. , n, m, l, rc;
+
+            for(Particle particle : this.grid.particles){
+                myWriter.write(String.format("%d %f %f 0 %f ", particle.id, particle.getX(), particle.getY(), particle.getR()));
+
+                if(particle.id == selectedID) {
+                    myWriter.write("1 0 0\n");
+                    auxNeighbors = particle.neighbors;
+                } else if (auxNeighbors.contains(particle)) {
+                    myWriter.write("0 1 0\n");
+                } else {
+                    myWriter.write("0 0 1\n");
+                }
+
             }
 
             myWriter.close();
@@ -122,20 +138,5 @@ public class Config{
             System.out.println("Error al crear el archivo");
             e.printStackTrace();
         }
-    }
+*/
 }
-
-/*
-|----------|
-|       .  |
-| .        |
-|          |
-|    .     |
-|          |
-|          |
-|   .      |
-|          |
-|          |
-|       .  |
-|----------|
- */
