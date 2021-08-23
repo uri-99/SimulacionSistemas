@@ -64,13 +64,7 @@ public class Config{
         return "printed";
     }
 
-    public void exportToLAMMPSFile(String filename, int selectedID) {
-        List<Particle> auxNeighbors = null;
-
-        for(Particle particle : this.grid.particles){
-            if(particle.id == selectedID)
-            auxNeighbors = particle.neighbors;
-        }
+    public void exportToLAMMPSFile(String filename) {
 
         try {
             FileWriter myWriter = new FileWriter(filename);
@@ -102,6 +96,25 @@ public class Config{
             System.out.println("Error al crear el archivo");
             e.printStackTrace();
         }
+    }
+
+    public void exportStats(long[][] resultados, int cantDePruebas){
+        try {
+            FileWriter myWriter = new FileWriter("resultados");
+            for(int i=0; i<cantDePruebas; i++){
+                myWriter.write(String.format("\n"));
+                for(int j=0; j<4; j++){
+                    myWriter.write(String.format("%d ", resultados[i][j]));
+                }
+            }
+
+            myWriter.close();
+            System.out.println("Se creo el archivo.");
+        } catch (IOException e) {
+            System.out.println("Error al crear el archivo");
+            e.printStackTrace();
+        }
+
     }
 
     /*

@@ -96,7 +96,7 @@ public class Grid{
  */
 
     public void bruteForce(){
-        System.out.println("\nSTART BRUTE FORCE--------------\n");
+        //System.out.println("\nSTART BRUTE FORCE--------------\n");
         for (Particle particle1: particles) {
            // System.out.printf("\nmirando id: %d\n", particle1.id);
             for(Particle particle2: particles) {
@@ -107,12 +107,12 @@ public class Grid{
                 }
             }
         }
-        System.out.println("\nEND BRUTE FORCE----------------\n");
+        //System.out.println("\nEND BRUTE FORCE----------------\n");
     }
 
     // Sin condiciones periódicas de contorno
     public void CIM(){
-        System.out.println("\nSTART CIM--------------\n");
+        //System.out.println("\nSTART CIM--------------\n");
         this.periodic=false;
         Cell celda, aux;
         int a2, b2;
@@ -153,7 +153,7 @@ public class Grid{
                 }
             }
         }
-        System.out.println("\nEND CIM-----------------\n");
+        //System.out.println("\nEND CIM-----------------\n");
     }
 
     // Con condiciones periódicas de contorno.

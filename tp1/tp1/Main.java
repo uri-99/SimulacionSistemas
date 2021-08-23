@@ -11,25 +11,28 @@ public class Main {
     private static Config config;
 
     public static void main(String[] args){
+
         config = new Config("150", "5", "10", "1");
         config.grid.CIMP();
-        config.exportToLAMMPSFile("test", 3);
-//        ej1a("100", "2", "10", "2");
-//        ej1b("100", "2", "10", "2");
-//        ej2("100", "5");
-//        ej3("100", "2");
+        config.exportToLAMMPSFile("simulationData");
+
+
+//        ej1a("100", "2", "10", "2");  //normal
+//        ej1b("100", "2", "10", "2");  //periodico
+        ej2(100,"100", "2", 10); //comparacion CIM y BF
+//        ej3("100", "2"); //comparación M
     }
 
-    // COMPLETADO
+    // COMPLETO
     private static void ej1a(String cantParticulas, String matrix, String planeLength, String radioInteraccion){
         config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
         System.out.println("\n\nCOMIENZO DEL EJ 1A");
-        Tinicio = System.currentTimeMillis();
+        Tinicio = System.nanoTime();
         config.grid.bruteForce();
         config.grid.CIM();
-        Tfinal = System.currentTimeMillis();
+        Tfinal = System.nanoTime(); //poner mas preciso
         Tiempo = Tfinal - Tinicio;
-        System.out.println("El tiempo tardado es: " + Tiempo);
+        System.out.println("El tiempo tardado es: " + Tiempo + "nanos");
     }
 
     //COMPLETO
@@ -41,42 +44,54 @@ public class Main {
         config.grid.CIMP();
         Tfinal = System.currentTimeMillis();
         Tiempo = Tfinal - Tinicio;
-        System.out.println("El tiempo tardado es: " + Tiempo);
+        System.out.println("El tiempo tardado es: " + Tiempo + "ms");
     }
 
     // COMPLETO
-    private static void ej2(String planeLength, String radioInteraccion){
+    private static void ej2(int particulas, String planeLength, String radioInteraccion, int M){
         System.out.println("\n\nCOMIENZO DEL EJ 2");
         int cantDePruebas = 10;
         // ACA GUARDO TODOS LOS RESULTADOS DE TODAS LAS PRUEBAS
-        long[][] resultados = new long[10][4];
-        for(int i = 0; i < cantDePruebas; i++){
-            // GUARDO EN EL LUGAR 0 DE LA MATRIZ LA CANT DE PARTICULAS
-            Random rand = new Random();
-            int N = rand.nextInt(5000-500) + 500; //100 (excluyente) es el maximo y 1 (incluido) es el minimo
-            String cantParticulas = Integer.toString(N);
-            resultados[i][0] = N;
-            // GUARDO EN EL LUGAR 1 DE LA MATRIZ LA CANT DE CELDAS
-            rand = new Random();
-            int MxM = rand.nextInt(20-1) + 1;
-            String matrix = Integer.toString(MxM);
-            resultados[i][1] = MxM;
-            // CREO LA CONFIG
-            config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
-            // GUARDO EN EL LUGAR 2 DE LA MATRIZ LA CANT DE TIEMPO DEL BRUTE FORCE
-            Tinicio = System.currentTimeMillis();
-            config.grid.bruteForce();
-            Tfinal = System.currentTimeMillis();
-            Tiempo = Tfinal - Tinicio;
-            resultados[i][2] = Tiempo;
-            // GUARDO EN EL LUGAR 3 DE LA MATRIZ LA CANT DE TIEMPO DEL CIM
-            Tinicio = System.currentTimeMillis();
-            config.grid.CIM();
-            Tfinal = System.currentTimeMillis();
-            Tiempo = Tfinal - Tinicio;
-            resultados[i][3] = Tiempo;
+        long[][] resultados = new long[cantDePruebas*49][4];
+        int N = particulas;
+        int MxM = M;
+        for(int ii=0; ii<49; ii++) {
+            N+=50;
+            //MxM += 1;
+            for (int i = 0; i < cantDePruebas; i++) {
+                // GUARDO EN EL LUGAR 0 DE LA MATRIZ LA CANT DE PARTICULAS
+                Random rand = new Random();
+
+                //int N = rand.nextInt(5000-500) + 500; //100 (excluyente) es el maximo y 1 (incluido) es el minimo
+                //MxM = MxM+10;
+                //MxM = M;
+
+                String cantParticulas = Integer.toString(N);
+                resultados[i+ii*10][0] = N;
+                // GUARDO EN EL LUGAR 1 DE LA MATRIZ LA CANT DE CELDAS
+                rand = new Random();
+
+                //int MxM = rand.nextInt(20-1) + 1;
+                String matrix = Integer.toString(MxM);
+                resultados[i+ii*10][1] = MxM;
+                // CREO LA CONFIG
+                config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+                // GUARDO EN EL LUGAR 2 DE LA MATRIZ LA CANT DE TIEMPO DEL BRUTE FORCE
+                Tinicio = System.nanoTime();
+                config.grid.bruteForce();
+                Tfinal = System.nanoTime();
+                Tiempo = Tfinal - Tinicio;
+                resultados[i+ii*10][2] = Tiempo;
+                // GUARDO EN EL LUGAR 3 DE LA MATRIZ LA CANT DE TIEMPO DEL CIM
+                Tinicio = System.nanoTime();
+                config.grid.CIM();
+                Tfinal = System.nanoTime();
+                Tiempo = Tfinal - Tinicio;
+                resultados[i+ii*10][3] = Tiempo;
+            }
         }
-        for (int i = 0; i < 10; i++) {
+        /*
+        for (int i = 0; i < cantDePruebas; i++) {
             for (int j = 0; j < 4; j++) {
                 if(j == 0){
                     System.out.println("Numero de particulas: ");
@@ -94,6 +109,8 @@ public class Main {
             }
             System.out.println();
         }
+        */
+        config.exportStats(resultados, cantDePruebas*49);
     }
 
     //COMPLETO
@@ -106,15 +123,7 @@ public class Main {
         double R = Double.parseDouble(radioInteraccion);
         int MxM = (int)Math.floor(L/R);
         String matrix = Integer.toString(MxM);
-        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
-        //config = new Config("100", "10", "10", "1");
-        System.out.println("\n\nCOMIENZO DEL EJ 3 con un M: " + MxM);
-        Tinicio = clock.millis();
-        config.grid.bruteForce();
-        config.grid.CIM();
-        Tfinal = clock.millis();
-        Tiempo = Tfinal - Tinicio;
-        long TiempoM = Tiempo;
+
 
 
         System.out.println("\n\nOtro tamaño de matrix para ver su tiempo");
@@ -128,14 +137,24 @@ public class Main {
         config2.grid.CIM();
         Tfinal = clock.millis();
         Tiempo = Tfinal - Tinicio;
+        long TiempoM = Tiempo;
+
+        config = new Config(cantParticulas, matrix, planeLength, radioInteraccion);
+        //config = new Config("100", "10", "10", "1");
+        System.out.println("\n\nCOMIENZO DEL EJ 3 con un M: " + MxM);
+        Tinicio = clock.millis();
+        config.grid.bruteForce();
+        config.grid.CIM();
+        Tfinal = clock.millis();
+        Tiempo = Tfinal - Tinicio;
 
 
 
 
 
 
-        System.out.println("El tiempo tardado con un M optimo es: " + TiempoM  + "ms. " + "M es igual a: " + MxM);
-        System.out.println("El tiempo tardado con un M aleatorio es: " + Tiempo +  "ms. "+ "M es igual a: " + MxM2);
+        System.out.println("El tiempo tardado con un M optimo es: " + Tiempo  + "ms. " + "M es igual a: " + MxM);
+        System.out.println("El tiempo tardado con un M aleatorio es: " + TiempoM +  "ms. "+ "M es igual a: " + MxM2);
 
     }
 
