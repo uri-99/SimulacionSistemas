@@ -23,7 +23,27 @@ class Cell:
 
     def __repr__(self):
         #aux = str(self.i) + " " +str(self.j)
-        aux = str(self.i) + " " +str(self.j) + " " + str(self.newVectors) + "-----" + str(self.oldVectors) + "\n"
+        aux=""
+        if self.isWall:
+            aux += "\t\tWall  : "
+        if self.isCorner:
+            aux += "\t\tCorner: "
+        aux += str(self.i) + " " +str(self.j) + " " 
+        
+        for i in range(5):
+            if self.oldVectors[i]:
+                aux+=" 1 "
+            else:
+                aux+=" 0 "
+        aux += "-----new:"
+
+        for i in range(5):
+            if self.newVectors[i]:
+                aux+=" 1 "
+            else:
+                aux+=" 0 "
+
+        str(self.newVectors) + "\n"
         return aux
 
     def collisionNumber(self):
@@ -33,17 +53,17 @@ class Cell:
                 i += 1
         return i
 
-    def amountParticles(self, left):
+    def amountParticles(self, left, size):
         amount = 0
-        letter = 0
-        if self.j == 101:
-            for vector in self.oldVectors:
-                if left and ( letter == 1 or letter == 2 or letter == 3 ):
-                    amount += 1    
-                else:
-                    if letter == 0 or letter == 4 or letter == 5 :
+        if self.j == ((size-1)/2):
+            if not left:
+                for k in [0,1,5]:
+                    if self.oldVectors[k]:
                         amount += 1
-                letter =+ 1
+            else:
+                for k in [2,3,4]:
+                    if self.oldVectors[k]:
+                        amount += 1
         else:
             for vector in self.oldVectors:
                 if vector:
