@@ -61,7 +61,7 @@ class Grid:
         r = random.randrange(0,2,1)
         for i in range(self.size):
             for j in range(self.size):
-                if self.cellArray[i][j].isWall: #can not be corner
+                if self.cellArray[i][j].isWall: #no puede ser corner
                     #horizontales
                     if self.cellArray[i][j].oldVectors[0] == True:
                         self.cellArray[i][j].newVectors[3] = True
@@ -88,7 +88,7 @@ class Grid:
                             self.cellArray[i][j].newVectors[1] = True
 
                 elif self.cellArray[i][j].isCorner: #rebota de donde vino
-                    for k in range(5):
+                    for k in range(6):
                         if self.cellArray[i][j].oldVectors[k] == True:
                             self.cellArray[i][j].newVectors[k-3] = True
    
@@ -97,14 +97,14 @@ class Grid:
                         self.cellArray[i][j].newVectors = [False, False, False, False, False, False]
 
                     if self.cellArray[i][j].collisionNumber() == 1:
-                        for k in range(5):
+                        for k in range(6):
                             self.cellArray[i][j].newVectors[k] = self.cellArray[i][j].oldVectors[k]
 
                     if self.cellArray[i][j].collisionNumber() == 2: #tiene 3 casos
                         particle1=0
                         particle2=0
                         first = True
-                        for k in range(5):
+                        for k in range(6):
                             if self.cellArray[i][j].oldVectors[k] and first:
                                 particle1 = k
                                 first = False
@@ -138,7 +138,7 @@ class Grid:
                             particle3=0
                             first = True
                             second = True
-                            for k in range(5):
+                            for k in range(6):
                                 if self.cellArray[i][j].oldVectors[k] and first:
                                     particle1 = k
                                     first = False
@@ -179,7 +179,7 @@ class Grid:
                                 else:
                                     print("error 2 frontal con expectador en:", i, j)
                             else:
-                                for k in range(5):
+                                for k in range(6):
                                     self.cellArray[i][j].newVectors[k] = self.cellArray[i][j].oldVectors[k]
                             
                     elif self.cellArray[i][j].collisionNumber() == 4: #si es double frontal cruzado usa random, else se queda igual
@@ -207,12 +207,12 @@ class Grid:
                         #listo random con 4 particulas
 
                         else:
-                            for k in range(5):
+                            for k in range(6):
                                 self.cellArray[i][j].newVectors[k] = self.cellArray[i][j].oldVectors[k]
 
 
                     elif self.cellArray[i][j].collisionNumber() == 5:
-                        for k in range(5):
+                        for k in range(6):
                             self.cellArray[i][j].newVectors[k] = self.cellArray[i][j].oldVectors[k]
                     
                     elif self.cellArray[i][j].collisionNumber() == 6:
@@ -364,3 +364,8 @@ class Grid:
                 print("\n", end ="")
             print("\n", end ="") 
         return
+
+
+        #error en colisiones cuando:
+        # dos particulas se chocan en a y f, desaparece 1. Tambien desaparece si es a y b.
+        # en pared cuando entra en e, por pared pasa a f y en generatemovement pasa a la pared de abajo por colosion pasa a e y por generate movement se va afuera.
