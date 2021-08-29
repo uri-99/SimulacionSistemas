@@ -5,9 +5,9 @@ import math;
 class Grid:
     
     def __init__(self, N, D):
-        self.size = 7 #203 SIEMPRE IMPAR
-        if(self.size % 2 == 0):
-            print("size siempre impar para que la cancha sea pareja")
+        self.size = 9 #203 SIEMPRE IMPAR
+        if(self.size % 2 == 0) or self.size <= 3:
+            print("size siempre impar para que la cancha sea pareja, y mayor a 3")
             exit()
         self.N = N
         self.D = D
@@ -24,6 +24,22 @@ class Grid:
                     aux.isCorner = True
                 row.append(aux)
             self.cellArray.append(row)
+
+        if D > self.size-2:
+            print("D es demasiado grande")
+            exit()
+        elif D % 2 != 1:
+            print("D debe ser impar para que sea pareja la apertura")
+            exit()
+        
+        mid = math.ceil((self.size-2)/2)
+        for k in range(math.ceil(D/2)):
+            print(mid-k, mid+k)
+            print(math.floor((self.size-1)/2))
+            self.cellArray[ mid-k ][ math.floor((self.size-1)/2) ].isWall = False
+            self.cellArray[ mid-k ][ math.floor((self.size-1)/2) ].isCorner = False
+            self.cellArray[ mid+k ][ math.floor((self.size-1)/2) ].isWall = False
+            self.cellArray[ mid+k ][ math.floor((self.size-1)/2) ].isCorner = False
 
         #print("tnull:\n")
         #print(self.cellArray)
@@ -224,24 +240,43 @@ class Grid:
     def generateMovements(self): #transformo los new del actual a los old del vecino correspondiente
         for i in range(self.size):
             for j in range(self.size):
-                #for k in self.cellArray[i][j].newVectors:
-                if self.cellArray[i][j].newVectors[0]: #A
-                    self.cellArray[i][j+1].oldVectors[0] = True
+                if i%2 == 0:
+                    if self.cellArray[i][j].newVectors[0]: #A
+                        self.cellArray[i][j+1].oldVectors[0] = True
 
-                if self.cellArray[i][j].newVectors[1]: #B
-                    self.cellArray[i-1][j].oldVectors[1] = True
+                    if self.cellArray[i][j].newVectors[1]: #B
+                        self.cellArray[i-1][j].oldVectors[1] = True
 
-                if self.cellArray[i][j].newVectors[2]: #C
-                    self.cellArray[i-1][j-1].oldVectors[2] = True
+                    if self.cellArray[i][j].newVectors[2]: #C
+                        self.cellArray[i-1][j-1].oldVectors[2] = True
 
-                if self.cellArray[i][j].newVectors[3]: #D
-                    self.cellArray[i][j-1].oldVectors[3] = True
+                    if self.cellArray[i][j].newVectors[3]: #D
+                        self.cellArray[i][j-1].oldVectors[3] = True
 
-                if self.cellArray[i][j].newVectors[4]: #E
-                    self.cellArray[i+1][j-1].oldVectors[4] = True
+                    if self.cellArray[i][j].newVectors[4]: #E
+                        self.cellArray[i+1][j-1].oldVectors[4] = True
 
-                if self.cellArray[i][j].newVectors[5]: #F
-                    self.cellArray[i+1][j].oldVectors[5] = True
+                    if self.cellArray[i][j].newVectors[5]: #F
+                        self.cellArray[i+1][j].oldVectors[5] = True
+                elif i%2 ==1:
+                    if self.cellArray[i][j].newVectors[0]: #A
+                        self.cellArray[i][j+1].oldVectors[0] = True
+
+                    if self.cellArray[i][j].newVectors[1]: #B
+                        self.cellArray[i-1][j+1].oldVectors[1] = True
+
+                    if self.cellArray[i][j].newVectors[2]: #C
+                        self.cellArray[i-1][j].oldVectors[2] = True
+
+                    if self.cellArray[i][j].newVectors[3]: #D
+                        self.cellArray[i][j-1].oldVectors[3] = True
+
+                    if self.cellArray[i][j].newVectors[4]: #E
+                        self.cellArray[i+1][j].oldVectors[4] = True
+
+                    if self.cellArray[i][j].newVectors[5]: #F
+                        self.cellArray[i+1][j+1].oldVectors[5] = True
+
 
                 self.cellArray[i][j].newVectors = [False, False, False, False, False, False]
                 

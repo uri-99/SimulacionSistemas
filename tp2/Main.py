@@ -7,7 +7,7 @@ import timeit
 
 # CREO EL MAPA/GRID
 
-grid = Grid(11,5) #N particulas, D tamaño apertura
+grid = Grid(20,1) #N particulas, D tamaño apertura
 
 # EMPIEZA EL JUEGO
 
