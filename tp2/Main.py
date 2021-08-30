@@ -7,7 +7,7 @@ import timeit
 
 # CREO EL MAPA/GRID
 
-grid = Grid(800,3) #N particulas, D tamaño apertura
+grid = Grid(800,25) #N particulas, D tamaño apertura
 
 # EMPIEZA EL JUEGO
 
@@ -34,17 +34,26 @@ while (fin_de_juego == False):
     grid.generateMovements()
     left_right[0] = grid.amountLeft()
     left_right[1] = grid.amountRight()
+    fin_de_juego = grid.isFinish()
     grid.calculateCollisions()
     #info recolectada para graficos a futuro, cantidad de particulas a la izq y der del tablero
     left_right[2] = timeit.default_timer() - start
     #donde se guarda esa data
     data_particles.append(left_right)
     #incrementador de vueltas
-    print("Vuelta: " + str(laps))
-    print(str(left_right[0]) + " - " + str(left_right[1]))
-    fin_de_juego = grid.isFinish()
+    
+    if laps%10 == 0:
+        print("Vuelta: " + str(laps))
+        print(str(left_right[0]) + " - " + str(left_right[1]))
+
 
 total_time = timeit.default_timer() - start
+
+print("Vuelta: " + str(laps))
+print(str(left_right[0]) + " - " + str(left_right[1]))
+
+print("listo")
+exit()
 
 # print("Resultados: ")
 # print("Vueltas" + laps)

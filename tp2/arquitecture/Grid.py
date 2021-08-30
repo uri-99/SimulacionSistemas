@@ -11,7 +11,7 @@ class Grid:
             exit()
         self.N = N
         self.D = D
-        self.finishCounter = 0 # si llega a 10 el juego termino
+        self.finishCounter = 0 # si llega a tal numero: el juego termino
         self.cellArray = []
         for i in range(self.size):
             row = []
@@ -301,11 +301,11 @@ class Grid:
         return cantidad
 
     def isFinish(self):
-        if (self.N * 0.05 > math.fabs((self.N / 2) - self.amountLeft())) and (self.N * 0.05 > math.fabs((self.N / 2) - self.amountRight())):
+        if (self.amountLeft() > 0.49*self.N) and (self.amountRight() > 0.49*self.N):
             self.finishCounter += 1
         else:
             self.finishCounter = 0
-        if self.finishCounter >= 10 :
+        if self.finishCounter >= 10:
             return True
         return False
 
