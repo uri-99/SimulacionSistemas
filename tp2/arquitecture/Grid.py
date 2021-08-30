@@ -175,6 +175,8 @@ class Grid:
                                 else:
                                     print("error 2 triple frontal con expectador en:", i, j)
                             elif particle3 - particle1 == 3:
+                                if particle3 == 5:
+                                    particle3 = -1
                                 self.cellArray[i][j].newVectors[particle2] = True #spectator
                                 if self.cellArray[i][j].oldVectors[particle1-1]==False and self.cellArray[i][j].oldVectors[particle3-1]==False:
                                     self.cellArray[i][j].newVectors[particle1-1] = True
@@ -185,6 +187,8 @@ class Grid:
                                 else:
                                     print("error 2 frontal con expectador en:", i, j)
                             elif particle3 - particle2 == 3:
+                                if particle3 == 5:
+                                    particle3 = -1
                                 self.cellArray[i][j].newVectors[particle1] = True #spectator
                                 if self.cellArray[i][j].oldVectors[particle2-1]==False and self.cellArray[i][j].oldVectors[particle3-1]==False:
                                     self.cellArray[i][j].newVectors[particle2-1] = True
