@@ -5,7 +5,7 @@ import math;
 class Grid:
     
     def __init__(self, N, D):
-        self.size = 9 #203 SIEMPRE IMPAR
+        self.size = 203 #203 SIEMPRE IMPAR
         if(self.size % 2 == 0) or self.size <= 3:
             print("size siempre impar para que la cancha sea pareja, y mayor a 3")
             exit()
