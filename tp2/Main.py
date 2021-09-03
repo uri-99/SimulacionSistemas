@@ -1,59 +1,69 @@
 from arquitecture.Cell import Cell
 from arquitecture.Grid import Grid
 import timeit
+import sys
+import numpy as np
 
 
 # INICIO PROGRAMA
 
-# CREO EL MAPA/GRID
+# py main.py 1000 51 2 1
+# ejecutar main con 1000 particulas, 51 de abertura, 2 iteraciones y guardandolo
 
-grid = Grid(800,25) #N particulas, D tamaño apertura
+particles = int(sys.argv[1])
+opening = int(sys.argv[2])
+iterations = int(sys.argv[3])
+save = int(sys.argv[4])
 
-# EMPIEZA EL JUEGO
+for i in range (1, iterations+1):
+    print("Iteracion " + str(i))
+    
+    # CREO EL MAPA/GRID
+    grid = Grid(particles, opening) #N particulas, D tamaño apertura
 
-
-fin_de_juego = False
-laps = 0
-data_particles = []
-left_right = [0,0,0]
-
-left_right[0] = grid.amountLeft()
-left_right[1] = grid.amountRight()
-left_right[2] = 0
-data_particles.append(left_right)
-
-start = timeit.default_timer()
+    # EMPIEZA EL JUEGO
 
 
+    fin_de_juego = False
+    laps = 0
+    data_particles = []
+    left_right = [0,0,0]
 
-
-while (fin_de_juego == False):
-    #contador de vueltas o etapas
-    laps += 1
-    #movimientos del juego que hacen que sea una vuelta
-    grid.generateMovements()
     left_right[0] = grid.amountLeft()
     left_right[1] = grid.amountRight()
-    fin_de_juego = grid.isFinish()
-    grid.calculateCollisions()
-    #info recolectada para graficos a futuro, cantidad de particulas a la izq y der del tablero
-    left_right[2] = timeit.default_timer() - start
-    #donde se guarda esa data
+    left_right[2] = 0
     data_particles.append(left_right)
-    #incrementador de vueltas
-    
-    if laps%10 == 0:
-        print("Vuelta: " + str(laps))
-        print(str(left_right[0]) + " - " + str(left_right[1]))
 
+    start = timeit.default_timer()
+    particles_matrix = []
 
-total_time = timeit.default_timer() - start
+    while (fin_de_juego == False):
+        #contador de vueltas o etapas
+        particles_matrix.append(grid.grid_to_matrix())
+        laps += 1
+        #movimientos del juego que hacen que sea una vuelta
+        grid.generateMovements()
+        left_right[0] = grid.amountLeft()
+        left_right[1] = grid.amountRight()
+        fin_de_juego = grid.isFinish()
+        grid.calculateCollisions()
+        #info recolectada para graficos a futuro, cantidad de particulas a la izq y der del tablero
+        left_right[2] = timeit.default_timer() - start
+        #donde se guarda esa data
+        data_particles.append(left_right)
+        #incrementador de vueltas
+        
+        if laps%10 == 0:
+            print("Vuelta: " + str(laps))
+            print(str(left_right[0]) + " - " + str(left_right[1]))
 
-print("Vuelta: " + str(laps))
-print(str(left_right[0]) + " - " + str(left_right[1]))
+    np.save('./simulation/data_'+str(particles)+'-'+str(opening)+'_'+str(i), particles_matrix)
+    total_time = timeit.default_timer() - start
 
-print("listo")
-exit()
+    print("Vuelta: " + str(laps))
+    print(str(left_right[0]) + " - " + str(left_right[1]))
+
+    print("listo")
 
 # print("Resultados: ")
 # print("Vueltas" + laps)

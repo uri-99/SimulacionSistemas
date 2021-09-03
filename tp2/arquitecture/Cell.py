@@ -70,4 +70,9 @@ class Cell:
                     amount += 1
         
         return amount
-        
+    
+    def have_particles(self):
+        for b in self.newVectors:
+            if(b == True):
+                return b
+        return False
