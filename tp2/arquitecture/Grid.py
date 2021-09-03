@@ -1,6 +1,7 @@
 from arquitecture.Cell import Cell
 import random;
 import math;
+import numpy as np;
 
 class Grid:
     
@@ -49,7 +50,6 @@ class Grid:
         print("left: ", self.amountLeft())
         print("right: ", self.amountRight())
         #print(self.cellArray)
-
         
         
 
@@ -72,6 +72,14 @@ class Grid:
                     auxCell.newVectors[auxDir] = True
                     i += 1
 
+    def grid_to_matrix(self):
+        int_size = int(self.size)
+        matrix = np.zeros((int_size, int_size))
+        for i in range(int_size):
+            for j in range(int_size):
+                if (self.cellArray[i][j].have_particles() == True):
+                    matrix[i][j] = 1
+        return matrix
 
     def calculateCollisions(self): #transformo los old actual a los new actual de cada celda
         r = random.randrange(0,2,1)
@@ -301,7 +309,7 @@ class Grid:
         return cantidad
 
     def isFinish(self):
-        if (self.amountLeft() > 0.49*self.N) and (self.amountRight() > 0.49*self.N):
+        if (self.amountLeft() > 0.45*self.N) and (self.amountRight() > 0.45*self.N):
             self.finishCounter += 1
         else:
             self.finishCounter = 0

@@ -1,6 +1,11 @@
 import os
 from matplotlib import pyplot as plt
 import numpy as np
+import sys
+
+particles = int(sys.argv[1])
+opening = int(sys.argv[2])
+iterations_arg = int(sys.argv[3])
 
 def initialize_empty_matrix(size):
     matrix = []
@@ -28,7 +33,7 @@ def filename(particles, size, iteration):
 def promedy_max_min(iterations):
     iterations_data = initialize_empty_matrix(3)
     for i in range(iterations):
-        data = file_to_array(filename(1000, 51, i+1), 3)
+        data = file_to_array(filename(particles, opening, i+1), 3)
         for j in range(len(data)):
             iterations_data[j].append(data[j])
     return iterations_data
@@ -72,7 +77,7 @@ def min_arrays(arrays):
                     initial_array[j] = arrays[i][j]
     return initial_array
 
-frame_array, left_particles_array, right_particles_array = promedy_max_min(5)
+frame_array, left_particles_array, right_particles_array = promedy_max_min(iterations_arg)
 
 average_frame = average_arrays(frame_array)
 average_left_particles = average_arrays(left_particles_array)
@@ -82,11 +87,14 @@ min_left_particles = min_arrays(left_particles_array)
 max_right_particles = max_arrays(right_particles_array)
 min_right_particles = min_arrays(right_particles_array)
 
-plt.errorbar(average_frame, average_left_particles, ecolor="grey", label="lado izquierdo", fmt='o', ms=2, yerr=[np.subtract(average_left_particles, min_left_particles), np.subtract(max_left_particles, average_left_particles)])
-plt.errorbar(average_frame, average_right_particles, ecolor='grey', label="lado derecho", fmt='o', ms=2,  yerr=[np.subtract(average_right_particles, min_right_particles), np.subtract(max_right_particles, average_right_particles)])
+plt.errorbar(average_frame, average_left_particles, ecolor="grey", fmt='o', ms=2, yerr=[np.subtract(average_left_particles, min_left_particles), np.subtract(max_left_particles, average_left_particles)])
+plt.errorbar(average_frame, average_right_particles, ecolor='grey', fmt='o', ms=2,  yerr=[np.subtract(average_right_particles, min_right_particles), np.subtract(max_right_particles, average_right_particles)])
+plt.xlabel('iteraciones', fontsize=20)
+plt.ylabel('partículas', fontsize=20)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
 
-plt.xlabel('iteraciones')
-plt.ylabel('partículas')
+# plt.title(str(particles) + " partículas, " + str(opening) + " de apertura, " + str(iterations_arg) + " iteraciones")
 
 plt.legend()
 plt.show()
