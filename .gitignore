@@ -2,3 +2,8 @@ out
 .idea
 SimulacionSistemas.iml
 test
+*.npy
+*.gif
+*.rar
+*.pyc
+*.pyc
