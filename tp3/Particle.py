@@ -26,8 +26,11 @@ class Particle:
 
     def calculateVerticalTC(self, table):
         if self.vx > 0:
-            if self.x < table.v[1]:
+            if self.x < table.v[1]: #chocó contra el muro del medio
                 tc = (table.v[1] - Particle.radius - self.x) / self.vx
+                if ((table.height - table.opening)/2) < self.y+(tc*self.vy) < ((table.height + table.opening)/2):
+                    print(self.id, " CROSSES BRODER in", tc)
+                    return
                 if table.tc > tc:
                     table.tc = tc
                     table.cleanFlags()
@@ -45,8 +48,11 @@ class Particle:
                     print("new tc: ", tc, ", vertical ", self.id)
                     return
         elif self.vx < 0:
-            if self.x > table.v[1]:
+            if self.x > table.v[1]: #chocó contra el muro del medio
                 tc = (table.v[1] + Particle.radius - self.x) / self.vx
+                if ((table.height - table.opening)/2) < self.y+(tc*self.vy) < ((table.height + table.opening)/2):
+                    print(self.id, " CROSSES BACK in", tc)
+                    return
                 if table.tc > tc:
                     table.tc = tc
                     table.cleanFlags()

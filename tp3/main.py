@@ -6,15 +6,20 @@ from Table import Table
 
 table = Table(10)
 table.fly()
+print(table.left_right())
 print("after fly 1, acá iría el save state\n", table)
 table.collide()
-print("after collide 1\n", table)
 table.calculateTC()
 table.fly()
-table.collide()
+print(table.left_right())
 print(table)
+table.collide()
 
-for i in range(10):
+
+
+for i in range(500):
     table.calculateTC()
     table.fly()
+    print(table.left_right())
+    print(table)
     table.collide()
