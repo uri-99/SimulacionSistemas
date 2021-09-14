@@ -5,6 +5,16 @@
 from Table import Table
 
 table = Table(10)
-print(table)
 table.fly()
-table.collide() #TODO
+print("after fly 1, acá iría el save state\n", table)
+table.collide()
+print("after collide 1\n", table)
+table.calculateTC()
+table.fly()
+table.collide()
+print(table)
+
+for i in range(10):
+    table.calculateTC()
+    table.fly()
+    table.collide()
