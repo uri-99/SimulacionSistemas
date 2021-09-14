@@ -122,5 +122,6 @@ class Particle:
 
 
     def __repr__(self):
-        return "id: " + str(self.id) + ", x: " + str(self.x) + ", y: " + str(self.y) + ", vx: " + str(self.vx) + ", vy: " + str(self.vy) + "\n"
+        #return "id: " + str(self.id) + ", x: " + str(self.x) + ", y: " + str(self.y) + ", vx: " + str(self.vx) + ", vy: " + str(self.vy) + "\n"
+        return str(self.id) + " " + str(self.x) + " " + str(self.y) + "\n"
 

@@ -131,8 +131,10 @@ class Table:
 
     def __repr__(self):
         string = ""
+        string += str(self.t) + "\n"
         for particle in self.particles:
             string += str(particle)
+        string += "\n"
         return string
 
 
