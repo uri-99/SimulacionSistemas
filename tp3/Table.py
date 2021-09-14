@@ -21,7 +21,7 @@ class Table:
         self.currID = 0
         while self.currID < self.N:
             self.addParticle()
-        print("t0\n", self)
+        #print("t0\n", self)
         self.calculateTC()
 
 
@@ -53,7 +53,7 @@ class Table:
 
     def fly(self):
         self.t += self.tc
-        print("t=", self.t)
+        #print("t=", self.t)
         for particle in self.particles:
             particle.flyX(self.tc)
             particle.flyY(self.tc)
@@ -74,20 +74,18 @@ class Table:
         if len(collidingParticles) == 1:
             if collidingParticles[0].collidingWith == "vertical":
                 collidingParticles[0].vx *= -1
-                print("vertical", collidingParticles[0])
+                #print("vertical", collidingParticles[0])
             elif collidingParticles[0].collidingWith == "horizontal":
                 collidingParticles[0].vy *= -1
-                print("horizontal", collidingParticles[0])
+                #print("horizontal", collidingParticles[0])
             else:
                 print(collidingParticles[0], collidingParticles[0].collidingWith)
-                print("error calculating collide of single particle")
-                exit()
+                exit("error calculating collide of single particle")
         elif len(collidingParticles) == 2:
             particle1 = collidingParticles[0]
             particle2 = collidingParticles[1]
             if particle1.collidingWith != "particle" or particle2.collidingWith != "particle":
-                print("error in collidingWith particles")
-                exit()
+                exit("error in collidingWith particles")
 
             sigma = 2 * Particle.radius
             deltaR = [particle2.x - particle1.x, particle2.y - particle1.y]
@@ -104,8 +102,8 @@ class Table:
             particle2.vx = particle2.vx - Jx/Particle.mass
             particle2.vy = particle2.vy - Jy/Particle.mass
 
-            print("p1", collidingParticles[0])
-            print("p2", collidingParticles[1])
+            #print("p1", collidingParticles[0])
+            #print("p2", collidingParticles[1])
         else:
             print("error, too many particles colliding")
             exit()

@@ -29,14 +29,14 @@ class Particle:
             if self.x < table.v[1]: #chocó contra el muro del medio
                 tc = (table.v[1] - Particle.radius - self.x) / self.vx
                 if ((table.height - table.opening)/2) < self.y+(tc*self.vy) < ((table.height + table.opening)/2):
-                    print(self.id, " CROSSES BRODER in", tc)
+                    #print(self.id, " CROSSES BRODER in", tc)
                     return
                 if table.tc > tc:
                     table.tc = tc
                     table.cleanFlags()
                     self.colliding = True
                     self.collidingWith = "vertical"
-                    print("new tc: ", tc, ", vertical ", self.id)
+                    #print("new tc: ", tc, ", vertical ", self.id)
                     return
             else:
                 tc = (table.v[2] - Particle.radius - self.x) / self.vx
@@ -45,20 +45,20 @@ class Particle:
                     table.cleanFlags()
                     self.colliding = True
                     self.collidingWith = "vertical"
-                    print("new tc: ", tc, ", vertical ", self.id)
+                    #print("new tc: ", tc, ", vertical ", self.id)
                     return
         elif self.vx < 0:
             if self.x > table.v[1]: #chocó contra el muro del medio
                 tc = (table.v[1] + Particle.radius - self.x) / self.vx
                 if ((table.height - table.opening)/2) < self.y+(tc*self.vy) < ((table.height + table.opening)/2):
-                    print(self.id, " CROSSES BACK in", tc)
+                    #print(self.id, " CROSSES BACK in", tc)
                     return
                 if table.tc > tc:
                     table.tc = tc
                     table.cleanFlags()
                     self.colliding = True
                     self.collidingWith = "vertical"
-                    print("new tc: ", tc, ", vertical ", self.id)
+                    #print("new tc: ", tc, ", vertical ", self.id)
                     return
             else:
                 tc = (table.v[0] + Particle.radius - self.x) / self.vx
@@ -67,7 +67,7 @@ class Particle:
                     table.cleanFlags()
                     self.colliding = True
                     self.collidingWith = "vertical"
-                    print("new tc: ", tc, ", vertical ", self.id)
+                    #print("new tc: ", tc, ", vertical ", self.id)
                     return
 
     def calculateHorizontalTC(self, table):
@@ -78,7 +78,7 @@ class Particle:
                 table.cleanFlags()
                 self.colliding = True
                 self.collidingWith = "horizontal"
-                print("new tc: ", tc, ", horizontal ", self.id)
+                #print("new tc: ", tc, ", horizontal ", self.id)
                 return
         elif self.vy < 0:
             tc = (table.h[0] + Particle.radius - self.y) / self.vy
@@ -87,7 +87,7 @@ class Particle:
                 table.cleanFlags()
                 self.colliding = True
                 self.collidingWith = "horizontal"
-                print("new tc: ", tc, ", horizontal ", self.id)
+                #print("new tc: ", tc, ", horizontal ", self.id)
                 return
 
     def calculateParticleTC(self, table, particle):
@@ -117,7 +117,7 @@ class Particle:
             particle.colliding = True
             self.collidingWith = "particle"
             particle.collidingWith = "particle"
-            print("new tc: ", tc, ", particles ", self.id, " ", particle.id)
+            #print("new tc: ", tc, ", particles ", self.id, " ", particle.id)
         return
 
 
