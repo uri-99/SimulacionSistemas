@@ -119,14 +119,14 @@ class Table:
         if len(collidingParticles) == 1:
             if collidingParticles[0].collidingWith == "vertical":
                 collidingParticles[0].vx *= -1
-                if (collidingParticles[0].vx > 0 and collidingParticles[0].x>Table.v[1]) or (collidingParticles[0].vx < 0 and collidingParticles[0].x<Table.v[1]):
-                    return abs(collidingParticles[0].vx)*Particle.mass
+                if (collidingParticles[0].vx > 0 and collidingParticles[0].x > Table.v[1]) or (collidingParticles[0].vx < 0 and collidingParticles[0].x < Table.v[1]):
+                    return abs(collidingParticles[0].vx)*Particle.mass*2
                 else:
                     return 0
                 #print("vertical", collidingParticles[0])
             elif collidingParticles[0].collidingWith == "horizontal":
                 collidingParticles[0].vy *= -1
-                return abs(collidingParticles[0].vy)*Particle.mass
+                return abs(collidingParticles[0].vy)*Particle.mass*2
                 #print("horizontal", collidingParticles[0])
             else:
                 print(collidingParticles[0], collidingParticles[0].collidingWith)
