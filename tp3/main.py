@@ -17,7 +17,27 @@ for i in range(500):
     table.calculateTC()
     table.fly()
     export.write("\n")
+    export.write(str(table.left_right()))
+    export.write("\n")
     export.write(str(table))
     table.collide()
+
+print("temp: ", table.calculateTemp())
+
+iniT = table.t
+momentum = 0
+for i in range(500):
+    table.calculateTC()
+    table.fly()
+    momentum += table.collide2()
+
+finT = table.t
+transT = finT - iniT
+print("Presion: ", momentum/transT, "(kg*m)/s^2")
+
+pressure = (table.N * (1.381*(10**-23)) * table.calculateTemp() ) / (table.height * table.width)
+print(pressure)
+
+
 
 export.close()

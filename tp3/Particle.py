@@ -3,11 +3,11 @@ import random
 
 
 class Particle:
-    mass = 1  #kg
-    radius = 0.0015  #m
+    mass = 1 #0.018/(6.02*10**23)  #kg
+    radius = 0.0015 #0.27*10**-9  #m
 
     def __init__(self, x, y, id):
-        self.speed = 0.01  #m/s
+        self.speed = 1 #730 #m/s
         self.x = x
         self.y = y
         self.id = id
