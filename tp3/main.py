@@ -13,6 +13,17 @@ export.write(str(Table.opening))
 export.write("\n")
 export.write(str(table))
 
+while table.left_right_percentages()[0] > 0.55:
+    table.calculateTC()
+    table.fly()
+    export.write("\n")
+    export.write(str(table.left_right()))
+    export.write("\n")
+    export.write(str(table))
+    table.collide()
+print("eq in T: ", table.t)
+
+'''
 for i in range(500):
     table.calculateTC()
     table.fly()
@@ -21,8 +32,9 @@ for i in range(500):
     export.write("\n")
     export.write(str(table))
     table.collide()
+    '''
 
-print("temp: ", table.calculateTemp())
+print("v2: ", table.calculateV2())
 
 iniT = table.t
 momentum = 0
@@ -33,11 +45,9 @@ for i in range(500):
 
 finT = table.t
 transT = finT - iniT
-print("Presion: ", momentum/transT, "(kg*m)/s^2")
-
-pressure = (table.N * (1.381*(10**-23)) * table.calculateTemp() ) / (table.height * table.width)
-print(pressure)
-
+L = 2*table.height + 2*table.width
+pressure = momentum/(transT * L)
+print("Presion: ", pressure, "[kg/(m*s^2)]")
 
 
 export.close()

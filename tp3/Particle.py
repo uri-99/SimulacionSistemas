@@ -3,20 +3,28 @@ import random
 
 
 class Particle:
-    mass = 1 #0.018/(6.02*10**23)  #kg
-    radius = 0.0015 #0.27*10**-9  #m
+    mass = 1
+    radius = 0.0015
 
-    def __init__(self, x, y, id):
-        self.speed = 1 #730 #m/s
+
+    def __init__(self, x, y, idd):
+        self.pseudoT = 0.0001
+
+        self.speed = math.sqrt(self.pseudoT)
         self.x = x
         self.y = y
-        self.id = id
+        self.id = idd
         self.colliding = False
         self.collidingWith = ""
 
         self.direction = math.radians(random.uniform(0, 360))
         self.vx = self.speed * math.cos(self.direction)
         self.vy = self.speed * math.sin(self.direction)
+
+    def modSpeed(self):
+        self.speed = math.sqrt(self.vx**2 + self.vy**2)
+        return self.speed
+
 
     def flyX(self, t):
         self.x = self.x + self.vx * t

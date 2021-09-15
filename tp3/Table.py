@@ -7,7 +7,7 @@ from Particle import Particle
 class Table:
     width = 0.24  # m
     height = 0.09  # m
-    opening = 0.01  # m
+    opening = 0.02  # m
 
     v = [0, width/2, width]  #walls
     h = [0, height]  #floor and roof
@@ -21,6 +21,7 @@ class Table:
         self.currID = 0
         while self.currID < self.N:
             self.addParticle()
+        print("done adding particles")
         #print("t0\n", self)
         self.calculateTC()
 
@@ -118,7 +119,10 @@ class Table:
         if len(collidingParticles) == 1:
             if collidingParticles[0].collidingWith == "vertical":
                 collidingParticles[0].vx *= -1
-                return abs(collidingParticles[0].vx)*Particle.mass
+                if (collidingParticles[0].vx > 0 and collidingParticles[0].x>Table.v[1]) or (collidingParticles[0].vx < 0 and collidingParticles[0].x<Table.v[1]):
+                    return abs(collidingParticles[0].vx)*Particle.mass
+                else:
+                    return 0
                 #print("vertical", collidingParticles[0])
             elif collidingParticles[0].collidingWith == "horizontal":
                 collidingParticles[0].vy *= -1
@@ -155,17 +159,11 @@ class Table:
             exit()
         return 0
 
-    def calculateTemp(self):
-        totalEc = 0
-        cantParticles = len(self.particles)
+    def calculateV2(self):
+        totV2 = 0
         for particle in self.particles:
-            totalEc += 0.5 * particle.mass * (particle.vx**2 + particle.vy**2)
-        avgEc = totalEc/cantParticles
-        Kb = 1.380649 * 10**(-23)
-        T = (2/(3*Kb)) * avgEc
-        return T
-
-
+            totV2 += (particle.modSpeed())**2
+        return totV2
 
     def left_right(self):
         left = 0
@@ -180,8 +178,8 @@ class Table:
 
     def left_right_percentages(self):
         left, right = self.left_right()
-        leftP = left / self.currID
-        rightP = right / self.currID
+        leftP = left / len(self.particles)
+        rightP = right / len(self.particles)
         return leftP, rightP
 
     def __repr__(self):
