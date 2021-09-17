@@ -5,12 +5,13 @@ import random
 class Particle:
     mass = 1
     radius = 0.0015
+    initSpeed = 0.01
 
 
     def __init__(self, x, y, idd):
-        self.pseudoT = 0.0001
-
-        self.speed = math.sqrt(self.pseudoT)
+        #self.pseudoT = 0.0001
+        #self.speed = math.sqrt(self.pseudoT)
+        self.speed = Particle.initSpeed
         self.x = x
         self.y = y
         self.id = idd
