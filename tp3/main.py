@@ -5,6 +5,7 @@
 import math
 import statistics
 
+from Particle import Particle
 from Table import Table
 
 export = open("data.txt", "w")
@@ -19,6 +20,7 @@ export.write("(" + str(table.N) +", 0)")
 export.write("\n")
 export.write(str(table))
 
+old = table.left_right_percentages()[0]
 while table.left_right_percentages()[0] > 0.55:
     table.calculateTC()
     table.fly()
@@ -27,8 +29,10 @@ while table.left_right_percentages()[0] > 0.55:
     export.write("\n")
     export.write(str(table))
     table.collide()
-    print(table.left_right())
     print(table.t)
+    if table.left_right_percentages()[0] != old:
+        print(table.left_right())
+        old = table.left_right_percentages()[0]
 print("eq in T: ", table.t)
 
 '''
@@ -70,8 +74,14 @@ transT = finT - iniT
 
 pressure = totalMomentum / (transT * L)
 print("Presion: ", pressure, "[kg/(m*s^2)]")
+export.write(str(Particle.initSpeed))
+export.write("\n")
+export.write(str(pressure))
+export.write("\n")
 
+deviation = statistics.stdev(valuesArray)
 print("deviation: ", statistics.stdev(valuesArray))
+export.write(str(deviation))
 
 
 print(len(valuesArray), valuesArray)
