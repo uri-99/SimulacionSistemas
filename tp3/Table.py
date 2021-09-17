@@ -27,17 +27,16 @@ class Table:
 
 
     def addParticle(self):
-        newX = random.uniform(Particle.radius, (self.width / 2) - Particle.radius)
-        newY = random.uniform(Particle.radius, self.height - Particle.radius)
+        newX = random.uniform(Particle.radius, (self.width / 2) - Particle.radius) #0.0015 - 0.1185 entran 78
+        newY = random.uniform(Particle.radius, self.height - Particle.radius) #0.0015 - 0.0885 entran 58
         for particle in self.particles:
-            if abs(particle.x - newX) < Particle.radius:
-                return False
-            elif abs(particle.y - newY) < Particle.radius:
+            if (newX - particle.x)**2 + (newY - particle.y)**2 <= (2*Particle.radius)**2:
                 return False
 
         self.currID += 1
         newParticle = Particle(newX, newY, self.currID)
         self.particles.append(newParticle)
+        print("added ", self.currID)
         return True
 
     def calculateTC(self):
