@@ -24,7 +24,6 @@ old = table.left_right_percentages()[0]
 while table.left_right_percentages()[0] > 0.55:
     table.calculateTC()
     table.fly()
-    export.write("\n")
     export.write(str(table.left_right()))
     export.write("\n")
     export.write(str(table))
