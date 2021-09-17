@@ -57,7 +57,7 @@ def parse_file():
             break
         difference, time, particles_ids, particles_x, particles_y = parse_paragraph(paragraph)
         differences.append(difference)
-        times.append(time*1000)
+        times.append(time*100)
         ids.append(particles_ids)
         x.append(particles_x)
         y.append(particles_y)
@@ -76,16 +76,22 @@ def draw_box():
 N, opening = read_params()
 differences, times, ids, x, y = parse_file()
 
+current_index = 1
+
 def animate(frame_number):
-    global d
-    d.remove()
-    d, = plt.plot(x[frame_number], y[frame_number], 'bo', markersize=2)
+    global current_index
+    if(frame_number > times[current_index]):
+        print(times[current_index])
+        print(frame_number)
+        global d
+        d.remove()
+        d, = plt.plot(x[current_index], y[current_index], 'bo', markersize=2)
+        current_index = current_index + 1
 
 fig = plt.gcf()
-print(x[0])
-draw_mid_line(0.01)
+draw_mid_line(float(opening))
 d, = plt.plot(x[0], y[0], 'bo', markersize=2)
-anim = animation.FuncAnimation(fig, animate, frames=len(times), interval=1, repeat=False)
+anim = animation.FuncAnimation(fig, animate, frames=int(times[len(times)-1])*1000, interval=1, repeat=False)
 plt.xlim([0, 0.24])
 plt.ylim([0, 0.09])
 plt.gca().set_aspect('equal')
