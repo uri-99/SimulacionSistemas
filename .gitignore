@@ -7,3 +7,5 @@ test
 *.rar
 *.pyc
 *.pyc
+tp3/data
+tp3/simulation_folder
