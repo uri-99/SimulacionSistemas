@@ -7,7 +7,7 @@ from Particle import Particle
 class Table:
     width = 0.24  # m
     height = 0.09  # m
-    opening = 0.02  # m
+    opening = 0.01  # m
 
     v = [0, width/2, width]  #walls
     h = [0, height]  #floor and roof
@@ -36,7 +36,6 @@ class Table:
         self.currID += 1
         newParticle = Particle(newX, newY, self.currID)
         self.particles.append(newParticle)
-        print("added ", self.currID)
         return True
 
     def calculateTC(self):
@@ -73,63 +72,23 @@ class Table:
                 collidingParticles.append(particle)
         if len(collidingParticles) == 1:
             if collidingParticles[0].collidingWith == "vertical":
-                collidingParticles[0].vx *= -1
-                #print("vertical", collidingParticles[0])
-            elif collidingParticles[0].collidingWith == "horizontal":
-                collidingParticles[0].vy *= -1
-                #print("horizontal", collidingParticles[0])
-            else:
-                print(collidingParticles[0], collidingParticles[0].collidingWith)
-                exit("error calculating collide of single particle")
-        elif len(collidingParticles) == 2:
-            particle1 = collidingParticles[0]
-            particle2 = collidingParticles[1]
-            if particle1.collidingWith != "particle" or particle2.collidingWith != "particle":
-                exit("error in collidingWith particles")
-
-            sigma = 2 * Particle.radius
-            deltaR = [particle2.x - particle1.x, particle2.y - particle1.y]
-            deltaV = [particle2.vx - particle1.vx, particle2.vy - particle1.vy]
-            escalarVR = deltaV[0] * deltaR[0] + deltaV[1] * deltaR[1]
-
-            J = (Particle.mass * escalarVR) / sigma
-            Jx = J*deltaR[0] / sigma
-            Jy = J*deltaR[1] / sigma
-
-            particle1.vx = particle1.vx + Jx/Particle.mass
-            particle1.vy = particle1.vy + Jy/Particle.mass
-
-            particle2.vx = particle2.vx - Jx/Particle.mass
-            particle2.vy = particle2.vy - Jy/Particle.mass
-
-            #print("p1", collidingParticles[0])
-            #print("p2", collidingParticles[1])
-        else:
-            print("error, too many particles colliding")
-            exit()
-        return
-
-    def collide2(self):
-        #calculate new vx and vy for collided particles, se puede hacer para todas las particles o la que colisionó que tenga un flag
-        collidingParticles = []
-        for particle in self.particles:
-            if particle.colliding:
-                collidingParticles.append(particle)
-        if len(collidingParticles) == 1:
-            if collidingParticles[0].collidingWith == "vertical":
-                collidingParticles[0].vx *= -1
                 if (collidingParticles[0].vx > 0 and collidingParticles[0].x > Table.v[1]) or (collidingParticles[0].vx < 0 and collidingParticles[0].x < Table.v[1]):
+                    collidingParticles[0].vx *= -1
                     return abs(collidingParticles[0].vx)*Particle.mass*2
                 else:
+                    if collidingParticles[0].vx == 0:
+                        collidingParticles[0].vy *= -1
+                        print("MEGA CASO IMPOSIBLE", collidingParticles[0])
+                    else:
+                        collidingParticles[0].vx *= -1
                     return 0
-                #print("vertical", collidingParticles[0])
             elif collidingParticles[0].collidingWith == "horizontal":
                 collidingParticles[0].vy *= -1
                 return abs(collidingParticles[0].vy)*Particle.mass*2
-                #print("horizontal", collidingParticles[0])
             else:
                 print(collidingParticles[0], collidingParticles[0].collidingWith)
                 exit("error calculating collide of single particle")
+
         elif len(collidingParticles) == 2:
             particle1 = collidingParticles[0]
             particle2 = collidingParticles[1]
