@@ -1,16 +1,48 @@
-# This is a sample Python script.
+from particle import Particle
+dt = 10**-1
+particle = Particle(dt)
+verletParticle = Particle(dt)
+beemanParticle = Particle(dt)
+gearParticle = Particle(dt)
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+#positions:
+analytic = [particle.x]
+# particle.advance()
+
+verlet = [verletParticle.x]
+# verletParticle.advance()
+
+beeman = [beemanParticle.x]
+beemanAcc = [beemanParticle.r2()]
+# beemanParticle.advance()
+
+gear = [gearParticle.x]
+
+while particle.t < particle.tf:
+    #analytic:
+    analytic.append(particle.solucion_analitica())
+    particle.advance()
+
+    #verlet:
+    if len(verlet) == 1:
+        verlet.append(verletParticle.Euler_r())
+    else:
+        verlet.append(verletParticle.Verlet_r(verlet))
+    verletParticle.advance()
+
+    #beeman
+    x, acc = beemanParticle.Beeman()
+    beeman.append(x)
+    beemanAcc.append(acc)
+
+    #gear
+    gear.append(gearParticle.Gear()) ##no estoy seguro que debería retornar esto
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+print(analytic)
+print(verlet)
+print(beeman)
+print(gear)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
