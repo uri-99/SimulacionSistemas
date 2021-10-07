@@ -15,59 +15,85 @@ class Particle:
         self.x = r         # A^(-(g/(2m))t) cos((k/m - g^2/(4m^2))^0.5 t
         self.v = -(self.A * self.gama) / (
                     2 * self.m)  # devrivar y evaluar en 0 r: derivo r en dt evalúo t=0, A es amplitud inicial A=1
+
+        self.positions = []
+        self.positions.append(self.x)
+        self.velocities = []
+        self.velocities.append(self.v)
+        self.accelerations = []
         self.acc = self.r2()
 
 
     def advance(self):
         self.t += self.dt
 
+#este está andando raro, se comporta como si el opscilador no estuviese amortiguado. Mi teoria es que A es cte y no lo debería ser pero no se que verga es A
     def solucion_analitica(self):
         self.x = self.A ** (-(self.gama / (2 * self.m)) * self.t) * math.cos(
             ((self.k / self.m) - (self.gama ** 2 / (4 * self.m ** 2))) ** 0.5 * self.t)
+        self.positions.append(self.x)
         return self.x
 
     def r0(self):
          return self.x
     def r1(self):
-        pass #return speed mandé mail
+        return self.velocities[-1]
+        # (self.r0(t+dt) - self.r0(t-dt))/(2*self.dt)
     def r2(self): #acc
         self.acc = (-self.k/self.m)*self.x - (self.gama/self.m) * self.v
+        self.accelerations.append(self.acc)
         return self.acc
     def f(self):  # fuerza
         return -self.k * self.x - self.gama * self.r1()
+        pass
+    def f_verlet(self):  # fuerza
+        return -self.k * self.x - self.gama * self.Verlet_v()
         pass
 
 
     def Euler_r(self):
         self.x = self.r0() + self.dt*self.r1() + (self.dt**2/(2*self.m))*self.f()
+        self.positions.append(self.x)
+        self.Euler_v()
         return self.x
     def Euler_v(self):
         self.v = self.r1() + (self.dt/self.m)*self.f()
+        self.velocities.append(self.v)
         return self.v
 
 
-    def Verlet_r(self, pastPositions):
-        self.x= 2*pastPositions[-1] - pastPositions[-2] + (self.dt**2/self.m) * self.f()
+    def Verlet_r(self):
+        self.x = 2*self.positions[-1] - self.positions[-2] + (self.dt**2/self.m) * self.f()
+        self.positions.append(self.x)
+        self.Verlet_v()
         return self.x
-    def Verlet_v(self, pastPositions):
-        self.v = (pastPositions[-1] - pastPositions[-3])/(2*self.dt)
+    def Verlet_v(self):
+        self.v = (self.positions[-1] - self.positions[-3])/(2*self.dt)
+        self.velocities.append(self.v)
         return self.v
+
+#listo verlet
 
     def calculateAcceleration(self, x, v): #acc
         return (-self.k/self.m)*x - (self.gama/self.m) * v
 
-
-
-    def Beeman(self, pastPositions, pastAcc):
-        #x = self.x+ self.v*self.dt + ((2/3)*self.r2() - (1/6)*pastAcc[-2])*self.dt**2
-        x = self.x + self.r1() * self.dt + (2/3)*self.r2()*self.dt**2 - (1/6)*pastAcc[-2]*self.dt**2
-        v_predicted = self.r1() + (3/2) * self.r2()*self.dt - (1/2)*pastAcc[-2]*self.dt
+    def Beeman(self):
+        # if type==1: #ver teorica si queres entender este comentario
+        #     x = self.x+ self.v*self.dt + ((2/3)*self.r2() - (1/6)*self.accelerations[-2])*self.dt**2
+        #     v = self.v + ((1/3)*self.calculateAcceleration(x, self.v) ...)
+        # elif type==2:
+        x = self.x + self.r1() * self.dt + (2/3)*self.r2()*self.dt**2 - (1/6)*self.accelerations[-2]*self.dt**2
+        v_predicted = self.r1() + (3/2) * self.accelerations[-1]*self.dt - (1/2)*self.accelerations[-2]*self.dt
         a_calculated = self.calculateAcceleration(x, v_predicted)
-        v_corrected = self.v + (1/3)*a_calculated*self.dt + (5/6)*self.r2()*self.dt - (1/6)*pastAcc[-2]*self.dt
+        v_corrected = self.v + (1/3)*a_calculated*self.dt + (5/6)*self.accelerations[-1]*self.dt - (1/6)*self.accelerations[-2]*self.dt
+        # else:
+        #     exit("wrong beeman type")
 
         self.x = x
+        self.positions.append(x)
         self.v = v_corrected
-        return x, a_calculated
+        self.velocities.append(v_corrected)
+        return x
 
     def calculateForce(self, x, v):
         return -self.k * x - self.gama * v
@@ -93,7 +119,7 @@ class Particle:
         r4c = r4p + 1/6 * (4*3*2*delta_R2)/dt**3
         r5c = r5p + 1/60 * (5*4*3*2*delta_R2)/dt**3
 
-        r2 = (-self.k / self.m) * #esto tiene que ser r - r0 pero no tengo la pos eq
+        r2 = (-self.k / self.m) * 0#esto tiene que ser r - r0 pero no tengo la pos eq
         r3 = (-self.k / self.m) * self.r1()
         r4 = (-self.k / self.m) * r2
         r5 = (-self.k / self.m) * r3
