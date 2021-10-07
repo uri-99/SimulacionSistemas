@@ -14,7 +14,7 @@ class Particle:
         self.A = r
         self.x = r         # A^(-(g/(2m))t) cos((k/m - g^2/(4m^2))^0.5 t
         self.v = -(self.A * self.gama) / (
-                    2 * self.m)  # devrivar y evaluar en 0 r: derivo r en dt evalúo t=0, A es amplitud inicial A=1
+                    2 * self.m)  # derivar y evaluar en 0 r: derivo r en dt evalúo t=0, A es amplitud inicial A=1
 
         self.positions = []
         self.positions.append(self.x)
@@ -29,8 +29,8 @@ class Particle:
 
 #este está andando raro, se comporta como si el opscilador no estuviese amortiguado. Mi teoria es que A es cte y no lo debería ser pero no se que verga es A
     def solucion_analitica(self):
-        self.x = self.A ** (-(self.gama / (2 * self.m)) * self.t) * math.cos(
-            ((self.k / self.m) - (self.gama ** 2 / (4 * self.m ** 2))) ** 0.5 * self.t)
+        self.x = abs(self.x) ** (-(self.gama / (2 * self.m)) * self.t) * math.cos(
+            ((self.k / self.m) - (self.gama ** 2 / (4 * (self.m ** 2)))) ** 0.5 * self.t)
         self.positions.append(self.x)
         return self.x
 
@@ -101,8 +101,8 @@ class Particle:
     def Gear(self):
         dt = self.dt
         r0p = self.r0() + self.r1()*dt + self.r2()*(dt**2/math.factorial(2)) + self.r3()*(dt**3/math.factorial(3)) + self.r4()*(dt**4/math.factorial(4)) + self.r5()*(dt**5/math.factorial(5))
-        r1p = self.r1() + self.r2()*dt + self.r3()*(dt**2/math.factorial(2)) + self.r4()*(dt**3/math.factorial(3)) + self.r5()*(dt**4/math.factorial(4))
-        r2p = self.r2() + self.r3()*dt+ self.r4() * (dt ** 2 / math.factorial(2)) + self.r5() * (dt ** 3 / math.factorial(3))
+        r1p = self.r1() + self.accelerations[-1]()*dt + self.r3()*(dt**2/math.factorial(2)) + self.r4()*(dt**3/math.factorial(3)) + self.r5()*(dt**4/math.factorial(4))
+        r2p = self.accelerations[-1] + self.r3()*dt+ self.r4() * (dt ** 2 / math.factorial(2)) + self.r5() * (dt ** 3 / math.factorial(3))
         r3p = self.r3() + self.r4()*dt + self.r5() * (dt ** 2 / math.factorial(2))
         r4p = self.r4() + self.r5()*dt
         r5p = self.r5()
