@@ -21,23 +21,25 @@ class Galaxy:
     Mars = Object(3390, 6.4171*10**23, mars_initial_pos, mars_initial_speed, t, dt)
     Sun = Object(696000, 1988500*10**24, [0, 0], 0, 0, t, dt)
     Ship = null
-    system=[Sun, Earth, Mars] 
+    system=[Sun, Earth, Mars]
+
+
 
     def __init__(self, shipCoords):
-        Ship = Object(radius, 2*10**5, shipCoords, 7.12, t, dt, self.system) #1500km de la superficie y 7.12 km/s
+        self.Ship = Object(radius, 2*10**5, shipCoords, 7.12, self.t, self.dt, self.system) #1500km de la superficie y 7.12 km/s
         # V0 = 8 km/s (sumada a las velocidad orbital total que ya tiene la nave antes del despegue, dada por la velocidad de la tierra mas la velocidad de la estación espacial)
 
     def advance(self): 
-        Earth.changePosition()
-        Mars.changePosition()
-        Ship.changePosition()
+        self.Earth.changePosition()
+        self.Mars.changePosition()
+        self.Ship.changePosition()
         if(self.shipTimeToTakeOff()):
             # cambiar speed de ship ya que despega
 
      # calcular si estan alineados
     def shipTimeToTakeOff(self):
-        ship_angle = Ship.angle_to_object(sun_initial_position)
-        earth_angle = Earth.angle_to_object(sun_initial_position)
+        ship_angle = self.Ship.angle_to_object()
+        earth_angle = self.Earth.angle_to_object()
         if(math.fabs(ship_angle - earth_angle) >= alignment_condition):
             return True
         return False

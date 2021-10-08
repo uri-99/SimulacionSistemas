@@ -27,9 +27,8 @@ class Particle:
     def advance(self):
         self.t += self.dt
 
-#este está andando raro, se comporta como si el opscilador no estuviese amortiguado. Mi teoria es que A es cte y no lo debería ser pero no se que verga es A
     def solucion_analitica(self):
-        self.x = abs(self.x) ** (-(self.gama / (2 * self.m)) * self.t) * math.cos(
+        self.x = self.A * math.e ** (-(self.gama / (2 * self.m)) * self.t) * math.cos(
             ((self.k / self.m) - (self.gama ** 2 / (4 * (self.m ** 2)))) ** 0.5 * self.t)
         self.positions.append(self.x)
         return self.x
@@ -95,13 +94,24 @@ class Particle:
         self.velocities.append(v_corrected)
         return x
 
+#listo Beeman
+
     def calculateForce(self, x, v):
         return -self.k * x - self.gama * v
+
+    def r3(self):
+        return (-self.k / self.m) * self.v - (self.gama / self.m) * self.acc
+
+    def r4(self):
+        return (-self.k/self.m)* self.acc - (self.gama/self.m) * self.r3()
+
+    def r5(self):
+        return (-self.k/self.m)* self.r3() - (self.gama/self.m) * self.r4()
 
     def Gear(self):
         dt = self.dt
         r0p = self.r0() + self.r1()*dt + self.r2()*(dt**2/math.factorial(2)) + self.r3()*(dt**3/math.factorial(3)) + self.r4()*(dt**4/math.factorial(4)) + self.r5()*(dt**5/math.factorial(5))
-        r1p = self.r1() + self.accelerations[-1]()*dt + self.r3()*(dt**2/math.factorial(2)) + self.r4()*(dt**3/math.factorial(3)) + self.r5()*(dt**4/math.factorial(4))
+        r1p = self.r1() + self.accelerations[-1]*dt + self.r3()*(dt**2/math.factorial(2)) + self.r4()*(dt**3/math.factorial(3)) + self.r5()*(dt**4/math.factorial(4))
         r2p = self.accelerations[-1] + self.r3()*dt+ self.r4() * (dt ** 2 / math.factorial(2)) + self.r5() * (dt ** 3 / math.factorial(3))
         r3p = self.r3() + self.r4()*dt + self.r5() * (dt ** 2 / math.factorial(2))
         r4p = self.r4() + self.r5()*dt
@@ -112,17 +122,26 @@ class Particle:
         delta_a = a - r2p
         delta_R2 = (delta_a*dt**2)/2
 
-        r0c = r0p + 3/20 * delta_R2
+        r0c = r0p + 3/16 * delta_R2
         r1c = r1p + 251/360 * delta_R2 / dt
         r2c = r2p + 1 * (2*delta_R2)/dt**2
         r3c = r3p + 11/18 * (3*2*delta_R2)/dt**3
         r4c = r4p + 1/6 * (4*3*2*delta_R2)/dt**3
         r5c = r5p + 1/60 * (5*4*3*2*delta_R2)/dt**3
 
-        r2 = (-self.k / self.m) * 0#esto tiene que ser r - r0 pero no tengo la pos eq
+        self.x = r0c
+        self.positions.append(self.x)
+        self.v = r1c
+        self.velocities.append(self.v)
+        self.acc = r2c
+        self.accelerations.append(self.acc)
+
+        r2 = (-self.k / self.m) * self.x
         r3 = (-self.k / self.m) * self.r1()
         r4 = (-self.k / self.m) * r2
         r5 = (-self.k / self.m) * r3
+
+        return r0c
 
 
     # def O(self, deltaT):  # Orden, es a lo sumo de orden deltaT al cubo, error como mucho es deltaT al cubo.

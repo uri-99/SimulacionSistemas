@@ -8,7 +8,7 @@ class Object:
         self.size = size
         self.mass = mass
         self.position = position
-        self.angularPos = self.position_to_angle(position) #radianes con respecto al sol
+        self.angularPos = self.angle_to_sun(position) #radianes con respecto al sol
         self.speed = speed
         self.angularSpeed = self.speed_to_angular_speed(speed)
         self.t = t
@@ -93,15 +93,22 @@ class Object:
         return math.sqrt(math.pow(x, 2) + math.pow(y, 2))
 
     def angle_to_object(self, other):
-        x = self.position[0] - other.position[0]
-        y = self.position[1] - other.position[1]
-        return math.atan(y/x)
+        self.angle_to_sun()
+        other.angle.to_sun()
+        return
+    
 
-
-    def position_to_angle(self, position):
-        x = position[0]
-        y = position[1]
-        return math.atan(y/x)
+    def angle_to_sun(self):
+        x = self.position[0]
+        y = self.position[1]
+        relative_angle = math.atan(y/x)
+        if(x >= 0 and y>= 0)
+            return relative_angle
+        else if(x =< 0 and y >= 0)
+            return 180 - relative_angle
+        else if(x =< 0 and y =< 0)
+            return 180 + relative_angle
+        return 360 - relative_angle
 
     def speed_to_angular_speed(self, velocity):
         vx = velocity[0]
