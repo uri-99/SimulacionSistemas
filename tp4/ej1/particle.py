@@ -143,6 +143,8 @@ class Particle:
 
         return r0c
 
+    #listo Gear 5
+
 
     # def O(self, deltaT):  # Orden, es a lo sumo de orden deltaT al cubo, error como mucho es deltaT al cubo.
     #     # Sin calcular la O, la funcion te va a quedar con ese error de aproximación
