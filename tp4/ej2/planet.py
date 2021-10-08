@@ -1,10 +1,11 @@
 import math
 
-class Object:
+class Planet:
 
     G = 6.67384 * 10**-11 #N m**2 kg**-2
 
-    def __init__(self, size, mass, position, speed, angularSpeed, t, dt):
+    def __init__(self, name, size, mass, position, speed, angularSpeed, t, dt):
+        self.name = name
         self.radius = size
         self.mass = mass
         self.position = position
@@ -16,6 +17,7 @@ class Object:
         self.distance_to_sun = self.calculate_distance_to_sun(position)
 
 
+
     def F(self, other):
         return self.G * ((self.mass * other.mass) / self.distance_to(other))
 
@@ -23,8 +25,12 @@ class Object:
         return math.sqrt( (self.position[0]-other.position[0])**2 + (self.position[1]-other.position[1])**2 )
 
     def changePosition(self):
+        self.angularPos += self.dt * self.angularSpeed
+        self.angularPos = self.angularPos % (2 * math.pi)
+        self.position = [math.cos(self.angularPos) * self.distance_to_sun, math.sin(self.angularPos) * self.distance_to_sun]
         self.t += self.dt
         #hacer la formula basica de movimiento circular uniforme, tan los datos en self.angularSpeed etc
+
 
 
     def calculate_distance_to_sun(self, position):
@@ -41,17 +47,19 @@ class Object:
         return math.fabs(self.angle_to_sun() - other.angle.to_sun()) #acuerdense q el angulo siempre va desde el eje x en sentido antihorario, asi que con modulo y resta todos los casos estan bien
 
     def angle_to_sun(self):
-        x = self.position[0]
-        y = self.position[1]
-        relative_angle = math.atan(y/x)
-        if(x >= 0 and y>= 0):
-            return relative_angle
-        elif(x <= 0 and y >= 0):
-            return math.pi - relative_angle
-        elif(x <= 0 and y <= 0):
-            return math.pi + relative_angle
-        else:
-            return 2*math.pi - relative_angle
+        if self.position != [0,0]:
+            x = self.position[0]
+            y = self.position[1]
+            relative_angle = math.atan(y/x)
+            if(x >= 0 and y>= 0):
+                return relative_angle
+            elif(x <= 0 and y >= 0):
+                return math.pi - relative_angle
+            elif(x <= 0 and y <= 0):
+                return math.pi + relative_angle
+            else:
+                return 2*math.pi - relative_angle
+
 
     def speed_components_to_total(self, velocity):
         vx = velocity[0]

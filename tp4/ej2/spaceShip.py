@@ -1,5 +1,5 @@
 import math
-from ej2.object import Object
+from ej2.planet import Planet
 
 class SpaceShip:
 
@@ -42,10 +42,11 @@ class SpaceShip:
 
         # lo que pense es, la velocidad del bicho este es basciamente igual que la tierra mas su velocidad, entonces tengo dos ideas: 1) la velocidad de el es la suya mas la de la tierra y q se mueva sola. 2) Veo lo q se movio la tierra, muevo lo mismo a la nave y despues calculo lo q se movio la nave pero en ese caso necesito saber la posicion actual de la tierra y la anterior y es medio un chino
     def changePosition(self):
-        self.t += self.dt
-        self.calculate_new_acceleration()
-        self.Gear("x")
-        self.Gear("y")
+        # self.t += self.dt
+        # self.calculate_new_acceleration()
+        # self.Gear("x")
+        # self.Gear("y")
+        pass
 
     def Gear(self, coord):
         if coord == "x":
