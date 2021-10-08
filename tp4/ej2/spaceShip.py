@@ -5,12 +5,14 @@ class SpaceShip:
 
     G = 6.67384 * 10**-11 #N m**2 kg**-2
 
-    def __init__(self, mass, position, speed, angularSpeed, t, dt, system):
+    def __init__(self, mass, position, speed, distance_to_earth, t, dt, system):
         self.mass = mass
         self.position = position
         # self.angularPos = self.angle_to_earth(position) #radianes con respecto a la tierra #DUDA tengo que pasarle siempre la tierra o no?
         self.speed = speed
-        self.angularSpeed = angularSpeed #self.speed_components_to_total(speed)
+        orbit_length = 2*math.pi*(system[1].radius + distance_to_earth)
+        period = orbit_length / speed
+        self.angularSpeed = (2*math.pi)/period #self.speed_components_to_total(speed)
         self.t = t
         self.dt = dt
         # self.distance_to_sun = self.calculate_distance_to_sun(position)
@@ -26,6 +28,9 @@ class SpaceShip:
         pos_x = []
         pos_y = []
         self.positions = [pos_x, pos_y]
+        self.has_launched = False
+        self.angular_to_earth = 0
+        self.distance_to_earth = distance_to_earth
 
     def angle_to_earth(self):
         x = self.position[0] - self.earth.position[0]
@@ -42,6 +47,12 @@ class SpaceShip:
 
         # lo que pense es, la velocidad del bicho este es basciamente igual que la tierra mas su velocidad, entonces tengo dos ideas: 1) la velocidad de el es la suya mas la de la tierra y q se mueva sola. 2) Veo lo q se movio la tierra, muevo lo mismo a la nave y despues calculo lo q se movio la nave pero en ese caso necesito saber la posicion actual de la tierra y la anterior y es medio un chino
     def changePosition(self):
+        self.t += self.dt
+        if not self.has_launched:
+            self.angular_to_earth += self.dt * self.angularSpeed
+            self.angular_to_earth = self.angular_to_earth % (2 * math.pi)
+            self.position = [math.cos(self.angular_to_earth) * self.distance_to_earth + self.earth.position[0],
+                             math.sin(self.angular_to_earth) * self.distance_to_earth + self.earth.position[1]]
         # self.t += self.dt
         # self.calculate_new_acceleration()
         # self.Gear("x")
