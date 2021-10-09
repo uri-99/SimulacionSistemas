@@ -11,7 +11,8 @@ class Planet:
         self.position = position
         self.angularPos = self.angle_to_sun() #radianes con respecto al sol
         self.speed = speed
-        self.angularSpeed = angularSpeed #self.speed_components_to_total(speed)
+        self.orbitalSpeed = self.speed_components_to_total(speed)
+        self.angularSpeed = angularSpeed
         self.t = t
         self.dt = dt
         self.distance_to_sun = self.calculate_distance_to_sun(position)
@@ -25,11 +26,12 @@ class Planet:
         return math.sqrt( (self.position[0]-other.position[0])**2 + (self.position[1]-other.position[1])**2 )
 
     def changePosition(self):
+        self.t += self.dt
         self.angularPos += self.dt * self.angularSpeed
         self.angularPos = self.angularPos % (2 * math.pi)
         self.position = [math.cos(self.angularPos) * self.distance_to_sun, math.sin(self.angularPos) * self.distance_to_sun]
-        self.t += self.dt
-        #hacer la formula basica de movimiento circular uniforme, tan los datos en self.angularSpeed etc
+        self.speed = self.decompose_speed()
+        #le falta setear el .speed a los valores cartesianos correspondientes
 
 
 
@@ -68,5 +70,9 @@ class Planet:
     
     def get_angular_position(self):
         return self.position_to_angle(self.position)
+
+    def decompose_speed(self):
+        angle = self.angle_to_sun()
+        return [self.orbitalSpeed * math.sin(angle), self.orbitalSpeed * math.cos(angle)]
 
 

@@ -5,7 +5,7 @@ import math
 
 
 G = 6.67384 * 10**-11 #N m**2 kg**-2
-dt = 60 #86400 = 1 día
+dt = 60#86400 = 1 día
 t=0
 
 earth_initial_pos = (1.500619962348151e8, 2.288499248197072e6)
@@ -21,12 +21,12 @@ alignment_condition = 2
 #  Planet = Planet(radius, mass, coords, speed, angularSpeed initT, dt)   #km, kg, [posX, posY], [speedX, speedY], t, dt
 Earth = Planet("Earth", 6371, 5.97 * 10 ** 24, earth_initial_pos, earth_initial_speed, 1.99106393e-7, t, dt)
 Mars = Planet("Mars", 3390, 6.4171 * 10 ** 23, mars_initial_pos, mars_initial_speed, 1.05865302e-7, t, dt)
-Sun = Planet("Sun", 696000, 1988500 * 10 ** 24, [0, 0], 0, 0, t, dt)
+Sun = Planet("Sun", 696000, 1988500 * 10 ** 24, [0, 0], [0,0], 0, t, dt)
 
 system=[Sun, Earth, Mars]
 
 shipCoords = [0,0]
-Ship = SpaceShip(2*10**5, shipCoords, 7.12, 1500, t, dt, system) #1500km de la superficie y 7.12 km/s
+Ship = SpaceShip(2*10**5, shipCoords, 7.12, 8, 1500+Earth.radius, t, dt, system) #1500km de la superficie y 7.12 km/s
 
     # V0 = 8 km/s (sumada a las velocidad orbital total que ya tiene la nave antes del despegue, dada por la velocidad de la tierra mas la velocidad de la estación espacial)
 
@@ -55,8 +55,12 @@ def shipTimeToTakeOff():
 # for planet in system:
 #     print(planet.name, planet.angularPos, planet.position)
 #     print(planet.distance_to_sun)
+advance()
+print("asd", Ship.distance_to(Earth))
 
-for i in range(365):
+Ship.launch()
+advance()
+for i in range(60):
     advance()
     print("earth ", Earth.angularPos, Earth.position)
     print("ship ", Ship.angular_to_earth, Ship.position)
