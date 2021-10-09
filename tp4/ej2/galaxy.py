@@ -61,7 +61,7 @@ print("asd", Ship.distance_to(Earth))
 export = open("data.txt", "w")
 Ship.launch()
 advance()
-for i in range(60):
+for i in range(10000):
     advance()
     export.write(Earth.print_position())
     export.write("\n")

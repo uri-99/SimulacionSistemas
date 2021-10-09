@@ -166,10 +166,8 @@ class SpaceShip:
     def distance_to(self, other):
         return math.sqrt( (self.position[0]-other.position[0])**2 + (self.position[1]-other.position[1])**2 )
 
-<<<<<<< HEAD
     def print_position(self):
         return '' + str(self.position[0]) + ' ' + str(self.position[1])
-=======
     def angle_to_object(self, other):
         x = self.position[0] - other.position[0]
         y = self.position[1] - other.position[1]
@@ -185,4 +183,3 @@ class SpaceShip:
             self.velocity = self.decompose_speed_earth()
             print("Launch speed ", self.speed, self.velocity, "  position: ", self.position, self.angular_to_earth)
             print("launch eart pos", self.earth.position, self.earth.angle_to_sun())
->>>>>>> f12cfcdfc2fcddf64116db0cefa76c7c0bb22b53
