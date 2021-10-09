@@ -3,14 +3,14 @@ from planet import Planet
 
 class SpaceShip:
 
-    G = 6.67384 * 10**-11 #N m**2 kg**-2
+    G = 6.67384 * 10**-11 #N m**2 kg**-2   #m**3 kg**-1 s**-2
 
-    def __init__(self, mass, position, speed, distance_to_earth, t, dt, system):
+    def __init__(self, mass, position, speed, takeoffSpeed, distance_to_earth, t, dt, system):
         self.mass = mass
         self.position = position
         # self.angularPos = self.angle_to_earth(position) #radianes con respecto a la tierra #DUDA tengo que pasarle siempre la tierra o no?
         self.speed = speed
-        orbit_length = 2*math.pi*(system[1].radius + distance_to_earth)
+        orbit_length = 2*math.pi*(distance_to_earth)
         period = orbit_length / speed
         self.angularSpeed = (2*math.pi)/period #self.speed_components_to_total(speed)
         self.t = t
@@ -31,6 +31,15 @@ class SpaceShip:
         self.has_launched = False
         self.angular_to_earth = 0
         self.distance_to_earth = distance_to_earth
+        self.velocity = self.decompose_speed_earth()
+        self.takeoffSpeed = takeoffSpeed
+
+    def decompose_speed_earth(self):
+        angle = self.angular_to_earth
+        return [self.speed * math.sin(angle), self.speed * math.cos(angle)]
+
+    def compose_velocity(self):
+        return math.sqrt(self.velocity[0]**2 + self.velocity[1]**2)
 
     def angle_to_earth(self):
         x = self.position[0] - self.earth.position[0]
@@ -53,13 +62,17 @@ class SpaceShip:
             self.angular_to_earth = self.angular_to_earth % (2 * math.pi)
             self.position = [math.cos(self.angular_to_earth) * self.distance_to_earth + self.earth.position[0],
                              math.sin(self.angular_to_earth) * self.distance_to_earth + self.earth.position[1]]
-        # self.t += self.dt
-        # self.calculate_new_acceleration()
-        # self.Gear("x")
-        # self.Gear("y")
-        pass
+            self.velocity = self.decompose_speed_earth()
+            print("aa", self.distance_to(self.earth))
+        else:
+            print("new acc: ", self.calculate_new_acceleration())
+            self.Gear("x")
+            self.Gear("y")
+            self.speed = self.compose_velocity()
+            print("dd", self.distance_to(self.earth))
 
     def Gear(self, coord):
+        print("Old sped before gear: ", self.velocity, self.acceleration)
         if coord == "x":
             a = 0
         elif coord == "y":
@@ -69,19 +82,18 @@ class SpaceShip:
             exit("Wrong coord gear")
 
         dt = self.dt
-        r0p = self.position[a] + self.speed[a] * dt + self.acceleration[a] * (
-                    dt ** 2 / math.factorial(2)) + self.r3() * (dt ** 3 / math.factorial(3)) + self.r4() * (
-                          dt ** 4 / math.factorial(4)) + self.r5() * (dt ** 5 / math.factorial(5))
-        r1p = self.speed[a] + self.acceleration[a] * dt + self.r3() * (dt ** 2 / math.factorial(2)) + self.r4() * (
-                    dt ** 3 / math.factorial(3)) + self.r5() * (dt ** 4 / math.factorial(4))
-        r2p = self.acceleration[a] + self.r3() * dt + self.r4() * (dt ** 2 / math.factorial(2)) + self.r5() * (
-                    dt ** 3 / math.factorial(3))
-        r3p = self.r3() + self.r4() * dt + self.r5() * (dt ** 2 / math.factorial(2))
-        r4p = self.r4() + self.r5() * dt
-        r5p = self.r5()
+        r0p = self.position[a] + self.velocity[a] * dt + self.acceleration[a] * (dt ** 2 / math.factorial(2)) #+ self.r3() * (dt ** 3 / math.factorial(3)) + self.r4() * (dt ** 4 / math.factorial(4)) + self.r5() * (dt ** 5 / math.factorial(5))
+        r1p = self.velocity[a] + self.acceleration[a] * dt #+ self.r3() * (dt ** 2 / math.factorial(2)) + self.r4() * (dt ** 3 / math.factorial(3)) + self.r5() * (dt ** 4 / math.factorial(4))
+        r2p = self.acceleration[a] #+ self.r3() * dt + self.r4() * (dt ** 2 / math.factorial(2)) + self.r5() * (dt ** 3 / math.factorial(3))
+        r3p = 0#self.r3() + self.r4() * dt + self.r5() * (dt ** 2 / math.factorial(2))
+        r4p = 0#self.r4() + self.r5() * dt
+        r5p = 0#self.r5()
+        print("predicted sped", r1p)
 
         self.position[a] = r0p
-        new_a = self.calculate_new_acceleration()
+        self.velocity[a] = r1p
+        self.acceleration[a] = r2p
+        new_a = self.calculate_new_acceleration_middle()
         delta_a = new_a[a] - r2p
         delta_R2 = (delta_a * dt ** 2) / 2
 
@@ -94,10 +106,11 @@ class SpaceShip:
 
         self.position[a] = r0c
         self.positions[a].append(r0c)
-        self.speed[a] = r1c
+        self.velocity[a] = r1c
         self.velocities[a].append(r1c)
         self.acceleration[a] = r2c
         self.accelerations[a].append(r2c)
+        print("New sped after gear: ", self.velocity, self.acceleration)
 
         return r0c
 
@@ -112,16 +125,16 @@ class SpaceShip:
 
 
     def F(self, other):
-        return self.G * ((self.mass * other.mass) / self.distance_to(other))
+        return self.G * ((self.mass * other.mass) / (self.distance_to(other)*1000)**2)
 
     def Fxy(self, other):
         f = self.F(other)
         angle = self.angle_to_object(other)
-        fx = f * math.sin(angle)
-        fy = f * math.cos(angle)
-        if self.position[0] > other.positions[0]:
+        fy = f * math.sin(angle)
+        fx = f * math.cos(angle)
+        if self.position[0] > other.position[0]:
             fx *= -1
-        if self.position[1] > other.positions[1]:
+        if self.position[1] > other.position[1]:
             fy *= -1
         return fx, fy
 
@@ -132,13 +145,44 @@ class SpaceShip:
             fxx, fyy = self.Fxy(planet)
             fx += fxx
             fy += fyy
-        self.accelerations[0].append(fx / self.mass)
-        self.accelerations[1].append(fy / self.mass)
-        self.acceleration = [fx / self.mass, fy / self.mass]
+        ax = (fx / self.mass) / 1000
+        ay = (fy / self.mass) / 1000
+        self.accelerations[0].append(ax)
+        self.accelerations[1].append(ay)
+        self.acceleration = [ax, ay]
         return self.acceleration
+
+    def calculate_new_acceleration_middle(self):
+        fx = 0
+        fy = 0
+        for planet in self.system:
+            fxx, fyy = self.Fxy(planet)
+            fx += fxx
+            fy += fyy
+        ax = (fx / self.mass) / 1000
+        ay = (fy / self.mass) / 1000
+        return [ax, ay]
 
     def distance_to(self, other):
         return math.sqrt( (self.position[0]-other.position[0])**2 + (self.position[1]-other.position[1])**2 )
 
+<<<<<<< HEAD
     def print_position(self):
         return '' + str(self.position[0]) + ' ' + str(self.position[1])
+=======
+    def angle_to_object(self, other):
+        x = self.position[0] - other.position[0]
+        y = self.position[1] - other.position[1]
+        return math.atan(y/x)
+
+    def launch(self):
+        if self.has_launched:
+            print("SHIP ALREADY HAS LAUNCHED")
+        else:
+            print()
+            self.has_launched = True
+            self.speed += self.earth.orbitalSpeed + self.takeoffSpeed
+            self.velocity = self.decompose_speed_earth()
+            print("Launch speed ", self.speed, self.velocity, "  position: ", self.position, self.angular_to_earth)
+            print("launch eart pos", self.earth.position, self.earth.angle_to_sun())
+>>>>>>> f12cfcdfc2fcddf64116db0cefa76c7c0bb22b53
