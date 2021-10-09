@@ -71,13 +71,10 @@ class Planet:
     def get_angular_position(self):
         return self.position_to_angle(self.position)
 
-<<<<<<< HEAD
     def print_position(self):
         return '' + str(self.position[0]) + ' ' + str(self.position[1])
-=======
     def decompose_speed(self):
         angle = self.angle_to_sun()
         return [self.orbitalSpeed * math.sin(angle), self.orbitalSpeed * math.cos(angle)]
->>>>>>> f12cfcdfc2fcddf64116db0cefa76c7c0bb22b53
 
 
