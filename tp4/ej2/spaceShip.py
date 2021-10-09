@@ -1,5 +1,5 @@
 import math
-from ej2.planet import Planet
+from planet import Planet
 
 class SpaceShip:
 
@@ -139,3 +139,6 @@ class SpaceShip:
 
     def distance_to(self, other):
         return math.sqrt( (self.position[0]-other.position[0])**2 + (self.position[1]-other.position[1])**2 )
+
+    def print_position(self):
+        return '' + str(self.position[0]) + ' ' + str(self.position[1])

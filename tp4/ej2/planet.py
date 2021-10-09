@@ -69,4 +69,7 @@ class Planet:
     def get_angular_position(self):
         return self.position_to_angle(self.position)
 
+    def print_position(self):
+        return '' + str(self.position[0]) + ' ' + str(self.position[1])
+
 
