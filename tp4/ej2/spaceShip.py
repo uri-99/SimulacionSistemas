@@ -69,7 +69,8 @@ class SpaceShip:
             self.velocity = self.decompose_speed_earth()
             # print("aa", self.distance_to(self.earth))
         else:
-            print("new acc: ", self.calculate_new_acceleration())
+            # print("new acc: ", self.calculate_new_acceleration())
+            self.calculate_new_acceleration()
             self.Gear("x")
             self.Gear("y")
             self.speed = self.compose_velocity()
@@ -201,8 +202,8 @@ class SpaceShip:
             self.has_launched = True
             self.speed += self.earth.orbitalSpeed + self.takeoffSpeed
             self.velocity = self.decompose_speed_earth()
-            print("Launch speed ", self.speed, self.velocity, "  position: ", self.position, self.angular_to_earth)
-            print("launch eart pos", self.earth.position, self.earth.angle_to_sun())
+            # print("Launch speed ", self.speed, self.velocity, "  position: ", self.position, self.angular_to_earth)
+            # print("launch eart pos", self.earth.position, self.earth.angle_to_sun())
 
 
 

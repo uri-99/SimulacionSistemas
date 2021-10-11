@@ -29,9 +29,10 @@ shipCoords = [earth_initial_pos[0] + 1500, earth_initial_pos[1]]
 
 fleet = []
 for i in range(365):
-    Ship = SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
-                     system)  # 1500km de la superficie y 7.12 km/s
-    fleet.append(Ship)
+    # Ship = SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
+    #                  system)  # 1500km de la superficie y 7.12 km/s
+    fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
+                     system))
 
 
     # V0 = 8 km/s (sumada a las velocidad orbital total que ya tiene la nave antes del despegue, dada por la velocidad de la tierra mas la velocidad de la estación espacial)
@@ -39,21 +40,22 @@ for i in range(365):
 def advance():
     Earth.changePosition()
     Mars.changePosition()
-    Ship.changePosition()
+    for ship in fleet:
+        ship.changePosition()
     # if(shipTimeToTakeOff()):
     #     # cambiar speed de ship ya que despega
     #     pass
 
  # calcular si estan alineados
 
-def shipTimeToTakeOff():
-    ship_angle = Ship.angle_to_object(Earth)
-    earth_angle = Earth.angle_to_sun()
-    print(ship_angle, earth_angle, abs(ship_angle - earth_angle))
-
-    if(abs(ship_angle - earth_angle) <= alignment_condition):
-        return True
-    return False
+# def shipTimeToTakeOff():
+#     ship_angle = Ship.angle_to_object(Earth)
+#     earth_angle = Earth.angle_to_sun()
+#     print(ship_angle, earth_angle, abs(ship_angle - earth_angle))
+#
+#     if(abs(ship_angle - earth_angle) <= alignment_condition):
+#         return True
+#     return False
 
 # for planet in system:
 #     print(planet.name, planet.angularPos, planet.position)
@@ -65,14 +67,15 @@ def shipTimeToTakeOff():
 export = open("data.txt", "w")
 
 for i in range(365):
-    fleet[i].launch()
+    fleet[math.ceil(i)].launch()
+    print(math.ceil(i))
     advance()
 
 for i in range(365):
     advance()
 
 for i in range(365):
-    export.write(fleet[i].minDistanceToMars)
+    export.write(str(fleet[i].minDistanceToMars))
     export.write("\n")
 
 # for i in range(325):
