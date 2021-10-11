@@ -26,7 +26,12 @@ Sun = Planet("Sun", 696000, 1988500 * 10 ** 24, [0, 0], [0,0], 0, t, dt)
 system=[Sun, Earth, Mars]
 
 shipCoords = [earth_initial_pos[0] + 1500, earth_initial_pos[1]]
-Ship = SpaceShip(2*10**5, shipCoords, 7.12, 8, 1500+Earth.radius, t, dt, system) #1500km de la superficie y 7.12 km/s
+
+fleet = []
+for i in range(365):
+    Ship = SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
+                     system)  # 1500km de la superficie y 7.12 km/s
+    fleet.append(Ship)
 
 
     # V0 = 8 km/s (sumada a las velocidad orbital total que ya tiene la nave antes del despegue, dada por la velocidad de la tierra mas la velocidad de la estación espacial)
@@ -59,40 +64,51 @@ def shipTimeToTakeOff():
 #     print(planet.distance_to_sun)
 export = open("data.txt", "w")
 
-for i in range(325):
+for i in range(365):
+    fleet[i].launch()
     advance()
-    export.write(Earth.print_position())
-    export.write("\n")
-    export.write(str(Mars.print_position()))
-    export.write("\n")
-    export.write(str(Ship.print_position()))
-    export.write("\n")
+
+for i in range(365):
+    advance()
+
+for i in range(365):
+    export.write(fleet[i].minDistanceToMars)
     export.write("\n")
 
-Ship.launch()
-while not Ship.has_launched:
-    if shipTimeToTakeOff():
-        Ship.launch()
-    advance()
-    export.write(Earth.print_position())
-    export.write("\n")
-    export.write(str(Mars.print_position()))
-    export.write("\n")
-    export.write(str(Ship.print_position()))
-    export.write("\n")
-    export.write("\n")
-
+# for i in range(325):
+#     advance()
+#     export.write(Earth.print_position())
+#     export.write("\n")
+#     export.write(str(Mars.print_position()))
+#     export.write("\n")
+#     export.write(str(Ship.print_position()))
+#     export.write("\n")
+#     export.write("\n")
 #
-for i in range(2000):
-    advance()
-    export.write(Earth.print_position())
-    export.write("\n")
-    export.write(str(Mars.print_position()))
-    export.write("\n")
-    export.write(str(Ship.print_position()))
-    export.write("\n")
-    export.write("\n")
+# Ship.launch()
+# while not Ship.has_launched:
+#     if shipTimeToTakeOff():
+#         Ship.launch()
+#     advance()
+#     export.write(Earth.print_position())
+#     export.write("\n")
+#     export.write(str(Mars.print_position()))
+#     export.write("\n")
+#     export.write(str(Ship.print_position()))
+#     export.write("\n")
+#     export.write("\n")
 #
+# #
+# for i in range(2000):
+#     advance()
+#     export.write(Earth.print_position())
+#     export.write("\n")
+#     export.write(str(Mars.print_position()))
+#     export.write("\n")
+#     export.write(str(Ship.print_position()))
+#     export.write("\n")
+#     export.write("\n")
+# #
 #
 #
 # for i in range(1000):

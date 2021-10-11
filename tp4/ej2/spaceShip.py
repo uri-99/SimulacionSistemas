@@ -33,6 +33,8 @@ class SpaceShip:
         self.distance_to_earth = distance_to_earth
         self.velocity = self.decompose_speed_earth()
         self.takeoffSpeed = takeoffSpeed
+        self.minDistanceToMars = self.distance_to(system[2])
+
 
     def decompose_speed_earth(self):
         angle = self.earth.angle_to_sun()
@@ -72,6 +74,8 @@ class SpaceShip:
             self.Gear("y")
             self.speed = self.compose_velocity()
             # print("dd", self.distance_to(self.earth))
+        if self.distance_to(self.system[2]) < self.minDistanceToMars:
+            self.minDistanceToMars = self.distance_to(self.system[2])
 
     def Gear(self, coord):
         # print("Old sped before gear: ", self.velocity, self.acceleration)
