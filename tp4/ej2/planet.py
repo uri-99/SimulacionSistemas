@@ -31,7 +31,6 @@ class Planet:
         self.angularPos = self.angularPos % (2 * math.pi)
         self.position = [math.cos(self.angularPos) * self.distance_to_sun, math.sin(self.angularPos) * self.distance_to_sun]
         self.speed = self.decompose_speed()
-        #le falta setear el .speed a los valores cartesianos correspondientes
 
 
 
@@ -52,7 +51,7 @@ class Planet:
         if self.position != [0,0]:
             x = self.position[0]
             y = self.position[1]
-            relative_angle = math.atan(y/x)
+            relative_angle = abs(math.atan(abs(y)/abs(x)))
             if(x >= 0 and y>= 0):
                 return relative_angle
             elif(x <= 0 and y >= 0):

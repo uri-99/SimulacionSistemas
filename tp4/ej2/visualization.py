@@ -40,9 +40,9 @@ def animate(frame):
     mars.remove()
     ship.remove()
     x, y = get_coordinates(frame)
-    ship = plt.Circle((x[2], y[2]), 3390, color = 'green')
-    earth = plt.Circle((x[0], y[0]), 63710, color = 'blue')
-    mars = plt.Circle((x[1], y[1]), 339000, color = 'red')
+    ship = plt.Circle((x[2], y[2]), 3390000, color = 'green')
+    earth = plt.Circle((x[0], y[0]), 6371000, color = 'blue')
+    mars = plt.Circle((x[1], y[1]), 3390000, color = 'red')
     plt.gca().add_patch(mars)
     plt.gca().add_patch(earth)
     plt.gca().add_patch(ship)
@@ -54,10 +54,10 @@ plt.ylim([-300000000, 300000000])
 global earth 
 global mars
 global ship
-sun = plt.Circle((0,0), 69600000, color = 'yellow')
-ship = plt.Circle((x[2], y[2]), 3390, color = 'green')
-earth = plt.Circle((x[0], y[0]), 63710, color = 'blue')
-mars = plt.Circle((x[1], y[1]), 339000, color = 'red')
+sun = plt.Circle((0,0), 69600000, color = 'yellow') #x100
+ship = plt.Circle((x[2], y[2]), 3390000, color = 'green')
+earth = plt.Circle((x[0], y[0]), 6371000, color = 'blue') #x1000
+mars = plt.Circle((x[1], y[1]), 3390000, color = 'red') #x1000
 plt.gca().add_patch(sun)
 plt.gca().add_patch(earth)
 plt.gca().add_patch(mars)
