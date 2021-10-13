@@ -33,7 +33,6 @@ Ship = SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
                  system)  # 1500km de la superficie y 7.12 km/s
 
 for i in range(365):
-
     fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
                      system))
 
@@ -98,62 +97,102 @@ export = open("data.txt", "w")
 
 
 export1a = open("1a.txt", "w")
+export1a2 = open("1a2.txt", "w")
 export1b = open("1b.txt", "w")
 export1c = open("1c.txt", "w")
 export2 = open("2.txt", "w")
 export3 = open("3.txt", "w")
 
 ## EJ 1.a ##
-print("START 1.a")
-for i in range(365):
-    fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
+# print("START 1.a")
+# for i in range(365):
+#     fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
+#                      system))
+#
+# for i in range(365*FACTOR):
+#     if i % FACTOR == 0:
+#         fleet[math.ceil(i/FACTOR)].launch()
+#         print(math.ceil(i/FACTOR))
+#     advance()
+#
+# for i in range(math.ceil((365*FACTOR)/2)):
+#     advance()
+#
+# d_min = math.inf
+# t_min = 0
+# OPTIMAL_LAUNCH_DATE = math.inf
+# for i in range(365):
+#     if fleet[i].minDistanceToMars < d_min:
+#         d_min = fleet[i].minDistanceToMars
+#         OPTIMAL_LAUNCH_DATE = i
+#         t_min = fleet[i].T_Dmin
+#
+#     export1a.write(str(fleet[i].minDistanceToMars))
+#     export1a.write("\n")
+# fleet = []
+# print("END 1.a")
+# print("t min ", t_min)
+OPTIMAL_LAUNCH_DATE = 324
+
+## EJ 1.a día 324 ##
+print("START 1.a 324")
+fleet = []
+for i in range(144):
+    fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, 600,
                      system))
 
-for i in range(365*FACTOR):
-    if i % FACTOR == 0:
-        fleet[math.ceil(i/FACTOR)].launch()
-        print(math.ceil(i/FACTOR))
+for i in range(144*OPTIMAL_LAUNCH_DATE):
+    if i%144 == 0:
+        print("day ", i/144)
     advance()
 
-for i in range(math.ceil((365*FACTOR)/2)):
+for i in range(144):
+    print("launch ", i)
+    fleet[i].launch()
+    advance()
+
+for i in range(144*100):
+    if i%144 == 0:
+        print("day ", i/144)
     advance()
 
 d_min = math.inf
-t_min = 0
-OPTIMAL_LAUNCH_DATE = math.inf
-for i in range(365):
+for i in range(144):
     if fleet[i].minDistanceToMars < d_min:
         d_min = fleet[i].minDistanceToMars
-        OPTIMAL_LAUNCH_DATE = i
+        OPTIMAL_LAUNCH_MINUTE = i*10
         t_min = fleet[i].T_Dmin
-
-    export1a.write(str(fleet[i].minDistanceToMars))
-    export1a.write("\n")
-fleet = []
-print("END 1.a")
-print("t min ", t_min)
+        print("optimal minute ", OPTIMAL_LAUNCH_MINUTE)
+    export1a2.write(str(fleet[i].minDistanceToMars))
+    export1a2.write("\n")
+export1a2.close()
 
 
 
-# ## EJ 1.b ##
-print("START 1.b")
-start = True
 
+
+
+# # ## EJ 1.b ##
+# print("START 1.b")
+# start = True
+#
 # OPTIMAL_LAUNCH_DATE = 324
+#
+# for i in range(math.ceil(365*FACTOR*1.5)):
+#     export1b.write(str(Ship.speed))
+#     export1b.write("\n")
+#     if i == OPTIMAL_LAUNCH_DATE*FACTOR:
+#         print("optimal ", OPTIMAL_LAUNCH_DATE)
+#         Ship.launch()
+#     advance()
+#
+# print("END 1.b")
 
-for i in range(math.ceil(365*FACTOR*1.5)):
-    export1b.write(str(Ship.speed))
-    export1b.write("\n")
-    if i == OPTIMAL_LAUNCH_DATE*FACTOR:
-        print("optimal ", OPTIMAL_LAUNCH_DATE)
-        Ship.launch()
-    advance()
-
-print("END 1.b")
-
-# EJ 1.c ##
+## EJ 1.c ##
 # print("START 1.c")
 # start = True
+# t_min = 34300800
+# OPTIMAL_LAUNCH_DATE = 324
 # speed_when_closest = 42069
 # for i in range(math.ceil(365*FACTOR*1.5)):
 #     export1c.write(str(Ship.relative_to_mars_speed()))
