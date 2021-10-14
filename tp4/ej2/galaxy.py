@@ -29,12 +29,12 @@ system=[Sun, Earth, Mars]
 shipCoords = [earth_initial_pos[0] + 1500, earth_initial_pos[1]]
 
 fleet = []
-Ship = SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
-                 system)  # 1500km de la superficie y 7.12 km/s
+# Ship = SpaceShip(2 * 10 ** 5, shipCoords, 7.12, -72.6, 1500 + Earth.radius, t, dt,
+#                  system)  # 1500km de la superficie y 7.12 km/s
 
-for i in range(365):
-    fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
-                     system))
+# for i in range(365):
+#     fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, dt,
+#                      system))
 
 
     # V0 = 8 km/s (sumada a las velocidad orbital total que ya tiene la nave antes del despegue, dada por la velocidad de la tierra mas la velocidad de la estación espacial)
@@ -73,7 +73,10 @@ export = open("data.txt", "w")
 #     export.write(str(fleet[i].minDistanceToMars))
 #     export.write("\n")
 
-# for i in range(325):
+# start=True
+# advance()
+# Ship.launch()
+# for i in range(200):
 #     advance()
 #     export.write(Earth.print_position())
 #     export.write("\n")
@@ -134,38 +137,38 @@ export3 = open("3.txt", "w")
 # print("t min ", t_min)
 OPTIMAL_LAUNCH_DATE = 324
 
-## EJ 1.a día 324 ##
-print("START 1.a 324")
-fleet = []
-for i in range(144):
-    fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, 600,
-                     system))
-
-for i in range(144*OPTIMAL_LAUNCH_DATE):
-    if i%144 == 0:
-        print("day ", i/144)
-    advance()
-
-for i in range(144):
-    print("launch ", i)
-    fleet[i].launch()
-    advance()
-
-for i in range(144*100):
-    if i%144 == 0:
-        print("day ", i/144)
-    advance()
-
-d_min = math.inf
-for i in range(144):
-    if fleet[i].minDistanceToMars < d_min:
-        d_min = fleet[i].minDistanceToMars
-        OPTIMAL_LAUNCH_MINUTE = i*10
-        t_min = fleet[i].T_Dmin
-        print("optimal minute ", OPTIMAL_LAUNCH_MINUTE)
-    export1a2.write(str(fleet[i].minDistanceToMars))
-    export1a2.write("\n")
-export1a2.close()
+# ## EJ 1.a día 324 ##
+# print("START 1.a 324")
+# fleet = []
+# for i in range(144):
+#     fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, 8, 1500 + Earth.radius, t, 600,
+#                      system))
+#
+# for i in range(144*OPTIMAL_LAUNCH_DATE):
+#     if i%144 == 0:
+#         print("day ", i/144)
+#     advance()
+#
+# for i in range(144):
+#     print("launch ", i)
+#     fleet[i].launch()
+#     advance()
+#
+# for i in range(144*100):
+#     if i%144 == 0:
+#         print("day ", i/144)
+#     advance()
+#
+# d_min = math.inf
+# for i in range(144):
+#     if fleet[i].minDistanceToMars < d_min:
+#         d_min = fleet[i].minDistanceToMars
+#         OPTIMAL_LAUNCH_MINUTE = i*10
+#         t_min = fleet[i].T_Dmin
+#         print("optimal minute ", OPTIMAL_LAUNCH_MINUTE, i)
+#     export1a2.write(str(fleet[i].minDistanceToMars))
+#     export1a2.write("\n")
+# export1a2.close()
 
 
 
@@ -209,15 +212,44 @@ export1a2.close()
 # print("END 1.c")
 
 ## EJ 2 ##
-print("START 2")
-
-print("END 2")
+# print("START 2")
+#
+# print("END 2")
 
 
 
 ## EJ 3 ##
 print("START 3")
+# start = True
+for i in range(2000):
+    fleet.append(SpaceShip(2 * 10 ** 5, shipCoords, 7.12, -i/10, 1500 + Earth.radius, t, dt,
+                     system))
+advance()
 
+for i in range(2000):
+    fleet[i].launch()
+    # print(fleet[i].speed)
+
+for i in range(200):
+    advance()
+    # print(fleet[0].minDistanceToMars)
+    # print(fleet[-1].minDistanceToMars)
+
+minn = math.inf
+minn_i = 0
+for i in range(2000):
+    export3.write(str(fleet[i].minDistanceToMars))
+    if fleet[i].minDistanceToMars < minn:
+        minn = fleet[i].minDistanceToMars
+        minn_i = i
+    export3.write("\n")
+export3.write("\n")
+export3.write("Min distance: ")
+export3.write(str(minn))
+export3.write(" iteration: ")
+export3.write(str(minn_i))
+export3.write(" V0: ")
+export3.write(str(fleet[minn_i].takeoffSpeed))
 print("END 3")
 
 
