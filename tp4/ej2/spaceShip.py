@@ -35,6 +35,7 @@ class SpaceShip:
         self.takeoffSpeed = takeoffSpeed
         self.minDistanceToMars = self.distance_to(system[2])
         self.T_Dmin = 0
+        self.die = False
 
 
     def decompose_speed_earth(self):
@@ -61,24 +62,27 @@ class SpaceShip:
 
         # lo que pense es, la velocidad del bicho este es basciamente igual que la tierra mas su velocidad, entonces tengo dos ideas: 1) la velocidad de el es la suya mas la de la tierra y q se mueva sola. 2) Veo lo q se movio la tierra, muevo lo mismo a la nave y despues calculo lo q se movio la nave pero en ese caso necesito saber la posicion actual de la tierra y la anterior y es medio un chino
     def changePosition(self):
-        self.t += self.dt
-        if not self.has_launched:
-            self.angular_to_earth += self.dt * self.angularSpeed
-            self.angular_to_earth = self.angular_to_earth % (2 * math.pi)
-            self.position = [math.cos(self.angular_to_earth) * self.distance_to_earth + self.earth.position[0],
-                             math.sin(self.angular_to_earth) * self.distance_to_earth + self.earth.position[1]]
-            self.velocity = self.decompose_speed_earth()
-            # print("aa", self.distance_to(self.earth))
-        else:
-            # print("new acc: ", self.calculate_new_acceleration())
-            self.calculate_new_acceleration()
-            self.Gear("x")
-            self.Gear("y")
-            self.speed = self.compose_velocity()
-            # print("dd", self.distance_to(self.earth))
-        if self.distance_to(self.system[2]) < self.minDistanceToMars:
-            self.minDistanceToMars = self.distance_to(self.system[2])
-            self.T_Dmin = self.t
+        if not self.die:
+            self.t += self.dt
+            if not self.has_launched:
+                self.angular_to_earth += self.dt * self.angularSpeed
+                self.angular_to_earth = self.angular_to_earth % (2 * math.pi)
+                self.position = [math.cos(self.angular_to_earth) * self.distance_to_earth + self.earth.position[0],
+                                 math.sin(self.angular_to_earth) * self.distance_to_earth + self.earth.position[1]]
+                self.velocity = self.decompose_speed_earth()
+                # print("aa", self.distance_to(self.earth))
+            else:
+                # print("new acc: ", self.calculate_new_acceleration())
+                self.calculate_new_acceleration()
+                self.Gear("x")
+                self.Gear("y")
+                self.speed = self.compose_velocity()
+                # print("dd", self.distance_to(self.earth))
+            if self.distance_to(self.system[2]) < self.minDistanceToMars:
+                self.minDistanceToMars = self.distance_to(self.system[2])
+                self.T_Dmin = self.t
+            if self.distance_to(self.system[0]) < self.system[0].radius:
+                self.die = True
 
     def Gear(self, coord):
         # print("Old sped before gear: ", self.velocity, self.acceleration)
@@ -201,6 +205,15 @@ class SpaceShip:
             print("SHIP ALREADY HAS LAUNCHED")
         else:
             self.has_launched = True
+
+            Ex = self.earth.position[0]
+            Ey = self.earth.position[1]
+            earth_angle = abs(math.atan(abs(Ey)/abs(Ex)))
+
+            # print(self.earth.angle_to_sun())
+            # print(self.angular_to_earth)
+            self.position = [math.cos(earth_angle) * self.distance_to_earth + self.earth.position[0],
+                             math.sin(earth_angle) * self.distance_to_earth + self.earth.position[1]]
             self.speed += self.earth.orbitalSpeed + self.takeoffSpeed
             self.velocity = self.decompose_speed_earth()
             # print("Launch speed ", self.speed, self.velocity, "  position: ", self.position, self.angular_to_earth)
