@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 from matplotlib import animation
-
+from matplotlib.animation import PillowWriter
 
 dirname = os.path.dirname(__file__)
 simulationFile = os.path.join(dirname, 'data.txt')
@@ -64,4 +64,5 @@ plt.gca().add_patch(mars)
 plt.gca().add_patch(ship)
 plt.gca().set_aspect('equal')
 anim = animation.FuncAnimation(fig, animate, interval=1, repeat=False, frames=len(earth_position))
-plt.show()
+# plt.show()
+anim.save("./animations/2-v10.gif", writer=PillowWriter(fps=30))
