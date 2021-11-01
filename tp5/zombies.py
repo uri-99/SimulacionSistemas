@@ -1,4 +1,4 @@
-
+import math
 
 def __init__(self,vX,vY,x,y,apagado):
     self.x = x
@@ -6,19 +6,35 @@ def __init__(self,vX,vY,x,y,apagado):
     self.vX = vX
     self.vY = vY
     self.apagado = apagado # SI ESTA EN TRUE APAGADO, NO PUEDE MOVERSE NI COMER GENTE
+    self.rondasPasadas = 0 #todo zombie quien tenga mas o igual de 7 rondas pasadas SE LE PASA EL APAGADO A FALSE
 
-def direccionDeseada():
-    # FORMULA
+def zombieDespierta(self):
+    if(self.rondasPasadas >= 7):
+        self.apagado = False
     return
 
-def mover():
-    # MOVER HUMANO
-    return
+def mover(self, humanos):
+    # MOVER ZOMBIE
+    humano = perseguirHumano(self, humanos)
+    self.rondasPasadas += 1
+    if humano != None:
+        # mover en la direccion de ese humano
+        return
+    return #None es que no hay humano a quien perseguir por ende Velocidad es 0
 
-def vision(humanos):
+def perseguirHumano(self, humanos):
     # Se fija quien tiene dentro de un radio de 5 metros
+    distancia = 6 #metros
+    humano = None
+    for human in humanos:
+        aux = distanciaAHumano(self, human.hx, human.hy)
+        if aux < distancia:
+            distancia = aux
+            humano = human        
+    if distancia < 5:
+        return humano
     return
 
-def distanciaAHumano(hx,hy):
+def distanciaAHumano(self,hx,hy):
     # Se fija la distancia entre el y el humano
-    return
+    return math.sqrt((hx-self.x)**2 + (hy-self.y)**2)
