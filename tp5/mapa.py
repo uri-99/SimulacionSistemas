@@ -12,6 +12,9 @@ def generarSeres(cantHumanos,CantidadZombies):
 def generarHumanosExtra(cantHumanos):
     return
 
+def posicionNoOcupada(): # Hay que llamarla para chequear q no existe un humano ahi antes de agregarlo
+    return
+
 def reglas():
     return
 
