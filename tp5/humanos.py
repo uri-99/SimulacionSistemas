@@ -1,12 +1,13 @@
 
 class Humano:
-    def __init__(self,x,y, v):
+    def __init__(self,x,y,v,size):
         self.x = x
         self.y = y
         self.v = v
         self.vX ,self.vY = self.calculateV0()
         self.angle = self.calculateAngle()
         self.gone = False
+        self.size = size
 
     def direccionDeseada(self):
         # FORMULA
@@ -29,9 +30,13 @@ class Humano:
 
         return alpha
 
-    def checkIfDie(self):
+    def checkIfDie(self, zombies):
+        for zombie in zombies:
+            if( abs(zombie.x - self.x) < self.size):
+                if(abs(zombie.y - self.y) < self.size):
+                    return True
+        return False
 
-        return boolean
 
     def checkIfWin(self):
 

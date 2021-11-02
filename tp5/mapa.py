@@ -51,7 +51,7 @@ class Mapa:
             auxX = random.uniform(0, 3)
             auxY = random.uniform((self.alto / 2) + (self.entrada / 2), (self.alto / 2) - (self.entrada / 2))
             if self.posicionNoOcupada(auxX, auxY):
-                self.humanos.append(Humano(auxX, auxY))
+                self.humanos.append(Humano(auxX, auxY, self.humanSize))
                 added += 1
 
         self.olaActual += 1
@@ -89,7 +89,6 @@ class Mapa:
                 human.kill()
                 self.humanos.remove(human)
                 self.humansEscaped += 1
-
         return
 
     def cantZombies(self):
@@ -97,7 +96,3 @@ class Mapa:
 
     def cantHumanos(self):
         return len(self.humanos)
-
-    def zombieAtrapaHumano():
-        # Mata al humano y crea un zombie en esa posicion en estado imbecil, es decir, q no se mueve por 7 segundos
-        return
