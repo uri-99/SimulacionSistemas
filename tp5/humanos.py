@@ -6,6 +6,7 @@ class Humano:
         self.v = v
         self.vX ,self.vY = self.calculateV0()
         self.angle = self.calculateAngle()
+        self.gone = False
 
     def direccionDeseada(self):
         # FORMULA
@@ -14,9 +15,10 @@ class Humano:
     def move(self):
         # MOVER HUMANO
         #empezá linea recta hasta la puerta
-        oldPos = newPos()
-        if(tengo que esquivar):
-            vx, vy, angle = new velocity
+        if not self.gone:
+            oldPos = newPos()
+            if(tengo que esquivar):
+                vx, vy, angle = new velocity
         return
 
     def calculateV0(self):
@@ -27,11 +29,16 @@ class Humano:
 
         return alpha
 
-    def checkIfDie(selfself):
+    def checkIfDie(self):
+
+        return boolean
+
+    def checkIfWin(self):
 
         return boolean
 
     def kill(self):
         # LO ATRAPARON Y TIENE Q DECIRLE AL MAPA DE CREAR UN ZOMBIE EN ESTA POSICION
+        self.gone = True
         return
 

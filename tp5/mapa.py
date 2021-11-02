@@ -25,7 +25,7 @@ class Mapa:
         self.humanos = []
         self.t = 0
         self.dt = dt
-        self.humanosEscapados = 0
+        self.humansEscaped = 0
         self.velZombies = velZombies
 
 
@@ -37,11 +37,15 @@ class Mapa:
             auxX = random.uniform(self.largo/2, self.largo)
             auxY = random.uniform(0, self.alto)
             if self.posicionNoOcupada(auxX, auxY):
-                self.zombies.append(Zombie(auxX, auxY, self.velZombies))
+                self.zombies.append(Zombie(auxX, auxY, self.velZombies, False))
                 Zadded += 1
         return
 
     def generarHumanos(self, cantHumanos):
+        if self.olaActual == self.olasHumanos:
+            print("Todas las olas ya fueron generadas")
+            return
+
         added = 0
         while added < cantHumanos: #generarHumano
             auxX = random.uniform(0, 3)
@@ -61,15 +65,17 @@ class Mapa:
                     return False
         return True
 
-    def reglas(self): #condicion de terminacion, ola actual = olas humanos, y hay 0 humanos no escapados
-        if len(self.humanos) == 0:
+    def isFinished(self): #condicion de terminacion, ola actual = olas humanos, y hay 0 humanos no escapados
+        if self.olaActual == self.olasHumanos:
+            for humano in self.humanos:
+                if humano.gone == False:
+                    return False #queda algun humano vivo
             return True
-        return False
+        return False #quedan oleadas por mandar
 
     def move(self):
-        self.rondas += 1
         self.t += self.dt
-        if(self.t % 9 == 0) and (self.olaActual < self.olaHumanos):
+        if(self.t % 9 == 0) and (self.olaActual < self.olasHumanos):
             self.generarHumanos(self.cantHumanos)
         for zombie in self.zombies:
             zombie.move()
@@ -77,7 +83,13 @@ class Mapa:
             human.move()
             if human.checkIfDie():
                 human.kill()
-                zombies.append(Zombie(datos del human que acaba de morir))
+                self.humanos.remove(human)
+                self.zombies.append(Zombie(human.x, human.y, self.velZombies, True))
+            elif human.checkIfWin():
+                human.kill()
+                self.humanos.remove(human)
+                self.humansEscaped += 1
+
         return
 
     def cantZombies(self):

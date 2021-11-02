@@ -20,7 +20,7 @@ mapa = mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies, cantHumanos, c
 mapa.generarSeres()
 distribucion = [0,0]
 
-while(mapa.reglas):
+while(not mapa.isFinished()):
     mapa.move()
     distribucion[rondas][0] = mapa.cantZombies
     distribucion[rondas][1] = mapa.cantHumanos

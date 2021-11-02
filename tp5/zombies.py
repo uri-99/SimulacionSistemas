@@ -1,24 +1,24 @@
 import math
 
 class Zombie:
-    def __init__(self,x,y,v):
+    def __init__(self,x,y,v,wasBit):
         self.v = v
         self.x = x
         self.y = y
         self.vX = 0
         self.vY = 0
-        self.apagado = True # SI ESTA EN TRUE APAGADO, NO PUEDE MOVERSE NI COMER GENTE
-        self.rondasPasadas = 0 #todo zombie quien tenga mas o igual de 7 rondas pasadas SE LE PASA EL APAGADO A FALSE
+        self.apagado = wasBit # SI ESTA EN TRUE APAGADO, NO PUEDE MOVERSE NI COMER GENTE
+        self.secondsSinceBit = 0 #Todo zombie quien tenga mas o igual de 7 segundos pasados SE LE PASA EL APAGADO A FALSE
 
     def zombieDespierta(self):
-        if(self.rondasPasadas >= 7):
+        if(self.secondsSinceBit >= 7):
             self.apagado = False
         return
 
     def move(self, humanos):
         # MOVER ZOMBIE
         humano = self.perseguirHumano(humanos)
-        self.rondasPasadas += 1
+        self.secondsSinceBit += 1
         if humano != None:
             if not self.apagado:
                 # mover en la direccion de ese humano
