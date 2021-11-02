@@ -1,9 +1,9 @@
 
 class Humano:
-    def __init__(self,x,y,v,size):
+    def __init__(self,x,y,size):
         self.x = x
         self.y = y
-        self.v = v
+        self.v = 1.6
         self.vX ,self.vY = self.calculateV0()
         self.angle = self.calculateAngle()
         self.gone = False
@@ -13,22 +13,24 @@ class Humano:
         # FORMULA
         return
 
+
     def move(self):
         # MOVER HUMANO
         #empezá linea recta hasta la puerta
         if not self.gone:
-            oldPos = newPos()
-            if(tengo que esquivar):
-                vx, vy, angle = new velocity
-        return
+            #oldPos = newPos()
+            #if(tengo que esquivar):
+            #    vx, vy, angle = new velocity
+            return 0
+
 
     def calculateV0(self):
-
-        return vx, vy
+        return 0,0
+        #return vx, vy
 
     def calculateAngle(self):
-
-        return alpha
+        return 0
+        #return alpha
 
     def checkIfDie(self, zombies):
         for zombie in zombies:
@@ -46,4 +48,7 @@ class Humano:
         # LO ATRAPARON Y TIENE Q DECIRLE AL MAPA DE CREAR UN ZOMBIE EN ESTA POSICION
         self.gone = True
         return
+
+    def __repr__(self):
+        return "x " + str(self.x) + "; y " + str(self.y)
 

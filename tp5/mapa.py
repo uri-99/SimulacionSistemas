@@ -27,13 +27,14 @@ class Mapa:
         self.dt = dt
         self.humansEscaped = 0
         self.velZombies = velZombies
+        self.generarSeres()
+        print("humanos: ", self.humanos, "\nzombies: ", self.zombies)
 
-
-    def generarSeres(self, cantHumanos, cantZombies):
-        self.generarHumanos(cantHumanos)
+    def generarSeres(self):
+        self.generarHumanos()
 
         Zadded = 0
-        while Zadded < cantZombies: #generarZombies
+        while Zadded < self.cantZombies: #generarZombies
             auxX = random.uniform(self.largo/2, self.largo)
             auxY = random.uniform(0, self.alto)
             if self.posicionNoOcupada(auxX, auxY):
@@ -41,14 +42,14 @@ class Mapa:
                 Zadded += 1
         return
 
-    def generarHumanos(self, cantHumanos):
+    def generarHumanos(self):
         if self.olaActual == self.olasHumanos:
             print("Todas las olas ya fueron generadas")
             return
 
         added = 0
-        while added < cantHumanos: #generarHumano
-            auxX = random.uniform(0, 3)
+        while added < self.cantHumanos: #generarHumano
+            auxX = random.uniform(0, 1)
             auxY = random.uniform((self.alto / 2) + (self.entrada / 2), (self.alto / 2) - (self.entrada / 2))
             if self.posicionNoOcupada(auxX, auxY):
                 self.humanos.append(Humano(auxX, auxY, self.humanSize))

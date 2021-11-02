@@ -16,6 +16,7 @@ class Zombie:
         return
 
     def move(self, humanos):
+        '''
         # MOVER ZOMBIE
         humano = self.perseguirHumano(humanos)
         self.secondsSinceBit += 1
@@ -23,6 +24,7 @@ class Zombie:
             if not self.apagado:
                 # mover en la direccion de ese humano
             return
+            '''
         return #None es que no hay humano a quien perseguir por ende Velocidad es 0
 
     def perseguirHumano(self, humanos):
@@ -41,3 +43,6 @@ class Zombie:
     def distanciaAHumano(self,hx,hy):
         # Se fija la distancia entre el y el humano
         return math.sqrt((hx-self.x)**2 + (hy-self.y)**2)
+
+    def __repr__(self):
+        return "x " + str(self.x) + "; y " + str(self.y)
