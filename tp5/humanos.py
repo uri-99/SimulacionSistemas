@@ -1,5 +1,5 @@
 
-class Humanos:
+class Humano:
     def __init__(self,x,y, v):
         self.x = x
         self.y = y

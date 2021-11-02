@@ -7,6 +7,7 @@ ALTO = 20
 PUERTA_ENTRADA = 3
 PUERTA_SALIDA = 3
 
+velocidadZombies = 1 #m/s
 cantZombies = 1
 cantHumanos = 20
 cantOlas = 5
@@ -15,7 +16,7 @@ dt = 0.01
 
 #CREO MAPA
 
-mapa = mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies, cantHumanos, cantOlas, dt)
+mapa = mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies, cantHumanos, cantOlas, dt, velocidadZombies)
 mapa.generarSeres()
 distribucion = [0,0]
 

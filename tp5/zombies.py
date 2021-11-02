@@ -1,12 +1,13 @@
 import math
 
 class Zombie:
-    def __init__(self,vX,vY,x,y,apagado):
+    def __init__(self,x,y,v):
+        self.v = v
         self.x = x
         self.y = y
-        self.vX = vX
-        self.vY = vY
-        self.apagado = apagado # SI ESTA EN TRUE APAGADO, NO PUEDE MOVERSE NI COMER GENTE
+        self.vX = 0
+        self.vY = 0
+        self.apagado = True # SI ESTA EN TRUE APAGADO, NO PUEDE MOVERSE NI COMER GENTE
         self.rondasPasadas = 0 #todo zombie quien tenga mas o igual de 7 rondas pasadas SE LE PASA EL APAGADO A FALSE
 
     def zombieDespierta(self):

@@ -1,11 +1,17 @@
+import random
+
 import numpy as np
+
+from humanos import Humano
+from zombies import Zombie
+
 
 class Mapa:
 
     humanSize = 0.3#m
 
 
-    def __init__(self,largo,alto,entrada,salida, cantZombies, cantHumanos, olasHumanosm, dt):
+    def __init__(self,largo,alto,entrada,salida, cantZombies, cantHumanos, olasHumanos, dt, velZombies):
         self.largo = largo
         self.alto = alto
         self.entrada = entrada
@@ -20,28 +26,38 @@ class Mapa:
         self.t = 0
         self.dt = dt
         self.humanosEscapados = 0
+        self.velZombies = velZombies
 
 
     def generarSeres(self, cantHumanos, cantZombies):
+        self.generarHumanos(cantHumanos)
 
-        generarHumanos(cantHumanos)
-
-        for zombie in cantZombies:
-            None
-            #generarZombies
+        Zadded = 0
+        while Zadded < cantZombies: #generarZombies
+            auxX = random.uniform(self.largo/2, self.largo)
+            auxY = random.uniform(0, self.alto)
+            if self.posicionNoOcupada(auxX, auxY):
+                self.zombies.append(Zombie(auxX, auxY, self.velZombies))
+                Zadded += 1
         return
 
     def generarHumanos(self, cantHumanos):
-        for i in range(cantHumanos):
-            # generarHumano
-            self.humanos.append(Humano())
+        added = 0
+        while added < cantHumanos: #generarHumano
+            auxX = random.uniform(0, 3)
+            auxY = random.uniform((self.alto / 2) + (self.entrada / 2), (self.alto / 2) - (self.entrada / 2))
+            if self.posicionNoOcupada(auxX, auxY):
+                self.humanos.append(Humano(auxX, auxY))
+                added += 1
+
         self.olaActual += 1
         return
 
-    def posicionNoOcupada(self,x,y,array): # Hay que llamarla para chequear q no existe un humano ahi antes de agregarlo
+    def posicionNoOcupada(self,x,y): # Hay que llamarla para chequear q no existe un humano ahi antes de agregarlo
+        array = self.humanos + self.zombies
         for person in array:
-            if(person.x == x): # habria que fijarse que no este tampoco muy cerca a uno
-                if(person.y == y):
+            if( abs(person.x - x) < self.humanSize ): # habria que fijarse que no este tampoco muy cerca a uno
+                if(abs(person.y - y) < self.humanSize):
                     return False
         return True
 
