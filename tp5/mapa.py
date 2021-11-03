@@ -81,7 +81,7 @@ class Mapa:
         for zombie in self.zombies:
             zombie.move(self.dt, self.humanos)
         for human in self.humanos:
-            human.move(self.dt, self.zombies)
+            human.move(self.dt, self.zombies, self.humanos)
             if human.checkIfDie():
                 human.kill()
                 self.humanos.remove(human)
