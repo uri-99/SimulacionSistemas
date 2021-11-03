@@ -77,16 +77,16 @@ class Mapa:
     def move(self):
         self.t += self.dt
         if(self.t % 9 == 0) and (self.olaActual < self.olasHumanos):
-            self.generarHumanos(self.cantHumanos)
+            self.generarHumanos()
         for zombie in self.zombies:
-            zombie.move()
+            zombie.move(self.dt, self.humanos)
         for human in self.humanos:
-            human.move()
+            human.move(self.dt, self.zombies)
             if human.checkIfDie():
                 human.kill()
                 self.humanos.remove(human)
                 self.zombies.append(Zombie(human.x, human.y, self.velZombies, True))
-            elif human.checkIfWin():
+            elif human.checkIfWin(self.largo, self.alto, self.salida):
                 human.kill()
                 self.humanos.remove(human)
                 self.humansEscaped += 1
