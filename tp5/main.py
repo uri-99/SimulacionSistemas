@@ -18,7 +18,6 @@ dt = 0.01
 
 mapa = Mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies, cantHumanos, cantOlas, dt, velocidadZombies)
 
-'''
 mapa.generarSeres()
 distribucion = [0,0]
 
@@ -29,4 +28,3 @@ while(not mapa.isFinished()):
     #escribir resultados, humanos zombies sus posiciones flag de si es uno o el otro, y el t.
 
 #RESULTADOS
-'''
