@@ -9,6 +9,20 @@ dirname = os.path.dirname(__file__)
 simulationFile = os.path.join(dirname, './ej.txt')
 simulation = open(simulationFile, 'r')
 
+def separate(particles_x, particles_y, particles_type):
+    zombies_x = []
+    zombies_y = []
+    humans_x = []
+    humans_y = []
+    for i in range(0, len(particles_x)):
+        if(particles_type[i] == 0):
+            humans_x.append(particles_x[i])
+            humans_y.append(particles_y[i])
+        else:
+            zombies_x.append(particles_x[i])
+            zombies_y.append(particles_y[i])
+    return humans_x, humans_y, zombies_x, zombies_y
+
 def read_paragraph():
     lines = []
     while(True):
@@ -28,25 +42,21 @@ def parse_paragraph(paragraph):
         particles_x.append(float(line[0]))
         particles_y.append(float(line[1]))
         particles_type.append(int(line[2]))
-    print(particles_x)
-    print(particles_y)
-    print(particles_type)
     return particles_x, particles_y, particles_type
 
 def parse_file():
     x = []
     y = []
-    particle_type = []
+    type = []
     while(True):
         paragraph = read_paragraph()
-        print(paragraph)
         if(len(paragraph) == 0):
             break
         particles_x, particles_y, particle_type = parse_paragraph(paragraph)
         x.append(particles_x)
         y.append(particles_y)
-        particle_type.append(particle_type)
-    return x, y, particle_type
+        type.append(particle_type)
+    return x, y, type
 
 def draw_box():
     plt.plot([0, 20], [0, 0], color="grey") #abajo
@@ -55,17 +65,20 @@ def draw_box():
     plt.plot([20, 20], [0, 20], color="grey") #derecha
 
 x, y, types = parse_file()
-print(x)
-print(y)
-print(types)
 
 def animate(frame):
-    global d
-    d.remove()
-    d, = plt.plot(x[frame], y[frame], 'bo', markersize=4)
+    global humans_plot
+    global zombies_plot
+    humans_plot.remove()
+    zombies_plot.remove()
+    humans_x, humans_y, zombies_x, zombies_y = separate(x[frame], y[frame], types[frame])
+    humans_plot, = plt.plot(humans_x, humans_y, 'bo', markersize=4)
+    zombies_plot, = plt.plot(zombies_x, zombies_y, 'go', markersize=4)
 
 fig = plt.gcf()
-d, = plt.plot(x[0], y[0], 'bo', markersize=4)
+humans_x_0, humans_y_0, zombies_x_0, zombies_y_0 = separate(x[0], y[0], types[0])
+humans_plot, = plt.plot(humans_x_0, humans_y_0, 'bo', markersize=4)
+zombies_plot, = plt.plot(zombies_x_0, zombies_y_0, 'go', markersize=4)
 frames = len(x)
 anim = animation.FuncAnimation(fig, animate, interval=dt, repeat=False, frames=frames)
 plt.xlim([0, 20])
