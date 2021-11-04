@@ -37,6 +37,9 @@ class Mapa:
         while Zadded < self.cantZombies: #generarZombies
             auxX = random.uniform(self.largo/2, self.largo)
             auxY = random.uniform(0, self.alto)
+
+            #auxX = 10 #test
+            #auxY = 10 #test
             if self.posicionNoOcupada(auxX, auxY):
                 self.zombies.append(Zombie(auxX, auxY, self.velZombies, False))
                 Zadded += 1
@@ -75,18 +78,21 @@ class Mapa:
         return False #quedan oleadas por mandar
 
     def move(self):
-        self.t += self.dt
+        self.t += 0.1
+        self.t = round(self.t, 1)
         if(self.t % 9 == 0) and (self.olaActual < self.olasHumanos):
             self.generarHumanos()
         for zombie in self.zombies:
             zombie.move(self.dt, self.humanos)
         for human in self.humanos:
             human.move(self.dt, self.zombies, self.humanos)
-            if human.checkIfDie():
+            if human.checkIfDie(self.zombies):
+                #print("dead")
                 human.kill()
                 self.humanos.remove(human)
                 self.zombies.append(Zombie(human.x, human.y, self.velZombies, True))
             elif human.checkIfWin(self.largo, self.alto, self.salida):
+                #print("win")
                 human.kill()
                 self.humanos.remove(human)
                 self.humansEscaped += 1
@@ -97,3 +103,12 @@ class Mapa:
 
     def cantHumanos(self):
         return len(self.humanos)
+
+    def __repr__(self):
+        s = ""
+        for i in self.humanos:
+            s += str(i.x) + " " + str(i.y) + " 0\n"
+        for j in self.zombies:
+            s += str(j.x) + " " + str(j.y) + " 1\n"
+        s += "\n"
+        return s

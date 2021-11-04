@@ -18,7 +18,6 @@ class Zombie:
 
     def move(self, dt, humanos): # MOVER ZOMBIE
         humano = self.elegirHumano(humanos)
-        self.secondsSinceBit += 1
         if humano is not None:
             if not self.apagado:
                 self.direccionDeseada(humano.x, humano.y)
@@ -29,11 +28,23 @@ class Zombie:
         self.zombieDespierta()
 
     def direccionDeseada(self, targetX, targetY):
-        difX = targetX - self.x
-        difY = (targetY - self.y)
-        a = math.tan(difY/difX)
-        self.x = self.vx * math.cos(a)
-        self.y = self.vy * math.sin(a)
+        difX = abs(targetX - self.x)
+        difY = abs(targetY - self.y)
+        a = math.atan(difY/difX)
+        if self.x > targetX:
+            self.vx = self.v * math.cos(a) *-1
+        elif self.x < targetX:
+            self.vx = self.v * math.cos(a)
+        else:
+            self.vx = 0
+
+        if self.y > targetY:
+            self.vy = self.v * math.sin(a) *-1
+        elif self.y < targetY:
+            self.vy = self.v * math.sin(a)
+        else:
+            self.vy = 0
+
         self.angle = a
         return self.vx, self.vy
 
@@ -41,17 +52,16 @@ class Zombie:
         distancia = math.inf
         humano = None
         for human in humanos:
-            aux = self.distanciaAHumano(human.hx, human.hy)
+            aux = self.distanciaAHumano(human.x, human.y)
             if aux < distancia:
                 distancia = aux
                 humano = human
-        if distancia <= 5:
+        if distancia < 5:
             return humano
         else:
             return None
 
     def distanciaAHumano(self,hx,hy): # Se fija la distancia entre el y el humano
-
         return math.sqrt((hx-self.x)**2 + (hy-self.y)**2)
 
     def __repr__(self):

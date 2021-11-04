@@ -18,10 +18,12 @@ class Humano:
 
     def direccionDeseada(self, targetX, targetY):
         difX = targetX - self.x
-        difY = (targetY - self.y)
-        a = math.tan(difY/difX)
+        difY = targetY - self.y
+        a = math.atan(difY/difX)
+
         self.vx = self.v * math.cos(a)
         self.vy = self.v * math.sin(a)
+
         self.angle = a
         return self.vx, self.vy
 
@@ -33,37 +35,46 @@ class Humano:
             if zombieInSight is not None:
                 self.findTemporalTarget(zombies, zombieInSight, humanos)
 
-            self.x += self.vx * dt
-            self.y += self.vy * dt
+            if self.x < 20 and self.y < 20:
+                self.x += self.vx * dt
+                self.y += self.vy * dt
 
 
-    def findTemporalTarget(self, zombies, closest, humanos):
-        sight = 3
-        #exitX, exitY = self.findExit()
-        angle = self.angleTo(closest)
-        if angle > 0 and self.angle > 0:
-            if angle > self.angle:
-                self.angle -= math.pi/4
-            else:
-                self.angle += math.pi / 4
-        elif angle < 0 and self.angle < 0:
-            if angle > self.angle:
-                self.angle -= math.pi/4
-            else:
-                self.angle += math.pi / 4
+    def findTemporalTarget(self, zombies, closestZ, humanos):
+        exitX, exitY = self.findExit()
+        angle_exit = self.angleTo(exitX, exitY)
+        angle = self.angleTo(closestZ.x, closestZ.y)
+
+
+        if abs(angle - angle_exit) > 45:
+            self.angle = angle_exit
         else:
-            if angle > 0:
-                self.angle -= math.pi/4
+            if angle > 0 and self.angle > 0:
+                if angle > self.angle:
+                    self.angle -= math.pi/4
+                else:
+                    self.angle += math.pi / 4
+            elif angle < 0 and self.angle < 0:
+                if angle > self.angle:
+                    self.angle -= math.pi/4
+                else:
+                    self.angle += math.pi / 4
             else:
-                self.angle += math.pi / 4
+                if angle > 0:
+                    self.angle -= math.pi/4
+                else:
+                    self.angle += math.pi / 4
+
         self.vx = self.v * math.cos(self.angle)
         self.vy = self.v * math.sin(self.angle)
 
 
-    def angleTo(self, obj):
-        difX = obj.x - self.x
-        difY = (obj.y - self.y)
-        a = math.tan(difY / difX)
+    def angleTo(self, x, y):
+        difX = abs(x - self.x)
+        difY = y - self.y
+        a = math.atan(difY / difX)
+        #if self.y > y:
+        #    return -a
         return a
 
     '''
@@ -90,20 +101,23 @@ class Humano:
 
 
     def findZombie(self, zombies):
+        sight = 3
         minDist = 3
         zombie = None
         for z in zombies:
-            if z.distanciaAHumano(self.x, self.y) <= minDist:
-                minDist = z.distanciaAHumano(self.x, self.y)
-                zombie = z
+            if z.x > self.x:
+                if z.distanciaAHumano(self.x, self.y) <= sight:
+                    if z.distanciaAHumano(self.x, self.y) <= minDist:
+                        minDist = z.distanciaAHumano(self.x, self.y)
+                        zombie = z
         return zombie
     
     def findExit(self):
         x = 20
         if self.y > (20 + 3) / 2:
-            y = 20+1.5
-        elif self.y < (20-3)/2:
-            y = 20-1.5
+            y = 10+1.5
+        elif self.y < (20 - 3)/2:
+            y = 10-1.5
         else:
             y = self.y
         return x, y

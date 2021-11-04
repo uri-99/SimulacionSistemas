@@ -3,10 +3,10 @@ from matplotlib import animation
 from matplotlib.animation import FuncAnimation
 import os
 
-dt = 1000 # 1 segundo
+dt = 10 # 1000 = 1 segundo
 
 dirname = os.path.dirname(__file__)
-simulationFile = os.path.join(dirname, './ej.txt')
+simulationFile = os.path.join(dirname, './data.txt')
 simulation = open(simulationFile, 'r')
 
 def separate(particles_x, particles_y, particles_type):
@@ -80,7 +80,7 @@ humans_x_0, humans_y_0, zombies_x_0, zombies_y_0 = separate(x[0], y[0], types[0]
 humans_plot, = plt.plot(humans_x_0, humans_y_0, 'bo', markersize=4)
 zombies_plot, = plt.plot(zombies_x_0, zombies_y_0, 'go', markersize=4)
 frames = len(x)
-anim = animation.FuncAnimation(fig, animate, interval=dt, repeat=False, frames=frames)
+anim = animation.FuncAnimation(fig, animate, interval=dt, repeat=True, frames=frames)
 plt.xlim([0, 20])
 plt.ylim([0, 20])
 plt.gca().set_aspect('equal')
