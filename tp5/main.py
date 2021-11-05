@@ -4,7 +4,7 @@ from mapa import Mapa
 
 LARGO = 20
 ALTO = 20
-PUERTA_ENTRADA = 20#3
+PUERTA_ENTRADA = 3
 PUERTA_SALIDA = 3
 
 velocidadZombies = 1 #m/s

@@ -75,6 +75,8 @@ class Mapa:
                 if humano.gone == False:
                     return False #queda algun humano vivo
             return True
+        if self.t > 100:
+            return True
         return False #quedan oleadas por mandar
 
     def move(self):
@@ -87,12 +89,12 @@ class Mapa:
         for human in self.humanos:
             human.move(self.dt, self.zombies, self.humanos)
             if human.checkIfDie(self.zombies):
-                #print("dead")
+                print("dead")
                 human.kill()
                 self.humanos.remove(human)
                 self.zombies.append(Zombie(human.x, human.y, self.velZombies, True))
             elif human.checkIfWin(self.largo, self.alto, self.salida):
-                #print("win")
+                print("win")
                 human.kill()
                 self.humanos.remove(human)
                 self.humansEscaped += 1

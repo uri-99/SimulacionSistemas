@@ -64,5 +64,9 @@ class Zombie:
     def distanciaAHumano(self,hx,hy): # Se fija la distancia entre el y el humano
         return math.sqrt((hx-self.x)**2 + (hy-self.y)**2)
 
+    def freeze(self):
+        self.apagado = True
+        self.secondsSinceBit = 5
+
     def __repr__(self):
         return "x " + str(self.x) + "; y " + str(self.y)

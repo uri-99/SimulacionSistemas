@@ -35,7 +35,7 @@ class Humano:
             if zombieInSight is not None:
                 self.findTemporalTarget(zombies, zombieInSight, humanos)
 
-            if self.x < 20 and self.y < 20:
+            if 20 > self.x > 0 and 20 > self.y > 0:
                 self.x += self.vx * dt
                 self.y += self.vy * dt
 
@@ -44,65 +44,39 @@ class Humano:
         exitX, exitY = self.findExit()
         angle_exit = self.angleTo(exitX, exitY)
         angle = self.angleTo(closestZ.x, closestZ.y)
+        ordered_zombies = sorted(zombies, key=lambda dist:self.distanceTo(dist.x, dist.y))
 
+        eit = numpy.array([self.vx, self.vy])
 
-        if abs(angle - angle_exit) > 45:
-            self.angle = angle_exit
-        else:
-            if angle > 0 and self.angle > 0:
-                if angle > self.angle:
-                    self.angle -= math.pi/4
-                else:
-                    self.angle += math.pi / 4
-            elif angle < 0 and self.angle < 0:
-                if angle > self.angle:
-                    self.angle -= math.pi/4
-                else:
-                    self.angle += math.pi / 4
-            else:
-                if angle > 0:
-                    self.angle -= math.pi/4
-                else:
-                    self.angle += math.pi / 4
+        x = closestZ.x - self.x
+        y = closestZ.y - self.y
+        size = math.sqrt(x**2 + y**2)
 
-        self.vx = self.v * math.cos(self.angle)
-        self.vy = self.v * math.sin(self.angle)
+        magnitude = self.distanceTo(closestZ.x, closestZ.y)
+        nc = numpy.array([-x/size, -y/size])
+        nc *= 2/magnitude
+
+        V = self.v * ((eit + nc) / numpy.linalg.norm(eit + nc))
+
+        self.vx = V[0]
+        self.vy = V[1]
+        print(math.sqrt(self.vx**2 + self.vy**2))
+
 
 
     def angleTo(self, x, y):
         difX = abs(x - self.x)
         difY = y - self.y
         a = math.atan(difY / difX)
+
         #if self.y > y:
         #    return -a
         return a
 
-    '''
-    if numpy.sign(self.angle) != numpy.sign(angle):
-        self.angle = angle + math.pi/4 * numpy.sign(angle) * -1
-            self.angle + math.pi/4 * -1 * numpy.sign(angle) #sumale 45 para el lado que no esté el zombie
-    else:
-        self.angle = self.angle + math.pi/4 * -1 * numpy.sign(angle) #sumale 45 para el lado que no esté el zombie
-
-    humansInSight = []
-    zombiesInSight = []
-
-    for z in zombies:
-        if z.distanciaAHumano(self.x, self.y) <= sight:
-            zombiesInSight.append(z)
-    for h in humanos:
-        if h.distanceTo(self.x, self.y) <= sight:
-            humansInSight.append(h)     
-    #xp, yp = self.findProm(zombiesInSight, humansInSight)
-    
-    def findProm(self, zombies, humans):
-        for z in zombies:
-    '''
-
 
     def findZombie(self, zombies):
-        sight = 3
-        minDist = 3
+        sight = math.inf
+        minDist = math.inf
         zombie = None
         for z in zombies:
             if z.x > self.x:
@@ -126,7 +100,9 @@ class Humano:
         for zombie in zombies:
             if( abs(zombie.x - self.x) < self.size):
                 if(abs(zombie.y - self.y) < self.size):
-                    return True
+                    if not zombie.apagado:
+                        zombie.freeze()
+                        return True
         return False
 
     def checkIfWin(self, largo, alto, salida):
