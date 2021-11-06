@@ -5,6 +5,8 @@ class Zombie:
         self.v = v
         self.x = x
         self.y = y
+        self.humano = False
+        self.zombie = True
         self.vx = 0
         self.vy = 0
         self.angle = 0
@@ -67,6 +69,16 @@ class Zombie:
     def freeze(self):
         self.apagado = True
         self.secondsSinceBit = 5
+
+    def distanceTo(self, x, y):
+        return math.sqrt((self.x - x)**2 + (self.y-y)**2)
+
+    def changeDirection(self,x,y):
+        a = self.angleTo(x,y)
+        a = (a+180) % 360 ## seria el angulo opuesto al ser mas cercano que tiene
+        self.vx = self.v * math.cos(a)
+        self.vy = self.v * math.sin(a)
+        return
 
     def __repr__(self):
         return "x " + str(self.x) + "; y " + str(self.y)
