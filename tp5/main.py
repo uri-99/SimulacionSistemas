@@ -56,7 +56,7 @@ def ejc():
     for i in range(0, len(cantZombies)):
         for j in range(0, reps):
             mapa = Mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies, cantHumanos, cantOlas, dt, velocidadZombies[i])
-            f = open("data/ejb_" + str(cantZombies[i]) + "_" + str(j) +".txt", "w")
+            f = open("data/ejc_" + str(cantZombies[i]) + "_" + str(j) +".txt", "w")
             while(not mapa.isFinished()):
                 mapa.move()
                 f.write(str(mapa))
