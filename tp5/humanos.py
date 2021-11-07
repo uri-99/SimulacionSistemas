@@ -79,7 +79,7 @@ class Humano:
             ncsize = math.sqrt(ncx**2 + ncy**2)
             ncmagnitude = self.distanceTo(ordered_zombies[i].x, ordered_zombies[i].y)
             aux = numpy.array([-ncx/ncsize, -ncy/ncsize])
-            aux *= 2/ncmagnitude
+            aux *= 1.75/ncmagnitude
             ncholderZ = ncholderZ + aux
 
         ncholderH = [0, 0]
