@@ -18,14 +18,18 @@ class Zombie:
             self.apagado = False
         return
 
-    def move(self, dt, humanos): # MOVER ZOMBIE
-        humano = self.elegirHumano(humanos)
-        if humano is not None:
-            if not self.apagado:
-                self.direccionDeseada(humano.x, humano.y)
-                self.x += self.vx * dt
-                self.y += self.vy * dt
-                # mover en la direccion de ese humano
+    def move(self, dt, humanos, isCpm): # MOVER ZOMBIE
+        if not self.apagado:
+            humano = self.elegirHumano(humanos)
+            if not isCpm:
+                if humano is not None:
+                    self.direccionDeseada(humano.x, humano.y) # mover en la direccion de ese humano
+
+            if humano is not None: #solo se mueve si se está queriendo mover, incluyendo choques con cpm. no puede haber cpm si no hay humanos a quien perseguir
+                if (self.x + self.vx * dt >= 20 and 10+1.5 > self.y + self.vy * dt> 10-1.5) or 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
+                    self.x += self.vx * dt
+                    self.y += self.vy * dt
+
         self.secondsSinceBit += dt
         self.zombieDespierta()
 
@@ -84,7 +88,7 @@ class Zombie:
 
     def changeDirection(self,x,y):
         a = self.angleTo(x,y)
-        a = (a+180) % 360 ## seria el angulo opuesto al ser mas cercano que tiene
+        a = -a#(a+math.pi) % (2*math.pi) ## seria el angulo opuesto al ser mas cercano que tiene
         self.vx = self.v * math.cos(a)
         self.vy = self.v * math.sin(a)
         return

@@ -8,7 +8,7 @@ PUERTA_ENTRADA = 3
 PUERTA_SALIDA = 3
 
 velocidadZombies = 1 #m/s
-cantZombies = 10
+cantZombies = 35
 cantHumanos = 20
 cantOlas = 5
 
