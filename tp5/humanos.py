@@ -7,7 +7,8 @@ class Humano:
     def __init__(self,x,y,size):
         self.x = x
         self.y = y
-
+        self.humano = True
+        self.zombie = False
         self.v = 1.6
         self.vx = 0
         self.vy = 0
@@ -152,7 +153,12 @@ class Humano:
     def distanceTo(self, x, y):
         return math.sqrt((self.x - x)**2 + (self.y-y)**2)
 
+    def changeDirection(self,x,y):
+        a = self.angleTo(x,y)
+        a = (a+180) % 360 ## seria el angulo opuesto al ser mas cercano que tiene
+        self.vx = self.v * math.cos(a)
+        self.vy = self.v * math.sin(a)
+        return
 
     def __repr__(self):
         return "x " + str(self.x) + "; y " + str(self.y)
-

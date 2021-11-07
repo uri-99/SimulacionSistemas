@@ -106,6 +106,44 @@ class Mapa:
     def cantHumanos(self):
         return len(self.humanos)
 
+    # def cpm(self,ser):
+    #     ## AVERIGUAR SI ESTA EN CONTACTO
+    #     for human in self.humanos:
+    #         if ser.distanceTo(human.x,human.y) <= 0.50 and ser.humano: ##0.3 es el radio de las personas
+    #             ## EN CONTACTO HUMANO - HUMANO, CAMBIAR DIRECCION
+    #             ser.changeDirection(human.x,human.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
+    #             return
+    #         ##CASO ZOMBIE - HUMANO, SOLO HUMANO CAMBIA DIRECCION, YA QUE ZOMBIE QUIERE IR HACIA EL. PERO SELF ES ZOMBIE ASI Q LISTO
+                
+        
+    #     for zombie in self.zombies:
+    #         if ser.distanceTo(zombie.x,zombie.y) <= 0.50: ##0.3 es el radio de las personas
+    #             ser.changeDirection(zombie.x,zombie.y) ## sea SER zombie o humano en ambos caso el SER debe cambiar direccion
+    #             return
+
+    #     return ##todos estan separados si llega este punto
+
+    #     ### LEER ESTO LEER ESTO LEER
+    #     ### SI LA RELACION ZOMBIE - HUMANO YA SE TIENE EN CUENTA ENTONCES SOLO HABRIA QUE HACER ZOMBIE - ZOMBIE y HUMANO - HUMANO, SI ES ASI SERIA ASI
+    #     ###
+
+    def cpm(self,ser):
+        ## AVERIGUAR SI ESTA CERCA
+        if ser.humano:
+            for human in self.humanos:
+                if ser.distanceTo(human.x,human.y) <= 0.50: ##0.3 es el radio de las personas
+                ## EN CONTACTO HUMANO - HUMANO, CAMBIAR DIRECCION
+                    ser.changeDirection(human.x,human.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
+                    return
+                
+        else:
+            for zombie in self.zombies:
+                if ser.distanceTo(zombie.x,zombie.y) <= 0.50: ##0.3 es el radio de las personas
+                    ser.changeDirection(zombie.x,zombie.y) ## sea SER zombie 
+                    return
+
+        return ##todos estan separados si llega este punto
+
     def __repr__(self):
         s = ""
         for i in self.humanos:
