@@ -85,8 +85,10 @@ class Mapa:
         if(self.t % 9 == 0) and (self.olaActual < self.olasHumanos):
             self.generarHumanos()
         for zombie in self.zombies:
+            self.cpm(zombie)
             zombie.move(self.dt, self.humanos)
         for human in self.humanos:
+            self.cpm(human)
             human.move(self.dt, self.zombies, self.humanos)
             if human.checkIfDie(self.zombies):
                 print("dead")
@@ -131,16 +133,18 @@ class Mapa:
         ## AVERIGUAR SI ESTA CERCA
         if ser.humano:
             for human in self.humanos:
-                if ser.distanceTo(human.x,human.y) <= 0.50: ##0.3 es el radio de las personas
-                ## EN CONTACTO HUMANO - HUMANO, CAMBIAR DIRECCION
-                    ser.changeDirection(human.x,human.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
-                    return
+                if(ser.x != human.x and ser.y != human.y):
+                    if ser.distanceTo(human.x,human.y) <= 0.50: ##0.3 es el radio de las personas
+                    ## EN CONTACTO HUMANO - HUMANO, CAMBIAR DIRECCION
+                        ser.changeDirection(human.x,human.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
+                        return
                 
         else:
             for zombie in self.zombies:
-                if ser.distanceTo(zombie.x,zombie.y) <= 0.50: ##0.3 es el radio de las personas
-                    ser.changeDirection(zombie.x,zombie.y) ## sea SER zombie 
-                    return
+                if(ser.x != zombie.x and ser.y != zombie.y):
+                    if ser.distanceTo(zombie.x,zombie.y) <= 0.50: ##0.3 es el radio de las personas
+                        ser.changeDirection(zombie.x,zombie.y) ## sea SER zombie 
+                        return
 
         return ##todos estan separados si llega este punto
 

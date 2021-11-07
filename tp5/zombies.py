@@ -72,6 +72,15 @@ class Zombie:
 
     def distanceTo(self, x, y):
         return math.sqrt((self.x - x)**2 + (self.y-y)**2)
+    
+    def angleTo(self, x, y):
+        difX = abs(x - self.x)
+        difY = y - self.y
+        a = math.atan(difY / difX)
+
+        #if self.y > y:
+        #    return -a
+        return a
 
     def changeDirection(self,x,y):
         a = self.angleTo(x,y)
