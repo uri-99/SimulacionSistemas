@@ -28,21 +28,16 @@ class Humano:
         self.angle = a
         return self.vx, self.vy
 
-    def move(self, dt, zombies, humanos): # MOVER HUMANO  #empieza linea recta hasta la puerta
-        targetX, targetY = self.findExit()
-        self.direccionDeseada(targetX, targetY)
+    def move(self, dt, zombies, humanos, isCpm): # MOVER HUMANO  #empieza linea recta hasta la puerta
         if not self.gone:
-            #zombieInSight = self.findZombie(zombies)
-            #if zombieInSight is not None:
-            self.findTemporalTarget(zombies, humanos)
+            if not isCpm:
+                targetX, targetY = self.findExit()
+                self.direccionDeseada(targetX, targetY)
+                self.findTemporalTarget(zombies, humanos)
 
             if (self.x + self.vx * dt >= 20 and 10+1.5 > self.y + self.vy * dt> 10-1.5) or 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
                 self.x += self.vx * dt
                 self.y += self.vy * dt
-
-            #if 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
-            #    self.x += self.vx * dt
-            #    self.y += self.vy * dt
 
 
     def findTemporalTarget(self, zombies, humanos):
@@ -80,7 +75,7 @@ class Humano:
             ncsize = math.sqrt(ncx**2 + ncy**2)
             ncmagnitude = self.distanceTo(ordered_zombies[i].x, ordered_zombies[i].y)
             aux = numpy.array([-ncx/ncsize, -ncy/ncsize])
-            aux *= 1.75/ncmagnitude
+            aux *= 1/ncmagnitude
             ncholderZ = ncholderZ + aux
 
         ncholderH = [0, 0]
@@ -156,7 +151,7 @@ class Humano:
 
     def changeDirection(self,x,y):
         a = self.angleTo(x,y)
-        a = (a+180) % 360 ## seria el angulo opuesto al ser mas cercano que tiene
+        a = -a#(a+math.pi) % (2*math.pi) ## seria el angulo opuesto al ser mas cercano que tiene
         self.vx = self.v * math.cos(a)
         self.vy = self.v * math.sin(a)
         return
