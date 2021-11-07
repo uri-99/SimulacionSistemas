@@ -1,4 +1,5 @@
 from mapa import Mapa
+from utils import standardDeviation
 
 # TODO EN METROS
 
@@ -32,18 +33,21 @@ def ejb():
     cantZombies = [2, 5, 10, 15, 20, 25, 30, 35]
     cantHumanos = 20
     cantOlas = 5
-    dt = 0.05
+    dt = 0.1
     reps = 10
-
+    f = open("data/ejb.txt", "w")
     for i in range(0, len(cantZombies)):
+        escapes = []
         for j in range(0, reps):
             mapa = Mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies[i], cantHumanos, cantOlas, dt, velocidadZombies)
-            f = open("data/ejb_" + str(cantZombies[i]) + "_" + str(j) +".txt", "w")
             while(not mapa.isFinished()):
                 mapa.move()
-                f.write(str(mapa))
-                #escribir resultados, humanos zombies sus posiciones flag de si es uno o el otro, y el t.
-            f.close()
+            escapes.append(mapa.humansEscaped)
+        average = sum(escapes) / len(escapes)
+        deviation = standardDeviation(escapes)
+        f.write(str(cantZombies[i]) + ' ' + str(average/(cantHumanos * cantOlas)) + ' ' + str(deviation/(cantHumanos * cantOlas)) )
+        f.write('\n')
+    f.close()
 
 def ejc():
     velocidadZombies = [0.4, 0.8, 1.2, 1.6, 2, 2.4]
