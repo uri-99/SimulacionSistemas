@@ -73,7 +73,8 @@ class Humano:
         ncw *= 0.2 / magnitudew
 
         ncholderZ = [0,0]
-        for i in range(3):
+        zombiesQ = 3 if len(zombies) > 3 else len(zombies)
+        for i in range(zombiesQ):
             ncx = ordered_zombies[i].x - self.x
             ncy = ordered_zombies[i].y - self.y
             ncsize = math.sqrt(ncx**2 + ncy**2)
@@ -83,7 +84,7 @@ class Humano:
             ncholderZ = ncholderZ + aux
 
         ncholderH = [0, 0]
-        for i in range(3):
+        for i in range(zombiesQ):
             if len(ordered_humans) > i+1:
                 ncx = ordered_humans[i+1].x - self.x
                 ncy = ordered_humans[i+1].y - self.y
