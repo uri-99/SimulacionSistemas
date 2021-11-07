@@ -31,36 +31,72 @@ class Humano:
         targetX, targetY = self.findExit()
         self.direccionDeseada(targetX, targetY)
         if not self.gone:
-            zombieInSight = self.findZombie(zombies)
-            if zombieInSight is not None:
-                self.findTemporalTarget(zombies, zombieInSight, humanos)
+            #zombieInSight = self.findZombie(zombies)
+            #if zombieInSight is not None:
+            self.findTemporalTarget(zombies, humanos)
 
-            if 20 > self.x > 0 and 20 > self.y > 0:
+            if (self.x + self.vx * dt >= 20 and 10+1.5 > self.y + self.vy * dt> 10-1.5) or 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
                 self.x += self.vx * dt
                 self.y += self.vy * dt
 
+            #if 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
+            #    self.x += self.vx * dt
+            #    self.y += self.vy * dt
 
-    def findTemporalTarget(self, zombies, closestZ, humanos):
-        exitX, exitY = self.findExit()
-        angle_exit = self.angleTo(exitX, exitY)
-        angle = self.angleTo(closestZ.x, closestZ.y)
+
+    def findTemporalTarget(self, zombies, humanos):
         ordered_zombies = sorted(zombies, key=lambda dist:self.distanceTo(dist.x, dist.y))
-
+        ordered_humans = sorted(humanos, key=lambda dist:self.distanceTo(dist.x, dist.y))
         eit = numpy.array([self.vx, self.vy])
 
-        x = closestZ.x - self.x
-        y = closestZ.y - self.y
-        size = math.sqrt(x**2 + y**2)
+        if self.x > 10:
+            xw = 20 - self.x
+            d_wall = self.distanceTo(20,self.y)
+        else:
+            xw = 0 - self.x
+            d_wall = self.distanceTo(0, self.y)
+        if self.y > 10:
+            yw = 20 - self.y
+            d_floor = self.distanceTo(self.x, 20)
+        else:
+            yw = 0 - self.y
+            d_floor = self.distanceTo(self.x, 0)
 
-        magnitude = self.distanceTo(closestZ.x, closestZ.y)
-        nc = numpy.array([-x/size, -y/size])
-        nc *= 2/magnitude
+        sizew = math.sqrt(xw ** 2 + yw ** 2)
+        if abs(d_floor) < abs(d_wall):
+            magnitudew = d_floor
+        else:
+            magnitudew = d_wall
 
-        V = self.v * ((eit + nc) / numpy.linalg.norm(eit + nc))
+        ncw = numpy.array([-xw/sizew, -yw/sizew])
+        ncw *= 0.2 / magnitudew
+
+        ncholderZ = [0,0]
+        for i in range(3):
+            ncx = ordered_zombies[i].x - self.x
+            ncy = ordered_zombies[i].y - self.y
+            ncsize = math.sqrt(ncx**2 + ncy**2)
+            ncmagnitude = self.distanceTo(ordered_zombies[i].x, ordered_zombies[i].y)
+            aux = numpy.array([-ncx/ncsize, -ncy/ncsize])
+            aux *= 2/ncmagnitude
+            ncholderZ = ncholderZ + aux
+
+        ncholderH = [0, 0]
+        for i in range(3):
+            if len(ordered_humans) > i+1:
+                ncx = ordered_humans[i+1].x - self.x
+                ncy = ordered_humans[i+1].y - self.y
+                ncsize = math.sqrt(ncx**2 + ncy**2)
+                ncmagnitude = self.distanceTo(ordered_humans[i+1].x, ordered_humans[i+1].y)
+                aux = numpy.array([-ncx/ncsize, -ncy/ncsize])
+                aux *= 0.05/ncmagnitude
+                ncholderH = ncholderH + aux
+        V = self.v * ((eit + ncholderZ + ncholderH + ncw) / numpy.linalg.norm(eit + ncholderZ + ncholderH + ncw))
+        #V = self.v * ((eit + nc + nc2 + ncw) / numpy.linalg.norm(eit + nc + nc2 + ncw))
 
         self.vx = V[0]
         self.vy = V[1]
-        print(math.sqrt(self.vx**2 + self.vy**2))
+        #print(math.sqrt(self.vx**2 + self.vy**2))
 
 
 
