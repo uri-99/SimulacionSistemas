@@ -16,14 +16,20 @@ class Humano:
 
         self.gone = False
         self.size = size
+        self.radius = size
 
     def direccionDeseada(self, targetX, targetY):
         difX = targetX - self.x
         difY = targetY - self.y
         a = math.atan(difY/difX)
 
-        self.vx = self.v * math.cos(a)
-        self.vy = self.v * math.sin(a)
+        if self.radius < self.size:
+            v = self.v * ((self.radius - 0.2)/(self.size - 0.2))**0.9
+        else:
+            v = self.v
+
+        self.vx = v * math.cos(a)
+        self.vy = v * math.sin(a)
 
         self.angle = a
         return self.vx, self.vy
@@ -35,9 +41,14 @@ class Humano:
                 self.direccionDeseada(targetX, targetY)
                 self.findTemporalTarget(zombies, humanos)
 
-            if (self.x + self.vx * dt >= 20 and 10+1.5 > self.y + self.vy * dt> 10-1.5) or 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
+            if (self.x + self.vx * dt >= 20 and 10+1.5 > self.y + self.vy * dt> 10-1.5) or (20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0):
                 self.x += self.vx * dt
                 self.y += self.vy * dt
+
+        if self.radius < self.size:
+            self.radius += self.size/(0.5/dt)
+        else:
+            self.radius = self.size
 
 
     def findTemporalTarget(self, zombies, humanos):
@@ -88,13 +99,18 @@ class Humano:
                 aux = numpy.array([-ncx/ncsize, -ncy/ncsize])
                 aux *= 0.05/ncmagnitude
                 ncholderH = ncholderH + aux
-        V = self.v * ((eit + ncholderZ + ncholderH + ncw) / numpy.linalg.norm(eit + ncholderZ + ncholderH + ncw))
+
+        if self.radius < self.size:
+            v = self.v * ((self.radius - 0.2)/(self.size - 0.2))**0.9
+        else:
+            v = self.v
+
+        V = v * ((eit + ncholderZ + ncholderH + ncw) / numpy.linalg.norm(eit + ncholderZ + ncholderH + ncw))
         #V = self.v * ((eit + nc + nc2 + ncw) / numpy.linalg.norm(eit + nc + nc2 + ncw))
 
         self.vx = V[0]
         self.vy = V[1]
         #print(math.sqrt(self.vx**2 + self.vy**2))
-
 
 
     def angleTo(self, x, y):

@@ -8,7 +8,7 @@ from zombies import Zombie
 
 class Mapa:
 
-    humanSize = 0.3#m
+    humanSize = 0.4#m
 
 
     def __init__(self,largo,alto,entrada,salida, cantZombies, cantHumanos, olasHumanos, dt, velZombies):
@@ -52,7 +52,7 @@ class Mapa:
 
         added = 0
         while added < self.cantHumanos: #generarHumano
-            auxX = random.uniform(0, 1)
+            auxX = random.uniform(0, 2.5)
             auxY = random.uniform((self.alto / 2) + (self.entrada / 2), (self.alto / 2) - (self.entrada / 2))
             if self.posicionNoOcupada(auxX, auxY):
                 self.humanos.append(Humano(auxX, auxY, self.humanSize))
@@ -134,23 +134,24 @@ class Mapa:
         if ser.humano:
             for human in self.humanos:
                 if(ser.x != human.x and ser.y != human.y):
-                    if ser.distanceTo(human.x,human.y) <= 0.40: ##0.3 es el radio de las personas
+                    if ser.distanceTo(human.x,human.y) <= 0.2: ##radio min de las personas
                     ## EN CONTACTO HUMANO - HUMANO, CAMBIAR DIRECCION
                         ser.changeDirection(human.x,human.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
                         #ser.direccionDeseada(-human.x, -human.y)
                         return True
             for zombie in self.zombies:
-                if zombie.apagado:
-                    if ser.distanceTo(zombie.x,zombie.y) <= 0.40: ##0.3 es el radio de las personas
+                if zombie.apagado and zombie.x != ser.x and zombie.y != ser.y:
+                    if ser.distanceTo(zombie.x,zombie.y) <= 0.2: ## radio min de las personas
                     ## EN CONTACTO HUMANO - HUMANO, CAMBIAR DIRECCION
                         ser.changeDirection(zombie.x,zombie.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
+                        ser.radius = 0.2
                         #ser.direccionDeseada(-human.x, -human.y)
 
                 
         else:
             for zombie in self.zombies:
                 if(ser.x != zombie.x and ser.y != zombie.y):
-                    if ser.distanceTo(zombie.x,zombie.y) <= 0.40: ##0.3 es el radio de las personas
+                    if ser.distanceTo(zombie.x,zombie.y) <= 0.4: ##0.3 es el radio de las personas
                         ser.changeDirection(zombie.x,zombie.y) ## sea SER zombie 
                         return True
 

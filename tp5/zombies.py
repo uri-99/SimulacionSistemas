@@ -13,6 +13,7 @@ class Zombie:
         self.apagado = wasBit # SI ESTA EN TRUE APAGADO, NO PUEDE MOVERSE NI COMER GENTE
         self.secondsSinceBit = 0 #Todo zombie quien tenga mas o igual de 7 segundos pasados SE LE PASA EL APAGADO A FALSE
 
+
     def zombieDespierta(self):
         if(self.secondsSinceBit >= 7):
             self.apagado = False
