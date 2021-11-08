@@ -11,8 +11,8 @@ PUERTA_SALIDA = 3
 #CREO MAPA
 
 def genericEj():
-    velocidadZombies = 1 #m/s
-    cantZombies = 15
+    velocidadZombies = 1.2 #m/s
+    cantZombies = 10
     cantHumanos = 20
     cantOlas = 5
 

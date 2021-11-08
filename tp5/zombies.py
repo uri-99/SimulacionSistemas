@@ -27,7 +27,7 @@ class Zombie:
                     self.direccionDeseada(humano.x, humano.y) # mover en la direccion de ese humano
 
             if humano is not None: #solo se mueve si se está queriendo mover, incluyendo choques con cpm. no puede haber cpm si no hay humanos a quien perseguir
-                if (self.x + self.vx * dt >= 20 and 10+1.5 > self.y + self.vy * dt> 10-1.5) or 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
+                if 20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0:
                     self.x += self.vx * dt
                     self.y += self.vy * dt
 

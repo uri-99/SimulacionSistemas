@@ -44,6 +44,9 @@ class Humano:
             if (self.x + self.vx * dt >= 20 and 10+1.5 > self.y + self.vy * dt> 10-1.5) or (20 > self.x + self.vx * dt > 0 and 20 > self.y + self.vy * dt> 0):
                 self.x += self.vx * dt
                 self.y += self.vy * dt
+            else:
+                self.y += self.vy * dt
+
 
         if self.radius < self.size:
             self.radius += self.size/(0.5/dt)
