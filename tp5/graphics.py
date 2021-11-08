@@ -1,5 +1,6 @@
 import os
 from matplotlib import pyplot as plt
+import numpy as np
 
 dirname = os.path.dirname(__file__)
 
@@ -19,7 +20,7 @@ def ejb():
         zombies.append(float(values[0]))
         escapeHumans.append(float(values[1]))
         deviations.append(float(values[2]))
-    plt.xlabel('Cantidad de zombies(u.a)', fontsize=20)
+    plt.xlabel('Cantidad de zombies', fontsize=20)
     plt.ylabel('Fracción de personas que lograron escapar(u.a)', fontsize=20)
     plt.yticks(fontsize=20)
     plt.xticks(fontsize=20)
@@ -43,10 +44,24 @@ def ejc():
         deviations.append(float(values[2]))
     plt.xlabel('Velocidad máxima de los zombies(m/s)', fontsize=20)
     plt.ylabel('Fracción de personas que lograron escapar(u.a)', fontsize=20)
-    plt.yticks(fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
     plt.errorbar(velocities, escapeHumans, ecolor="grey", fmt='-o', ms=2, yerr=deviations )
     plt.show()
 
-ejb()
+def caudal():
+    dataFile = os.path.join(dirname, './data/caudal.txt')
+    data = open(dataFile, 'rb')
+    scapeTimes = np.load(data)
+    print(scapeTimes)
+    plt.figure(figsize=(15,1))
+    plt.plot(scapeTimes, len(scapeTimes) * [1], "x")
+    plt.yticks([])
+    plt.xlabel('Tiempo (s)', fontsize=20)
+    plt.ylabel('Humano saliendo', fontsize=20)
+    plt.xlim([0, 42])
+    plt.xticks(fontsize=20)
+    plt.show()
+    # plt.errorbar(zombies, escapeHumans, ecolor="grey", fmt='-o', ms=2)
+
+caudal()

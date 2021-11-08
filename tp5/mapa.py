@@ -26,6 +26,7 @@ class Mapa:
         self.t = 0
         self.dt = dt
         self.humansEscaped = 0
+        self.scapeTime = []
         self.velZombies = velZombies
         self.generarSeres()
         # print("humanos: ", self.humanos, "\nzombies: ", self.zombies)
@@ -97,6 +98,7 @@ class Mapa:
                 human.kill()
                 self.humanos.remove(human)
                 self.humansEscaped += 1
+                self.scapeTime.append(self.t)
         return
 
     def cantZombies(self):

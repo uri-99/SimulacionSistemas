@@ -1,5 +1,6 @@
 from mapa import Mapa
 from utils import standardDeviation
+import numpy as np
 
 # TODO EN METROS
 
@@ -28,6 +29,25 @@ def genericEj():
 
     f.close()
     print(str(mapa.humansEscaped))
+
+def caudal():
+    velocidadZombies = 0.4 #m/s
+    cantZombies = 35
+    cantHumanos = 20
+    cantOlas = 5
+
+    dt = 0.09
+    mapa = Mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies, cantHumanos, cantOlas, dt, velocidadZombies)
+
+    f = open("data/caudal.txt", "wb")
+
+    while(not mapa.isFinished()):
+        mapa.move()
+    npArray = np.array(mapa.scapeTime)
+    print(mapa.humansEscaped)
+    print(mapa.scapeTime)
+    np.save(f, npArray)
+    f.close()
 
 def ejb():
     velocidadZombies = 1 #m/s
@@ -73,6 +93,6 @@ def ejc():
         f.write('\n')
     f.close()
 
-genericEj()
+caudal()
 
 #RESULTADOS
