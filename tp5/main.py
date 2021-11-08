@@ -12,11 +12,11 @@ PUERTA_SALIDA = 3
 
 def genericEj():
     velocidadZombies = 1 #m/s
-    cantZombies = 10
+    cantZombies = 35
     cantHumanos = 20
     cantOlas = 5
 
-    dt = 0.05
+    dt = 0.09
     mapa = Mapa(LARGO,ALTO,PUERTA_ENTRADA,PUERTA_SALIDA, cantZombies, cantHumanos, cantOlas, dt, velocidadZombies)
 
     f = open("data/generic.txt", "w")
@@ -67,6 +67,6 @@ def ejc():
                 #escribir resultados, humanos zombies sus posiciones flag de si es uno o el otro, y el t.
             f.close()
 
-ejb()
+genericEj()
 
 #RESULTADOS

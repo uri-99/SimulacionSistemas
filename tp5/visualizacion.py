@@ -6,7 +6,7 @@ import os
 dt = 10 # 1000 = 1 segundo
 
 dirname = os.path.dirname(__file__)
-simulationFile = os.path.join(dirname, './data.txt')
+simulationFile = os.path.join(dirname, 'data/generic.txt')
 simulation = open(simulationFile, 'r')
 
 def separate(particles_x, particles_y, particles_type):
