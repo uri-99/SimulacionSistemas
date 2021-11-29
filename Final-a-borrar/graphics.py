@@ -8,7 +8,7 @@ dirname = os.path.dirname(__file__)
 def ejb():
     dataFile = os.path.join(dirname, './data/ejb.txt')
     data = open(dataFile, 'r')
-    zombies = []
+    attackers = []
     escapeHumans = []
     deviations = []
     while(True):
@@ -17,14 +17,14 @@ def ejb():
         if(line == '\n' or line == ''):
             break
         values = line.split(' ')
-        zombies.append(float(values[0]))
+        attackers.append(float(values[0]))
         escapeHumans.append(float(values[1]))
         deviations.append(float(values[2]))
-    plt.xlabel('Cantidad de zombies', fontsize=20)
+    plt.xlabel('Cantidad de attackers', fontsize=20)
     plt.ylabel('Fracción de personas que lograron escapar(u.a)', fontsize=20)
     plt.yticks(fontsize=20)
     plt.xticks(fontsize=20)
-    plt.errorbar(zombies, escapeHumans, ecolor="grey", fmt='-o', ms=2, yerr=deviations )
+    plt.errorbar(attackers, escapeHumans, ecolor="grey", fmt='-o', ms=2, yerr=deviations )
     plt.show()
 
 def ejc():
@@ -42,7 +42,7 @@ def ejc():
         velocities.append(float(values[0]))
         escapeHumans.append(float(values[1]))
         deviations.append(float(values[2]))
-    plt.xlabel('Velocidad máxima de los zombies(m/s)', fontsize=20)
+    plt.xlabel('Velocidad máxima de los attackers(m/s)', fontsize=20)
     plt.ylabel('Fracción de personas que lograron escapar(u.a)', fontsize=20)
     plt.xticks(fontsize=20)
     plt.yticks(fontsize=20)
@@ -62,6 +62,6 @@ def caudal():
     plt.xlim([0, 42])
     plt.xticks(fontsize=20)
     plt.show()
-    # plt.errorbar(zombies, escapeHumans, ecolor="grey", fmt='-o', ms=2)
+    # plt.errorbar(attackers, escapeHumans, ecolor="grey", fmt='-o', ms=2)
 
 caudal()

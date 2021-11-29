@@ -3,7 +3,7 @@ import random
 import numpy as np
 
 from humanos import Humano
-from zombies import Zombie
+from attackers import Attacker
 
 
 class Mapa:
@@ -11,35 +11,35 @@ class Mapa:
     humanSize = 0.4#m
 
 
-    def __init__(self,largo,alto,entrada,salida, cantZombies, cantHumanos, olasHumanos, dt, velZombies):
+    def __init__(self,largo,alto,entrada,salida, cantAttackers, cantHumanos, olasHumanos, dt, velAttackers):
         self.largo = largo
         self.alto = alto
         self.entrada = entrada
         self.salida = salida
-        self.cantZombies = cantZombies
+        self.cantAttackers = cantAttackers
         self.cantHumanos = cantHumanos
         self.olasHumanos = olasHumanos
         self.olaActual = 0
         self.rondas = 0
-        self.zombies = []
+        self.attackers = []
         self.humanos = []
         self.t = 0
         self.dt = dt
         self.humansEscaped = 0
         self.scapeTime = []
-        self.velZombies = velZombies
+        self.velAttackers = velAttackers
         self.generarSeres()
-        # print("humanos: ", self.humanos, "\nzombies: ", self.zombies)
+        # print("humanos: ", self.humanos, "\nattackers: ", self.attackers)
 
     def generarSeres(self):
         self.generarHumanos()
 
         Zadded = 0
-        while Zadded < self.cantZombies: #generarZombies
+        while Zadded < self.cantAttackers: #generarAttackers
             auxX = random.uniform(self.largo/2, self.largo)
             auxY = random.uniform(0, self.alto)
             if self.posicionNoOcupada(auxX, auxY):
-                self.zombies.append(Zombie(auxX, auxY, self.velZombies, False))
+                self.attackers.append(Attacker(auxX, auxY, self.velAttackers, False))
                 Zadded += 1
         return
 
@@ -60,7 +60,7 @@ class Mapa:
         return
 
     def posicionNoOcupada(self,x,y): # Hay que llamarla para chequear q no existe un humano ahi antes de agregarlo
-        array = self.humanos + self.zombies
+        array = self.humanos + self.attackers
         for person in array:
             if( abs(person.x - x) < self.humanSize ): # habria que fijarse que no este tampoco muy cerca a uno
                 if(abs(person.y - y) < self.humanSize):
@@ -82,17 +82,17 @@ class Mapa:
         self.t = round(self.t, 1)
         if(self.t % 9 == 0) and (self.olaActual < self.olasHumanos):
             self.generarHumanos()
-        for zombie in self.zombies:
-            isCpm = self.cpm(zombie)
-            zombie.move(self.dt, self.humanos, isCpm)
+        for attacker in self.attackers:
+            isCpm = self.cpm(attacker)
+            attacker.move(self.dt, self.humanos, isCpm)
         for human in self.humanos:
             isCpm = self.cpm(human)
-            human.move(self.dt, self.zombies, self.humanos, isCpm)
-            if human.checkIfDie(self.zombies):
+            human.move(self.dt, self.attackers, self.humanos, isCpm)
+            if human.checkIfDie(self.attackers):
                 #print("dead")
                 human.kill()
                 self.humanos.remove(human)
-                self.zombies.append(Zombie(human.x, human.y, self.velZombies, True))
+                self.attackers.append(Attacker(human.x, human.y, self.velAttackers, True))
             elif human.checkIfWin(self.largo, self.alto, self.salida):
                 #print("win")
                 human.kill()
@@ -101,8 +101,8 @@ class Mapa:
                 self.scapeTime.append(self.t)
         return
 
-    def cantZombies(self):
-        return len(self.zombies)
+    def cantAttackers(self):
+        return len(self.attackers)
 
     def cantHumanos(self):
         return len(self.humanos)
@@ -117,9 +117,9 @@ class Mapa:
     #         ##CASO ZOMBIE - HUMANO, SOLO HUMANO CAMBIA DIRECCION, YA QUE ZOMBIE QUIERE IR HACIA EL. PERO SELF ES ZOMBIE ASI Q LISTO
                 
         
-    #     for zombie in self.zombies:
-    #         if ser.distanceTo(zombie.x,zombie.y) <= 0.50: ##0.3 es el radio de las personas
-    #             ser.changeDirection(zombie.x,zombie.y) ## sea SER zombie o humano en ambos caso el SER debe cambiar direccion
+    #     for attacker in self.attackers:
+    #         if ser.distanceTo(attacker.x,attacker.y) <= 0.50: ##0.3 es el radio de las personas
+    #             ser.changeDirection(attacker.x,attacker.y) ## sea SER attacker o humano en ambos caso el SER debe cambiar direccion
     #             return
 
     #     return ##todos estan separados si llega este punto
@@ -138,20 +138,20 @@ class Mapa:
                         ser.changeDirection(human.x,human.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
                         #ser.direccionDeseada(-human.x, -human.y)
                         return True
-            for zombie in self.zombies:
-                if zombie.apagado and zombie.x != ser.x and zombie.y != ser.y:
-                    if ser.distanceTo(zombie.x,zombie.y) <= 0.2: ## radio min de las personas
+            for attacker in self.attackers:
+                if attacker.apagado and attacker.x != ser.x and attacker.y != ser.y:
+                    if ser.distanceTo(attacker.x,attacker.y) <= 0.2: ## radio min de las personas
                     ## EN CONTACTO HUMANO - HUMANO, CAMBIAR DIRECCION
-                        ser.changeDirection(zombie.x,zombie.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
+                        ser.changeDirection(attacker.x,attacker.y) ## LA DEL HUMAN NO HACE FALTA CAMBIAR DIRECCINO (SOLO SELF) XQ DESP EL FOR VA A OCUPARE DE ESE HUMAN EN CPM
                         ser.radius = 0.2
                         #ser.direccionDeseada(-human.x, -human.y)
 
                 
         else:
-            for zombie in self.zombies:
-                if(ser.x != zombie.x and ser.y != zombie.y):
-                    if ser.distanceTo(zombie.x,zombie.y) <= 0.4: ##0.3 es el radio de las personas
-                        ser.changeDirection(zombie.x,zombie.y) ## sea SER zombie 
+            for attacker in self.attackers:
+                if(ser.x != attacker.x and ser.y != attacker.y):
+                    if ser.distanceTo(attacker.x,attacker.y) <= 0.4: ##0.3 es el radio de las personas
+                        ser.changeDirection(attacker.x,attacker.y) ## sea SER attacker 
                         return True
 
         return False ##todos estan separados si llega este punto
@@ -160,7 +160,7 @@ class Mapa:
         s = ""
         for i in self.humanos:
             s += str(i.x) + " " + str(i.y) + " 0\n"
-        for j in self.zombies:
+        for j in self.attackers:
             s += str(j.x) + " " + str(j.y) + " 1\n"
         s += "\n"
         return s

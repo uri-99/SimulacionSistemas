@@ -1,13 +1,4 @@
 import math
-import functools
 
-def distanceBetweenPoints(point1, point2):
-    x, y = point1
-    x1, y1 = point2
-    return math.sqrt(math.pow(x1 - x, 2) + math.pow(y1 - y, 2))
-
-def standardDeviation(values):
-    size = len(values)
-    average = sum(values)/size
-    topAux = sum(map(lambda value: pow(value - average, 2), values))
-    return math.sqrt(topAux/(size-1))
+def distanceBetween(person1, person2):
+    return math.sqrt( (person1.x - person2.x)**2 + (person1.y-person2.y)**2)

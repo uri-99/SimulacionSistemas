@@ -1,20 +1,20 @@
 import math
 
-class Zombie:
+class Attacker:
     def __init__(self,x,y,v,wasBit):
         self.v = v
         self.x = x
         self.y = y
         self.humano = False
-        self.zombie = True
+        self.attacker = True
         self.vx = 0
         self.vy = 0
         self.angle = 0
         self.apagado = wasBit # SI ESTA EN TRUE APAGADO, NO PUEDE MOVERSE NI COMER GENTE
-        self.secondsSinceBit = 0 #Todo zombie quien tenga mas o igual de 7 segundos pasados SE LE PASA EL APAGADO A FALSE
+        self.secondsSinceBit = 0 #Todo attacker quien tenga mas o igual de 7 segundos pasados SE LE PASA EL APAGADO A FALSE
 
 
-    def zombieDespierta(self):
+    def attackerDespierta(self):
         if(self.secondsSinceBit >= 7):
             self.apagado = False
         return
@@ -32,7 +32,7 @@ class Zombie:
                     self.y += self.vy * dt
 
         self.secondsSinceBit += dt
-        self.zombieDespierta()
+        self.attackerDespierta()
 
     def direccionDeseada(self, targetX, targetY):
         difX = abs(targetX - self.x)

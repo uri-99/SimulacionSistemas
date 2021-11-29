@@ -11,8 +11,8 @@ simulationFile = os.path.join(dirname, 'data/generic.txt')
 simulation = open(simulationFile, 'r')
 
 def separate(particles_x, particles_y, particles_type):
-    zombies_x = []
-    zombies_y = []
+    attackers_x = []
+    attackers_y = []
     humans_x = []
     humans_y = []
     for i in range(0, len(particles_x)):
@@ -20,9 +20,9 @@ def separate(particles_x, particles_y, particles_type):
             humans_x.append(particles_x[i])
             humans_y.append(particles_y[i])
         else:
-            zombies_x.append(particles_x[i])
-            zombies_y.append(particles_y[i])
-    return humans_x, humans_y, zombies_x, zombies_y
+            attackers_x.append(particles_x[i])
+            attackers_y.append(particles_y[i])
+    return humans_x, humans_y, attackers_x, attackers_y
 
 def read_paragraph():
     lines = []
@@ -71,17 +71,17 @@ x, y, types = parse_file()
 
 def animate(frame):
     global humans_plot
-    global zombies_plot
+    global attackers_plot
     humans_plot.remove()
-    zombies_plot.remove()
-    humans_x, humans_y, zombies_x, zombies_y = separate(x[frame], y[frame], types[frame])
+    attackers_plot.remove()
+    humans_x, humans_y, attackers_x, attackers_y = separate(x[frame], y[frame], types[frame])
     humans_plot, = plt.plot(humans_x, humans_y, 'bo', markersize=3)
-    zombies_plot, = plt.plot(zombies_x, zombies_y, 'go', markersize=3)
+    attackers_plot, = plt.plot(attackers_x, attackers_y, 'go', markersize=3)
 
 fig = plt.gcf()
-humans_x_0, humans_y_0, zombies_x_0, zombies_y_0 = separate(x[0], y[0], types[0])
+humans_x_0, humans_y_0, attackers_x_0, attackers_y_0 = separate(x[0], y[0], types[0])
 humans_plot, = plt.plot(humans_x_0, humans_y_0, 'bo', markersize=3)
-zombies_plot, = plt.plot(zombies_x_0, zombies_y_0, 'go', markersize=3)
+attackers_plot, = plt.plot(attackers_x_0, attackers_y_0, 'go', markersize=3)
 frames = len(x)
 anim = animation.FuncAnimation(fig, animate, interval=dt, repeat=False, frames=frames)
 draw_box()
