@@ -15,7 +15,7 @@ class Guard:
             dist = distanceBetween(self, person)
             difx = self.x - person.x
             dify = self.y - person.y
-            if dist <= (self.size/2) + (person.size/2):
+            #if dist <= (self.size/2) + (person.size/2):
                 #battle, hasta que puede quedar mejor en attacker.py
 
         #posición respectiva al vip nada mas, él tiene el social force

@@ -7,7 +7,7 @@ import os
 dt = 90 # 1000 = 1 segundo
 
 dirname = os.path.dirname(__file__)
-simulationFile = os.path.join(dirname, 'data/generic.txt')
+simulationFile = os.path.join(dirname, 'generic.txt')
 simulation = open(simulationFile, 'r')
 
 def separate(particles_x, particles_y, particles_type): #type 0 guards, type1 attackers, type2 vip, typ3 dead
@@ -106,5 +106,5 @@ draw_box()
 plt.xlim([-3, 23])
 plt.ylim([-3, 23])
 plt.gca().set_aspect('equal')
-#plt.show()
-anim.save("./animations/15_1.gif", writer=PillowWriter(fps=33))
+plt.show()
+#anim.save("./animations/15_1.gif", writer=PillowWriter(fps=33))
