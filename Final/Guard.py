@@ -11,5 +11,12 @@ class Guard:
         isDead = False
 
     def move(self, dt, VIP, attackers):
-        #todo move guard
+        for person in attackers:
+            dist = distanceBetween(self, person)
+            difx = self.x - person.x
+            dify = self.y - person.y
+            if dist <= (self.size/2) + (person.size/2):
+                #battle, hasta que puede quedar mejor en attacker.py
+
+        #posición respectiva al vip nada mas, él tiene el social force
         return
