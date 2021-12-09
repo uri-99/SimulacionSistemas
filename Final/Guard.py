@@ -6,32 +6,46 @@ import math
 
 class Guard:
     guardSpeed = 2 #m/s
-    def __init__(self, size, mass, angle, VIP, guards):
+    def __init__(self, size, mass, angle, VIP, guards, guardTau, canShoot, second=False):
         self.VIP = VIP
-        self.x = VIP.x + math.cos(angle)
-        self.y = VIP.y + math.sin(angle)
+        if not second:
+            self.x = VIP.x + math.cos(angle)
+            self.y = VIP.y + math.sin(angle)
+            self.angle = angle
+        else:
+            self.x = VIP.x + 1.5*math.cos(angle)
+            self.y = VIP.y + 1.5*math.sin(angle)
+            self.angle = angle + math.pi/12
+        self.second = second
         self.vx = 0#self.attackerSpeed
         self.vy = 0
         self.size = size
         self.mass = mass
         self.isDead = False
-        self.angle = angle
         self.trainingLevel = 0.8
         self.guards = guards
         self.kn = 2 * 10 **3
         self.kt = 0#2 * 10**1
-        self.tau = 0.002 #s
+        self.tau = guardTau #0.002 #s
         self.isFighting = False
         self.roundsFighting = 0
         self.amountOfRivals = 0
+        self.canShoot = canShoot
+        self.shootTimer = 1/0.05 #1/dt
 
     def move(self, dt, VIP, guards, attackers):
         granular = [0, 0]
         social = [0, 0]
         drive = [0, 0]
 
+        closestPersonDist = math.inf
+        closestPerson = None
+
         for person in attackers:
             dist = distanceBetween(self, person)
+            if dist < closestPersonDist:# and not person.isDead:
+                closestPerson = person
+                closestPersonDist = dist
             angle = angleBetween(self, person)
             if dist <= (self.size / 2) + (person.size / 2):
                 dif = dist - (self.size + person.size)
@@ -41,8 +55,18 @@ class Guard:
             #self.x = VIP.x + math.cos(self.angle)
             #self.y = VIP.y + math.sin(self.angle)
 
+        if self.shootTimer == 0:
+            if closestPerson is not None:
+                closestPerson.isDead = True
+            self.shootTimer = 2/dt
+        else:
+            self.shootTimer -= 1
 
-        angle = angleBetween(self, Position(VIP.x + math.cos(self.angle), VIP.y + math.sin(self.angle)))
+
+        if not self.second:
+            angle = angleBetween(self, Position(VIP.x + math.cos(self.angle), VIP.y + math.sin(self.angle)))
+        else:
+            angle = angleBetween(self, Position(VIP.x + 1.2*math.cos(self.angle), VIP.y + 1.2*math.sin(self.angle)))
         drive[0] = ((self.guardSpeed * math.cos(angle) - self.vx) / self.tau)
         drive[1] = ((self.guardSpeed * math.sin(angle) - self.vy) / self.tau)
 
@@ -64,21 +88,7 @@ class Guard:
             self.y += self.vy * dt
 
 
-
-            #if dist <= (self.size/2) + (person.size/2):
-                #battle, hasta que puede quedar mejor en attacker.py
-                #if random.uniform(0,1) > self.trainingLevel:
-                    #person.isDead = True
-                #else
-                    #self.isDead = True
-
-        #posición respectiva al vip nada mas, él tiene el social force
         return
-
-    def transferForce(self, mass, fx, fy):
-        f_t = math.sqrt(fx**2 + fy**2)
-        acc = f_t / mass
-        guard_acc = f_t / self.mass
 
 class Position:
     def __init__(self, x, y):

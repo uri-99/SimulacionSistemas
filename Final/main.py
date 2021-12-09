@@ -5,12 +5,14 @@ WIDTH = 20
 DOOR_SIZE = 3
 
 def genericEj():
-    qAttackers = 30
+    qAttackers = 25
     qGuards = 15
     rGuards = 1
-    doubleGuards = False
+    guardTau = 0.001
+    doubleGuards = True
+    canShoot = True
     dt = 0.05
-    map = Map(WIDTH, HEIGHT, DOOR_SIZE, DOOR_SIZE, qAttackers, qGuards, rGuards, doubleGuards, dt)
+    map = Map(WIDTH, HEIGHT, DOOR_SIZE, DOOR_SIZE, qAttackers, qGuards, rGuards, doubleGuards, dt, guardTau, canShoot)
 
     print("map generated")
 

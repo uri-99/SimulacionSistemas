@@ -29,7 +29,7 @@ class Attacker:
         social = [0, 0]
         drive = [0, 0]
 
-        for person in attackers:
+        for person in attackers + guards:
             dist = distanceBetween(self, person)
             if dist>0:
                 angle = angleBetween(self, person)
@@ -73,6 +73,10 @@ class Attacker:
 
         if 0 < self.x + self.vx * dt < 20:
             self.x += self.vx * dt
+        else:
+            if 8.5<self.y<11.5:
+                self.x += self.vx * dt
+                self.isDead = True
         if 0 < self.y + self.vy * dt < 20:
             self.y += self.vy * dt
 

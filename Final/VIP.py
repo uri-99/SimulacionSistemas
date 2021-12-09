@@ -34,7 +34,8 @@ class VIP:
             difx = abs(self.x - person.x)
             dify = abs(self.y - person.y)
             if dist <= (self.size/2) + (person.size/2):#un atacker toca al vip
-                self.isDead = self.hasDied()
+                if not person.isDead and not person.isFighting:
+                    self.isDead = self.hasDied()
 
             angle = angleBetween(self, person)
             #social[0] += ( self.A ** (-dist/self.B) ) * math.cos(angle)
@@ -59,8 +60,7 @@ class VIP:
         self.vx += acc[0] * dt
         self.vy += acc[1] * dt
 
-        if 0 < self.x + self.vx * dt < 20:
-            self.x += self.vx * dt
+        self.x += self.vx * dt
         if 0 < self.y + self.vy * dt < 20:
             self.y += self.vy * dt
 
