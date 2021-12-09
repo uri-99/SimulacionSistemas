@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.animation import PillowWriter
 import os
 
-dt = 90 # 1000 = 1 segundo
+dt = 5 # 1000 = 1 segundo
 
 dirname = os.path.dirname(__file__)
 simulationFile = os.path.join(dirname, 'generic.txt')
