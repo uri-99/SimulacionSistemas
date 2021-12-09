@@ -78,7 +78,7 @@ class Map:
     def isFinished(self):
         if self.t > 100:
             return True
-        if self.VIP.isDead or self.VIP.hasEscaped:
+        if self.VIP.hasEscaped or self.VIP.isDead:
             return True
         return False
 
