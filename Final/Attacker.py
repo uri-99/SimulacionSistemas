@@ -15,11 +15,11 @@ class Attacker:
         self.size = size
         self.mass = mass
         self.isDead = False
-        self.kn = 1.2 * 10 **5
-        self.kt = 2.4 * 10**5
+        self.kn = 2 * 10 **3
+        self.kt = 0#2 * 10**1
         self.A = 0.8 #N
         self.B = 2000 #m
-        self.tau = 0.02 #s
+        self.tau = 0.015 #s
 
     def move(self, dt, VIP, guards, attackers):
         granular = [0, 0]
@@ -33,25 +33,25 @@ class Attacker:
                 if dist <= (self.size/2) + (person.size/2): #si se están tocando
                     print("touching")
                     dif = dist - (self.size + person.size)
-                    #granular[0] += -dif * self.kn *math.cos(-angle)
-                    #granular[1] += -dif * self.kn *math.sin(-angle)
+                    granular[0] += dif * self.kn *math.cos(angle)
+                    granular[1] += dif * self.kn *math.sin(angle)
                     print(granular)
 
-                    #granular[0] += self.vx * dif * self.kt * cos(-angle + math.pi/2)#vt velocidad relativa tangencial?
-                    #granular[1] += self.vy * dif * self.kt * sin(-angle + math.pi/2)
+                    granular[0] += self.vx * dif * self.kt * math.cos(angle + math.pi/2)#vt velocidad relativa tangencial?
+                    granular[1] += self.vy * dif * self.kt * math.sin(angle + math.pi/2)
                     print(granular)
                     #if person is Guard:
                         #battle here
 
                 social[0] += ( self.A ** (dist/self.B) ) * math.cos(-angle)
                 social[1] += ( self.A ** (dist/self.B) ) * math.sin(-angle)
-                print("social: ", social)
+                #print("social: ", social)
 
 
         angle = angleBetween(self, VIP)
         drive[0] =  ((self.attackerSpeed*math.cos(angle) - self.vx)/self.tau)
         drive[1] =  ((self.attackerSpeed*math.sin(angle) - self.vy)/self.tau)
-        print("drive: ", drive)
+        #print("drive: ", drive)
 
         F_total = [0,0]
         F_total[0] = granular[0] + social[0] + drive[0]

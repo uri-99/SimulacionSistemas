@@ -6,7 +6,7 @@ DOOR_SIZE = 3
 
 def genericEj():
     qAttackers = 10
-    qGuards = 10
+    qGuards = 15
     rGuards = 1
     doubleGuards = False
     dt = 0.1
