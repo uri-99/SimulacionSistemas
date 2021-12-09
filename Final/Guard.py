@@ -15,6 +15,9 @@ class Guard:
         self.angle = angle
         self.trainingLevel = 0.8
         self.guards = guards
+        self.isFighting = False
+        self.roundsFighting = 0
+        self.amountOfRivals = 0
 
     def move(self, dt, VIP, guards, attackers):
         for person in attackers:

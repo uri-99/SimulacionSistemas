@@ -20,13 +20,15 @@ class Attacker:
         self.A = 0.8 #N
         self.B = 2000 #m
         self.tau = 0.015 #s
+        self.isFighting = False
+        self.roundsFighting = 0
 
     def move(self, dt, VIP, guards, attackers):
         granular = [0, 0]
         social = [0, 0]
         drive = [0, 0]
 
-        for person in guards + attackers:
+        for person in attackers:
             dist = distanceBetween(self, person)
             if dist>0:
                 angle = angleBetween(self, person)
@@ -40,8 +42,6 @@ class Attacker:
                     granular[0] += self.vx * dif * self.kt * math.cos(angle + math.pi/2)#vt velocidad relativa tangencial?
                     granular[1] += self.vy * dif * self.kt * math.sin(angle + math.pi/2)
                     print(granular)
-                    #if person is Guard:
-                        #battle here
 
                 social[0] += ( self.A ** (dist/self.B) ) * math.cos(-angle)
                 social[1] += ( self.A ** (dist/self.B) ) * math.sin(-angle)

@@ -52,6 +52,20 @@ class Map:
             #calcular x e y para cada guardia a ser creado. tengo qGuards, self.VIP.x y self.VIP.y
             #todo meter un guardia en cada angulo respecto al VIP apropiadamente
 
+    def guardsOrder(self):
+        notFighting = 0
+        for guard in self.guards:
+            if (not guard.isFighting) and (not guard.isDead):
+                notFighting += 1
+        angle = (2*math.pi) / notFighting
+        i = 1
+        for guard in self.guards:
+            if (not guard.isFighting) and (not guard.isDead):
+                new_angle = i*angle
+                i += 1
+                # TODO ya esta el angulo segun cuantos hay, solo habria q saber decirle como ir ahi
+        return
+
     def positionIsFree(self, x, y):
         array = self.attackers + self.guards
         for person in array:
@@ -73,11 +87,50 @@ class Map:
         self.t = round(self.t, 1)
         self.VIP.move(self.dt, self.attackers)
         for guard in self.guards:
-            if not guard.isDead:
+            checkGuard(guard)
+            if (not guard.isDead) and (not guard.isFighting):
                 guard.move(self.dt, self.VIP, self.guards, self.attackers)
         for attacker in self.attackers:
-            if not attacker.isDead:
+            checkAttacker(attacker)
+            if (not attacker.isDead) and (not attacker.isFighting):
                 attacker.move(self.dt, self.VIP, self.guards, self.attackers)
+        for guard in self.guards:
+            checkFight(guard)
+
+    def checkFight(self, guard): #se fija si el guardia esta peleando y calcula posibilidades
+        if not guard.isDead:
+            for attacker in self.attackers:
+                if not attacker.isDead:
+                    # FIGHT STARTER
+                    if dist <= (guard.size/2) + (attacker.size/2): # entra solo cuando ambos estan vivos
+                        guard.isFighting = True
+                        attacker.isFighting = True
+                        guard.amountOfRivals += 1
+                        if random.uniform(0,1) >= guard.trainingLevel/guard.amountOfRivals #segun la cantidad de rivales la prob de ganar es mas baja
+                            guard.isDead = True
+                        else
+                            attacker.isDead = True
+
+    def checkGuard(self, guard):
+        if (not guard.isDead) and guard.isFighting:
+            # FIGHT ENDER
+            guard.roundsFighting += 1
+
+            if guard.roundsFighting != 0 and guard.roundsFighting%2 == 0:
+                guard.roundsFighting -= 2
+                guard.amountOfRivals -= 1
+                if guard.amountOfRivals == 0:
+                    guard.isFighting = False
+
+    def checkAttacker(self, attacker):
+        if not attacker.isDead and attacker.isFighting:
+            # FIGHT ENDER
+            attacker.roundsFighting += 1
+
+            if attacker.roundsFighting != 0 and attacker.roundsFighting%2 == 0:
+                attacker.roundsFighting = 0
+                attacker.isFighting = False
+
 
     def __repr__(self):
         s = ""
@@ -88,5 +141,3 @@ class Map:
             s += str(j.x) + " " + str(j.y) + " 1\n"
         s += "\n"
         return s
-
-
