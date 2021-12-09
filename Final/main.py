@@ -5,14 +5,15 @@ WIDTH = 20
 DOOR_SIZE = 3
 
 def genericEj():
-    qAttackers = 5
-    qGuards = 20
+    qAttackers = 10
+    qGuards = 10
     rGuards = 1
     doubleGuards = False
     dt = 0.1
     map = Map(WIDTH, HEIGHT, DOOR_SIZE, DOOR_SIZE, qAttackers, qGuards, rGuards, doubleGuards, dt)
 
-    print("asd")
+    print("map generated")
+
     f = open("generic.txt", "w")
 
     while(not map.isFinished()):

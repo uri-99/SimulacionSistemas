@@ -1,7 +1,7 @@
 #stats fijos siempre
 import random
 import math
-from utils import distanceBetween
+from utils import *
 
 class VIP:
 
@@ -17,9 +17,9 @@ class VIP:
         self.isDead = False
         self.hasEscaped = False
         self.dieChance = 0.5
-        self.A = 2000 #N
+        self.A = 200 #N
         self.B = 0.8 #m
-        self.tau = 0.05 #s
+        self.tau = 0.15 #s
 
     def move(self, dt, attackers):
         if self.x >= 20:
@@ -31,8 +31,8 @@ class VIP:
 
         for person in attackers:
             dist = distanceBetween(self, person)
-            difx = math.abs(self.x - person.x)
-            dify = math.abs(self.y - person.y)
+            difx = abs(self.x - person.x)
+            dify = abs(self.y - person.y)
             if dist <= (self.size/2) + (person.size/2):#un atacker toca al vip
                 self.isDead = self.hasDied()
 

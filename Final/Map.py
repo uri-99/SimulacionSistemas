@@ -29,7 +29,8 @@ class Map:
 
     def generateBeings(self):
         self.VIP = VIP(2, 10, self.attackerSize, 70)
-        self.generateGuards()
+        if self.qGuards > 0:
+            self.generateGuards()
 
         Zadded = 0
         while Zadded < self.qAttackers: #generarAttackers
@@ -43,11 +44,13 @@ class Map:
 
     def generateGuards(self):
         angle = (2*math.pi) / self.qGuards
+        print(self.qGuards)
         for i in range(self.qGuards):
             mass = random.uniform(80,100)
+            new_angle = i*angle
+            self.guards.append(Guard(self.guardSize, mass, new_angle, self.VIP, self.guards))
             #calcular x e y para cada guardia a ser creado. tengo qGuards, self.VIP.x y self.VIP.y
             #todo meter un guardia en cada angulo respecto al VIP apropiadamente
-            return
 
     def positionIsFree(self, x, y):
         array = self.attackers + self.guards
