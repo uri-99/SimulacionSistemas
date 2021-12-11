@@ -73,12 +73,14 @@ class Attacker:
 
         if 0 < self.x + self.vx * dt < 20:
             self.x += self.vx * dt
+            self.y += self.vy * dt
         else:
             if 8.5<self.y<11.5:
                 self.x += self.vx * dt
+                self.y += self.vy * dt
                 #self.isDead = True
-        if 0 < self.y + self.vy * dt < 20:
-            self.y += self.vy * dt
+        #if 0 < self.y + self.vy * dt < 20:
+        #    self.y += self.vy * dt
 
 
         return
