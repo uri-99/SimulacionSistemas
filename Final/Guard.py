@@ -8,14 +8,14 @@ class Guard:
     guardSpeed = 2 #m/s
     def __init__(self, size, mass, angle, VIP, guards, guardTau, canShoot, second=False):
         self.VIP = VIP
+        self.angle = angle
         if not second:
             self.x = VIP.x + math.cos(angle)
             self.y = VIP.y + math.sin(angle)
-            self.angle = angle
         else:
             self.x = VIP.x + 1.5*math.cos(angle)
             self.y = VIP.y + 1.5*math.sin(angle)
-            self.angle = angle + math.pi/12
+            #self.angle += + math.pi/12
         self.second = second
         self.vx = 0#self.attackerSpeed
         self.vy = 0

@@ -5,8 +5,11 @@ import numpy as np
 dirname = os.path.dirname(__file__)
 # 
 #
+
+
+
 # def ejb():
-#     dataFile = os.path.join(dirname, './data/ejb.txt')
+#     dataFile = os.path.join(dirname, './ej1.txt')
 #     data = open(dataFile, 'r')
 #     zombies = []
 #     escapeHumans = []

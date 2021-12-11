@@ -13,9 +13,9 @@ class Map:
     guardSize = 0.5
 
     fightTime = 30
-    canKill = False
 
-    def __init__(self, width, height, enter, exit, qAttackers, qGuards, rGuards, doubleGuards, dt, guardTau, canShoot):
+
+    def __init__(self, width, height, enter, exit, qAttackers, qGuards, rGuards, doubleGuards, dt, guardTau, canShoot, canKill):
         self.width = width
         self.height = height
         self.enter = enter
@@ -32,6 +32,8 @@ class Map:
         self.guardTau = guardTau
         self.canShoot = canShoot
         self.generateBeings()
+        self.canKill = canKill
+        self.result = None
 
     def generateBeings(self):
         self.VIP = VIP(2, 10, self.attackerSize, 70)
@@ -50,7 +52,7 @@ class Map:
 
     def generateGuards(self):
         angle = (2*math.pi) / self.qGuards
-        print(self.qGuards)
+        #print(self.qGuards)
         for i in range(self.qGuards):
             mass = random.uniform(80,100)
             new_angle = i*angle
@@ -78,10 +80,13 @@ class Map:
     def positionIsFree(self, x, y):
         array = self.attackers + self.guards
         for person in array:
+            if math.sqrt((x-self.VIP.x)**2 + (y-self.VIP.y)**2) <= 1.5:
+                return False
             if abs(person.x - x) < person.size:
                 if abs(person.y - y) < person.size:
-                    if abs(self.VIP.x - x) < self.rGuards and abs(self.VIP.y - y) < self.rGuards: #not spawn between VIP and Guards
-                        return False
+                    return False
+                    #if abs(self.VIP.x - x) < self.rGuards and abs(self.VIP.y - y) < self.rGuards: #not spawn between VIP and Guards
+                    #    return False
         return True
 
     def isFinished(self):
@@ -89,10 +94,15 @@ class Map:
             print("time over\n")
             return True
         if self.VIP.hasEscaped or self.VIP.isDead:
+            for attacker in self.attackers:
+                if attacker.x > 20:
+                    attacker.isDead = True
             if self.VIP.hasEscaped:
-                print("escaped")
+                #print("escaped")
+                self.result = 1
             else:
-                print("died")
+                #print("died")
+                self.result = 0
             return True
         return False
 
