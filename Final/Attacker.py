@@ -18,8 +18,8 @@ class Attacker:
         self.isDead = False
         self.kn = 2 * 10 **3
         self.kt = 0#2 * 10**1
-        self.A = 0.08 #N
-        self.B = 2000 #m
+        self.A = 2000 #N
+        self.B = 0.08 #m
         self.tau = 0.015 #s
         self.isFighting = False
         self.roundsFighting = 0
@@ -76,7 +76,7 @@ class Attacker:
         else:
             if 8.5<self.y<11.5:
                 self.x += self.vx * dt
-                self.isDead = True
+                #self.isDead = True
         if 0 < self.y + self.vy * dt < 20:
             self.y += self.vy * dt
 

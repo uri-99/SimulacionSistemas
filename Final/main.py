@@ -8,9 +8,9 @@ def genericEj():
     qAttackers = 25
     qGuards = 15
     rGuards = 1
-    guardTau = 0.001
+    guardTau = 0.002
     doubleGuards = True
-    canShoot = True
+    canShoot = False
     dt = 0.05
     map = Map(WIDTH, HEIGHT, DOOR_SIZE, DOOR_SIZE, qAttackers, qGuards, rGuards, doubleGuards, dt, guardTau, canShoot)
 

@@ -17,8 +17,8 @@ class VIP:
         self.isDead = False
         self.hasEscaped = False
         self.dieChance = 0.5
-        self.A = 0.08 #N
-        self.B = 2000 #m
+        self.A = 2000 #N
+        self.B = 0.08 #m
         self.tau = 0.015 #s
 
     def move(self, dt, attackers):

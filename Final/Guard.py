@@ -54,13 +54,13 @@ class Guard:
 
             #self.x = VIP.x + math.cos(self.angle)
             #self.y = VIP.y + math.sin(self.angle)
-
-        if self.shootTimer == 0:
-            if closestPerson is not None:
-                closestPerson.isDead = True
-            self.shootTimer = 2/dt
-        else:
-            self.shootTimer -= 1
+        if self.canShoot:
+            if self.shootTimer == 0:
+                if closestPerson is not None:
+                    closestPerson.isDead = True
+                self.shootTimer = 2/dt
+            else:
+                self.shootTimer -= 1
 
 
         if not self.second:
