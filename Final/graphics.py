@@ -114,3 +114,4 @@ tauString = "TAU de guardias"
 #part1(guardsTauVariation, tauVariation, tauString)
 #part1(attackersVariationShoot, attackersVariation, attackersString)
 
+def part2():
