@@ -99,12 +99,18 @@ attackersVariation = range(0, 50)
 attackersString = "Cantidad de atacantes"
 guardsVariation = range(0, 50)
 guardsString = "Cantidad de guardias"
-trainingLevel = range(0, 1, 1/len(trainingLevelVariationWithKill))
+trainingLevelVariation = np.arange(0, 1, 1/len(trainingLevelVariationWithKill))
+trainingString = "Nivel de entrenamiento"
+tauVariation = np.arange(0.0002, 0.01, (0.01-0.0002)/len(guardsTauVariation))
+tauString = "TAU de guardias"
 
-part1(attackersVariationWithoutKill, attackersVariation, attackersString)
+#part1(attackersVariationWithoutKill, attackersVariation, attackersString)
 #part1(attackersVariationWithKill, attackersVariation, attackersString)
 #part1(guardsVariationWithoutKill, attackersVariation, guardsString)
 #part1(guardsVariationWithKill, attackersVariation, guardsString)
 #part1(doubleGuardsAttackersVariationWithoutKill, attackersVariation, attackersString)
 #part1(doubleGuardsAttackersVariationWithKill, attackersVariation, attackersString)
+#part1(trainingLevelVariationWithKill, trainingLevelVariation, trainingString)
+#part1(guardsTauVariation, tauVariation, tauString)
+#part1(attackersVariationShoot, attackersVariation, attackersString)
 
